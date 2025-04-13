@@ -10,15 +10,15 @@ const createNoteAction = async (formData) => {
   const title = formData.get("title");
   const content = formData.get("content");
 
-  if (!title || !content) {
-    return { success: false, message: "Title or content is missing" };
+  if (!title) {
+    return { success: false, message: "Title is missing", note: None };
   }
   try {
-    await createNote(title, content);
-    return { success: true, message: "Note created successfully" };
+    const note = await createNote(title, content);
+    return { success: true, message: "Note created successfully", note: note };
   } catch (error) {
     console.error("Error creating note:", error);
-    return { success: false, message: "Error creating note" };
+    return { success: false, message: "Error creating note", note: None };
   }
 };
 
@@ -27,33 +27,52 @@ const updateNoteAction = async (formData, params) => {
   const title = formData.get("title");
   const content = formData.get("content");
 
-  if (!title || !content) {
-    return { success: false, message: "Title or content is missing" };
+  if (!title) {
+    return { success: false, message: "Title cannot be blank", note: None };
   }
   try {
-    await updateNote(id, title, content);
-    return { success: true, message: "Note updated successfully" };
+    const note = await updateNote(id, title, content);
+    return { success: true, message: "Note updated successfully", note: note };
   } catch (error) {
     console.error("Error updating note:", error);
-    return { success: false, message: "Error updating note" };
+    return { success: false, message: "Error updating note", note: None };
   }
 };
 
-const getNoteAction = async (req, res) => {
-  const { id } = req.params;
-  const note = await getNote(id);
-  res.status(200).json(note);
+const getNoteAction = async (params) => {
+  const { id } = params;
+  try {
+    const note = await getNote(id);
+    return { success: false, message: "Note is creted", note: note };
+  } catch (error) {
+    console.error("Couldn't find the note with id:", id);
+    return { success: false, message: "Note not found", note: None };
+  }
 };
 
-const deleteNoteAction = async (req, res) => {
-  const { id } = req.params;
-  await deleteNote(id);
-  res.status(204).end();
+const deleteNoteAction = async (params) => {
+  const { id } = params;
+  try {
+    await deleteNote(id);
+    return { success: true, message: "Note deleted.", note: None };
+  } catch (error) {
+    console.error("Error deleting the note.");
+    return { success: false, message: "Error deleting the note.", note: None };
+  }
 };
 
-const getAllNotesAction = async (req, res) => {
-  const notes = await getAllNotes();
-  res.status(200).json(notes);
+const getAllNotesAction = async () => {
+  try {
+    const notes = await getAllNotes();
+    return { success: true, message: "Retreived all notes", notes: notes };
+  } catch (error) {
+    console.error("Error with retrieving notes.");
+    return {
+      success: false,
+      message: "Error with retrieving notes.",
+      note: None,
+    };
+  }
 };
 
 export {
