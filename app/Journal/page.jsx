@@ -2,6 +2,7 @@
 import React from 'react';
 import Sidebar from '../_components/Sidebar';
 import MarkdownEditor from '../_components/MarkdownEditor';
+import PlainEditor from '../_components/PlainEditor';
 import { v4 as uuidv4} from 'uuid'
 import { useState } from 'react';
 
@@ -17,7 +18,7 @@ export default function page() {
 
    const handleCreateNote = () =>{
     const id = uuidv4()
-    const title = `Untitled ${notes.length + 1}`
+    const title = `Untitled`
     setNotes((prev) => [...prev, { id, title }])
     setNoteContent((prev) => ({ ...prev, [id]: '' }))
 
@@ -39,10 +40,22 @@ export default function page() {
           onCreateNote={handleCreateNote} />
               <main className="flex-1 p-0 overflow-auto">
         {currentNote && (
-          <MarkdownEditor
-            value={noteContent[selectedNoteId]}
-            onChange={handleUpdateContent}
-          />
+          // <MarkdownEditor
+          //   value={noteContent[selectedNoteId]}
+          //   onChange={handleUpdateContent}
+          // />
+          <PlainEditor
+            title={currentNote.title}
+            content={noteContent[selectedNoteId]}
+            onTitleChange={(newTitle) => {
+            setNotes((prev) =>
+              prev.map((note) =>
+                note.id === selectedNoteId ? { ...note, title: newTitle } : note
+              )
+            )
+          }}
+              onContentChange={handleUpdateContent}
+            />
         )}
       </main>
       </div>
