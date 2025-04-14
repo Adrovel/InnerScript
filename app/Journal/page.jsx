@@ -5,6 +5,7 @@ import MarkdownEditor from '../_components/MarkdownEditor';
 import PlainEditor from '../_components/PlainEditor';
 import { v4 as uuidv4} from 'uuid'
 import { useState } from 'react';
+import ChatPanel from '../_components/ChatPanel';
 
 export default function page() {
   const [notes, setNotes] = useState([
@@ -58,6 +59,9 @@ export default function page() {
             />
         )}
       </main>
+      <aside className="w-[300px] border-l p-4 overflow-y-auto">
+        <ChatPanel noteContent={noteContent[selectedNoteId]} />
+      </aside>
       </div>
     </>
   );
