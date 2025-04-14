@@ -21,7 +21,7 @@ export default function Sidebar({notes, onSelectNote, onCreateNote, selectedNote
              key={note.id}
              onClick={()=>onSelectNote(note.id)}
              className={clsx(
-              'cursor-pointer px-4 py-2 text-sm hover:bg-muted transition-colors',
+              'cursor-pointer h-9 px-4 py-2 text-sm hover:bg-muted transition-colors',
               {
                 'bg-muted font-medium': selectedNoteId === note.id,
               }
