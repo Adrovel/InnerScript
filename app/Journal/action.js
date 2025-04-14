@@ -27,8 +27,8 @@ const updateNoteAction = async (formData, params) => {
   const title = formData.get("title");
   const content = formData.get("content");
 
-  if (!title) {
-    return { success: false, message: "Title cannot be blank", note: None };
+  if (!title && !content) {
+    return { success: false, message: "Title or content cannot be blank", note: None };
   }
   try {
     const note = await updateNote(id, title, content);
