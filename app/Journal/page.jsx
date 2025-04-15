@@ -56,6 +56,7 @@ export default function page() {
             )
           }}
               onContentChange={handleUpdateContent}
+              noteId={selectedNoteId}
             />
         )}
       </main>
