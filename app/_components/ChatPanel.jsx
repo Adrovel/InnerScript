@@ -10,7 +10,7 @@ export default function ChatPanel({noteContent}) {
   ])
 
 const handleSend = (e) =>{
-  e.preventDefault()
+
 if(!input.trim()) return
 setMessages((prev) => [...prev,{ from: 'user', text: input}])
 setInput('')
