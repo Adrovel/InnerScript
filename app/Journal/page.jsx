@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import Sidebar from '../_components/Sidebar';
-import MarkdownEditor from '../_components/MarkdownEditor';
+import MarkdownEditor from '../_components/temp/MarkdownEditor';
 import PlainEditor from '../_components/PlainEditor';
 import { v4 as uuidv4} from 'uuid'
 import { useState } from 'react';
@@ -59,9 +59,9 @@ export default function page() {
             />
         )}
       </main>
-      <aside className="w-[300px] border-l p-4 overflow-y-auto">
+     
         <ChatPanel noteContent={noteContent[selectedNoteId]} />
-      </aside>
+      
       </div>
     </>
   );

@@ -11,7 +11,7 @@ export default function PlainEditor({ title, content, onTitleChange, onContentCh
         value={title}
         onChange={(e) => onTitleChange(e.target.value)}
         placeholder="Untitled Note"
-        className="text-4xl font-semibold p-3 outline-none bg-transparent text-center"
+        className="text-4xl font-semibold p-3 outline-none bg-[#f8fafc] text-center"
       />
       <textarea
         value={content}
