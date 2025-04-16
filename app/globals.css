@@ -120,3 +120,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3); /* or any subtle color */
+  border-radius: 3px;
+}
