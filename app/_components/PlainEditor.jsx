@@ -1,16 +1,27 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 
-
-
-
-export default function PlainEditor({ noteId, title, content, onTitleChange, onContentChange }) {
+export default function PlainEditor({
+  noteId,
+  title,
+  content, 
+  onTitleChange, 
+  onContentChange 
+}) {
   
   const [localTitle, setLocalTitle] = useState(title)
   const [localContent, setLocalContent] = useState(content)
 
-
+  const saveNoteToDB = async (id, title, content) => {
+    await fetch('/api/notes', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id, title, content }),
+    })
+  }
+  
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (noteId) {
@@ -22,15 +33,7 @@ export default function PlainEditor({ noteId, title, content, onTitleChange, onC
   }, [localTitle, localContent, noteId])
 
 
-  const saveNoteToDB = async (id, title, content) => {
-    await fetch('/api/notes', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id, title, content }),
-    })
-  }
+ 
   
   return (
     <div className="flex flex-col h-full ">
