@@ -122,7 +122,8 @@
 }
 
 .custom-scroll::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
+  height: 2px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
