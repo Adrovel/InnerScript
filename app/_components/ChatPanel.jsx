@@ -3,13 +3,18 @@
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
 import { Mic, MicOff, Send } from 'lucide-react'
+import CustomAudioPlayer from './CustomAudioPlayer'
 
 export default function ChatPanel({noteContent}) {
   const [isRecording, setIsRecording] = useState(false)
+  const [audioUrl, setAudioUrl] = useState(null)
+  const [recordingTime, setRecordingTime] = useState(0)
 
   const textareaRef = useRef(null)
   const mediaRecorderRef = useRef(null)
+  const mediaStreamRef = useRef(null)
   const audioChunks = useRef([])
+  const timerRef = useRef(null)
 
   const {
     messages,
@@ -31,41 +36,55 @@ export default function ChatPanel({noteContent}) {
     }
   }, [input])
 
-const handleSend = async (e) =>{
+  const handleSend = async (e) =>{
+    e?.preventDefault?.()
+    setInput('')
+    if(!input.trim()) return
+    await append({ role: 'user', content: input})
+  }
 
-  e?.preventDefault?.()
-  setInput('')
-  if(!input.trim()) return
-  await append({ role: 'user', content: input})
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60).toString().padStart(2, '0')
+    const secs = (seconds % 60).toString().padStart(2, '0')
+    return `${mins}:${secs}`
+  }
 
-}
+  const handleMicClick = async () => {
+    if (isRecording) {
+      mediaRecorderRef.current?.stop()
+      setIsRecording(false)
+      clearInterval((timerRef.current))
+      setRecordingTime(0)
+    } else {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+        const mediaRecorder = new MediaRecorder(stream)
 
-const handleMicClick = async () => {
-  if (isRecording) {
-    mediaRecorderRef.current?.stop()
-    setIsRecording(false)
-  } else {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      const mediaRecorder = new MediaRecorder(stream)
-      audioChunks.current = []
+        mediaStreamRef.current = stream
 
-      mediaRecorder.ondataavailable = (e) => audioChunks.current.push(e.data)
-      mediaRecorder.onstop = () => {
-        const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' })
-        const audioUrl = URL.createObjectURL(audioBlob)
-        console.log('Audio recorded:', audioUrl)
+        mediaRecorder.ondataavailable = (e) => audioChunks.current.push(e.data)
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' })
+          // audio processing space
+          setAudioUrl(URL.createObjectURL((audioBlob)))
+          audioChunks.current = []
+          stream.getTracks().forEach((track) => track.stop())
+        }
+        mediaRecorder.start()
+        setRecordingTime(0)
+        timerRef.current = setInterval(() => {
+          setRecordingTime((prev) => prev + 1)
+        }, 1000)
+        mediaRecorderRef.current = mediaRecorder
+        setIsRecording(true)
+      } catch (e) {
+        console.error('Mic access is denied or error', err)
       }
-      mediaRecorder.start()
-      setIsRecording(true)
-    } catch (e) {
-      console.error('Mic access is denied or error', err)
     }
   }
-}
 
   return (
-    <aside className="w-[300px] border-l p-4 overflow-y-auto bg-white">
+    <aside className="w-[300px] border-l p-4 overflow-y-auto bg-[#F5F7FF]">
     <div className="flex flex-col h-full ">
       <div className="flex-1 space-y-2 overflow-y-auto text-sm custom-scroll">
         {messages.map((msg, idx) => (
@@ -89,17 +108,20 @@ const handleMicClick = async () => {
         ))}
       </div>
 
-      <div className="mt-4 flex gap-2 bg-[#D6E3FF] rounded-lg items-end px-2 py-2 border-1 border-[#B7CEFF]">
+      {audioUrl && (
+        <CustomAudioPlayer src={audioUrl} />
+      )}
+
+      <div className="mt-4 flex gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
+        {isRecording ? (
+          <div className="flex-1 text-md text-gray-500 p-1.5 text-center">
+            {formatTime(recordingTime)}
+          </div>
+        ): (
         <textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => {
-            handleInputChange(e)
-            if (isRecording) {
-              mediaRecorderRef.current?.stop()
-              setIsRecording(false)
-            }
-          }}
+          onChange={(e) => handleInputChange(e)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
@@ -114,6 +136,8 @@ const handleMicClick = async () => {
           className="flex-1 resize-none bg-transparent outline-none custom-scroll rounded-md p-2 text-sm overflow-y-auto max-h-32"
           rows={1}
         />
+        )}
+
         <button
           onClick={input.trim() ? handleSend : handleMicClick}
           className="rounded-full bg-transparent text-black p-2"
