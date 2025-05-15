@@ -1,10 +1,45 @@
 'use client'
 
-import clsx from 'clsx';
-
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, ChevronRight, ChevronLeft } from 'lucide-react';
+
+import clsx from 'clsx';
+
+import FileTree from './FileTree';
+
+
+const explorer = [
+  {
+    id: 1,
+    name: "First Folder",
+    isFolder: true,
+    Files: [
+      {
+        id: 2,
+        name: "First File",
+        isFolder: false,
+      },
+      {
+        id: 5,
+        name: "Third File",
+        isFolder: false,
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "Second Folder",
+    isFolder: true,
+    Files: [
+      {
+        id: 5,
+        name: "Second File",
+        isFolder: false,
+      }
+    ]
+  }
+]
 
 export default function Sidebar({notes, onSelectNote, onCreateNote, selectedNoteId}) {
 
@@ -31,6 +66,10 @@ export default function Sidebar({notes, onSelectNote, onCreateNote, selectedNote
           </li>
         ))}
       </ul>
+      {explorer.map((item)=> (
+          <FileTree key={item.id} explorer={item}/>
+        ))
+      }
     </ScrollArea>
    </div>
   );
