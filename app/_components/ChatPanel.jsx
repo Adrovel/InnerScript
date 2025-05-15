@@ -3,26 +3,19 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
-import { Mic, MicOff, Send } from 'lucide-react'
-import CustomAudioPlayer from './CustomAudioPlayer'
+import { Send, Files, X } from 'lucide-react'
+import DropdownMenu from './DropdownMenu'
 
 export default function ChatPanel({noteContent}) {
-  const [isRecording, setIsRecording] = useState(false)
-  const [audioUrl, setAudioUrl] = useState(null)
-  const [recordingTime, setRecordingTime] = useState(0)
+  const [dropDownState, setDropDownState] = useState(false)
+  const [selectedFiles, setSelectedFiles] = useState([])
 
   const textareaRef = useRef(null)
-  const mediaRecorderRef = useRef(null)
-  const mediaStreamRef = useRef(null)
-  const audioChunks = useRef([])
-  const timerRef = useRef(null)
 
   const {
     messages,
     input,
     handleInputChange,
-    handleSubmit,
-    isLoading,
     setInput,
     append,
   } = useChat({
@@ -44,6 +37,7 @@ export default function ChatPanel({noteContent}) {
     await append({ role: 'user', content: input})
   }
 
+<<<<<<< Updated upstream
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60).toString().padStart(2, '0')
     const secs = (seconds % 60).toString().padStart(2, '0')
@@ -85,6 +79,8 @@ export default function ChatPanel({noteContent}) {
   }
 
 
+=======
+>>>>>>> Stashed changes
   return (
     <aside className="w-[300px] border-l p-4 overflow-y-auto bg-[#F5F7FF]">
     <div className="flex flex-col h-full ">
@@ -110,16 +106,16 @@ export default function ChatPanel({noteContent}) {
         ))}
       </div>
 
-      {audioUrl && (
-        <CustomAudioPlayer src={audioUrl} />
-      )}
 
-      <div className="mt-4 flex gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
-        {isRecording ? (
-          <div className="flex-1 text-md text-gray-500 p-1.5 text-center">
-            {formatTime(recordingTime)}
+
+      <div className="mt-4 flex-col gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
+        { selectedFiles.length > 0 && (
+          <div className='flex flex-row'>
+            <button className='bg-transparent rounded-ful outline outline-[#5B8DEF]'>
+              <X size={15} className="stroke-[2]"/>
+            </button>
           </div>
-        ): (
+        )}
         <textarea
           ref={textareaRef}
           value={input}
@@ -135,23 +131,22 @@ export default function ChatPanel({noteContent}) {
           }
 
           placeholder="Ask something..."
-          className="flex-1 resize-none bg-transparent outline-none custom-scroll rounded-md p-2 text-sm overflow-y-auto max-h-32"
+          className="resize-none bg-transparent outline-none custom-scroll rounded-md p-2 text-sm overflow-y-auto max-h-32 w-full"
           rows={1}
         />
-        )}
-
-        <button
-          onClick={input.trim() ? handleSend : handleMicClick}
-          className="rounded-full bg-transparent text-black p-2"
-        >
-          {input.trim() ? (
+        <div className='flex justify-between'>
+          <button
+            className='rounded-full bg-transparent text-black p-2'
+          >
+            <Files size={18} className='stroke-[2]'/>
+          </button>
+          <button
+            onClick={handleSend}
+            className="rounded-full bg-transparent text-black p-2"
+          >
             <Send size={18} className="stroke-[2]" />
-          ) : isRecording ? (
-            <MicOff size={18} className="stroke-[2] text-red-600" />
-          ) : (
-            <Mic size={18} className="stroke-[2]" />
-          )}
-        </button>
+          </button>
+        </div>
       </div>
     </div>
     </aside>
