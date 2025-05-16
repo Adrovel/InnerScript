@@ -1,13 +1,25 @@
-'use client'             
-
+'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
 import { Send, Files, X } from 'lucide-react'
-import DropdownMenu from './DropdownMenu'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+import { data } from '@/data'
+import {
+  Command,
+  CommandInput,
+  CommandEmpty,
+  CommandItem,
+  CommandList
+} from '@/components/ui/command'
+import { cn } from '@/lib/utils'
 
 export default function ChatPanel({noteContent}) {
-  const [dropDownState, setDropDownState] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState([])
 
   const textareaRef = useRef(null)
@@ -37,50 +49,14 @@ export default function ChatPanel({noteContent}) {
     await append({ role: 'user', content: input})
   }
 
-<<<<<<< Updated upstream
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60).toString().padStart(2, '0')
-    const secs = (seconds % 60).toString().padStart(2, '0')
-    return `${mins}:${secs}`
+  const toggleItem = (id) => {
+    setSelectedFiles((prev) =>
+      prev.includes(id)
+       ? prev.filter((itemId) => itemId !== id)
+       : [...prev, id]
+    )
   }
 
-  const handleMicClick = async () => {
-    if (isRecording) {
-      mediaRecorderRef.current?.stop()
-      setIsRecording(false)
-      clearInterval((timerRef.current))
-      setRecordingTime(0)
-    } else {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-        const mediaRecorder = new MediaRecorder(stream)
-
-        mediaStreamRef.current = stream
-
-        mediaRecorder.ondataavailable = (e) => audioChunks.current.push(e.data)
-        mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' })
-          // audio processing space
-          setAudioUrl(URL.createObjectURL((audioBlob)))
-          audioChunks.current = []
-          stream.getTracks().forEach((track) => track.stop())
-        }
-        mediaRecorder.start()
-        setRecordingTime(0)
-        timerRef.current = setInterval(() => {
-          setRecordingTime((prev) => prev + 1)
-        }, 1000)
-        mediaRecorderRef.current = mediaRecorder
-        setIsRecording(true)
-      } catch (e) {
-        console.error('Mic access is denied or error', err)
-      }
-    }
-  }
-
-
-=======
->>>>>>> Stashed changes
   return (
     <aside className="w-[300px] border-l p-4 overflow-y-auto bg-[#F5F7FF]">
     <div className="flex flex-col h-full ">
@@ -105,8 +81,6 @@ export default function ChatPanel({noteContent}) {
           </div>
         ))}
       </div>
-
-
 
       <div className="mt-4 flex-col gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
         { selectedFiles.length > 0 && (
@@ -135,11 +109,34 @@ export default function ChatPanel({noteContent}) {
           rows={1}
         />
         <div className='flex justify-between'>
-          <button
-            className='rounded-full bg-transparent text-black p-2'
-          >
-            <Files size={18} className='stroke-[2]'/>
-          </button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button>
+                <Files size={18} className='stroke-[2]'/>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="bg-white border rounded-md shadow-md p-0">
+              <Command className="bg-white rounded-md">
+                <CommandInput placeholder="search for file" />
+                <CommandList>
+                  <CommandEmpty>No results found.</CommandEmpty>
+                  {data.map((item) => (
+                    <CommandItem
+                      key={item.id}
+                      value={item.id.toString()}
+                      onSelect={() => toggleItem(item.id)}
+                      className={cn(
+                        "cursor-pointer",
+                        selectedFiles.includes(item.id) && "bg-blue-100 text-blue-800"
+                      )}
+                    >
+                      {item.title}
+                    </CommandItem>
+                  ))}
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
           <button
             onClick={handleSend}
             className="rounded-full bg-transparent text-black p-2"
