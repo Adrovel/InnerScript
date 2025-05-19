@@ -2,22 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
-import { Send, Files, X } from 'lucide-react'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-
+import { Send, X } from 'lucide-react'
 import { data } from '@/data'
-import {
-  Command,
-  CommandInput,
-  CommandEmpty,
-  CommandItem,
-  CommandList
-} from '@/components/ui/command'
-import { cn } from '@/lib/utils'
+
+import DropDownMenu from './DropdownMenu'
 
 export default function ChatPanel({noteContent}) {
   const [selectedFiles, setSelectedFiles] = useState([])
@@ -49,13 +37,10 @@ export default function ChatPanel({noteContent}) {
     await append({ role: 'user', content: input})
   }
 
-  const toggleItem = (id) => {
-    setSelectedFiles((prev) =>
-      prev.includes(id)
-       ? prev.filter((itemId) => itemId !== id)
-       : [...prev, id]
-    )
+  const clearSelections = () => {
+    setSelectedFiles([])
   }
+
 
   return (
     <aside className="w-[300px] border-l p-4 overflow-y-auto bg-[#F5F7FF]">
@@ -84,12 +69,29 @@ export default function ChatPanel({noteContent}) {
 
       <div className="mt-4 flex-col gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
         { selectedFiles.length > 0 && (
-          <div className='flex flex-row'>
-            <button className='bg-transparent rounded-ful outline outline-[#5B8DEF]'>
-              <X size={15} className="stroke-[2]"/>
+          <div className='flex flex-row gap-2 mb-2'>
+            <button
+              className='bg-transparent rounded-ful outline'
+              onClick={clearSelections}
+            >
+              <X size={14} className="stroke-[2]"/>
             </button>
+            {selectedFiles.map((item) => (
+              <div className='flex flex-row outline'>
+              <div key={item.id} className="text-sm text-gray-700 px-1">
+                { item.title }
+              </div>
+              <button
+                className='bg-transparent outline'
+                onClick={clearSelections}
+              >
+                <X size={14} className="stroke-[2]"/>
+              </button>
+              </div>
+            ))}
           </div>
         )}
+
         <textarea
           ref={textareaRef}
           value={input}
@@ -109,34 +111,7 @@ export default function ChatPanel({noteContent}) {
           rows={1}
         />
         <div className='flex justify-between'>
-          <Popover>
-            <PopoverTrigger asChild>
-              <button>
-                <Files size={18} className='stroke-[2]'/>
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="bg-white border rounded-md shadow-md p-0">
-              <Command className="bg-white rounded-md">
-                <CommandInput placeholder="search for file" />
-                <CommandList>
-                  <CommandEmpty>No results found.</CommandEmpty>
-                  {data.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      value={item.id.toString()}
-                      onSelect={() => toggleItem(item.id)}
-                      className={cn(
-                        "cursor-pointer",
-                        selectedFiles.includes(item.id) && "bg-blue-100 text-blue-800"
-                      )}
-                    >
-                      {item.title}
-                    </CommandItem>
-                  ))}
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
+          <DropDownMenu options={data} selectedOptions={selectedFiles} setSelectedOptions={setSelectedFiles}/>
           <button
             onClick={handleSend}
             className="rounded-full bg-transparent text-black p-2"
