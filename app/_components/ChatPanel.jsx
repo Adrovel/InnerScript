@@ -37,11 +37,6 @@ export default function ChatPanel({noteContent}) {
     await append({ role: 'user', content: input})
   }
 
-  const clearSelections = () => {
-    setSelectedFiles([])
-  }
-
-
   return (
     <aside className="w-[300px] border-l p-4 overflow-y-auto bg-[#F5F7FF]">
     <div className="flex flex-col h-full ">
@@ -68,29 +63,6 @@ export default function ChatPanel({noteContent}) {
       </div>
 
       <div className="mt-4 flex-col gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
-        { selectedFiles.length > 0 && (
-          <div className='flex flex-row gap-2 mb-2'>
-            <button
-              className='bg-transparent rounded-ful outline'
-              onClick={clearSelections}
-            >
-              <X size={14} className="stroke-[2]"/>
-            </button>
-            {selectedFiles.map((item) => (
-              <div className='flex flex-row outline'>
-              <div key={item.id} className="text-sm text-gray-700 px-1">
-                { item.title }
-              </div>
-              <button
-                className='bg-transparent outline'
-                onClick={clearSelections}
-              >
-                <X size={14} className="stroke-[2]"/>
-              </button>
-              </div>
-            ))}
-          </div>
-        )}
 
         <textarea
           ref={textareaRef}
