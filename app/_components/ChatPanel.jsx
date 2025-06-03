@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from 'ai/react'
 import { Send, X } from 'lucide-react'
-import { data } from '@/data'
+import { data } from '@/temp_data'
 
 import DropDownMenu from './DropdownMenu'
 
@@ -26,7 +26,7 @@ export default function ChatPanel({noteContent}) {
     const textarea = textareaRef.current
     if (textarea) {
       textarea.style.height = 'auto'
-      textarea.style.height = `${Math.min(textarea.scrollHeight, 128)}px` // 128px = max-h-32
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 128)}px`
     }
   }, [input])
 
@@ -73,7 +73,7 @@ export default function ChatPanel({noteContent}) {
               e.preventDefault()
               handleSend()
               if (textareaRef.current) {
-                textareaRef.current.style.height = 'auto' // reset height
+                textareaRef.current.style.height = 'auto'
               }
             }}
           }
@@ -84,12 +84,14 @@ export default function ChatPanel({noteContent}) {
         />
         <div className='flex justify-between'>
           <DropDownMenu options={data} selectedOptions={selectedFiles} setSelectedOptions={setSelectedFiles}/>
-          <button
-            onClick={handleSend}
-            className="rounded-full bg-transparent text-black p-2"
-          >
-            <Send size={18} className="stroke-[2]" />
-          </button>
+          <div className='bg-[#8baef4] rounded-full w-8 h-8 flex items-center justify-center'>
+            <button
+              onClick={handleSend}
+              className="rounded-full bg-transparent text-black"
+            >
+              <Send size={18} className="stroke-[2]" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

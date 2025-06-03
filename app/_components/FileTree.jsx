@@ -50,11 +50,11 @@ export default function FileTree({explorer, depth = 0}) {
       )}
         <span className="truncate">{explorer.name}</span>
 
-        {isFolder && (
+        {/* {isFolder && (
           <div>
             <button onClick={(e)=>handleNewFolder(e,false)}><FilePlus size={18}/></button>
             <button onClick={(e)=>handleNewFolder(e,true)}><FolderPlus size={18}/></button>
-          </div>)}
+          </div>)} */}
 
       </div>
         {showInput.visible && (

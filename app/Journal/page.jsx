@@ -11,32 +11,43 @@ import ChatPanel from '../_components/ChatPanel';
 export default function Page() {
 
   const [notes, setNotes] = useState([])
-  const [selectedNoteId, setSelectedNoteId] = useState([])
+  const [selectedNoteId, setSelectedNoteId] = useState(null)
   const [noteContent, setNoteContent] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
   
   const currentNote = notes.find((n) => n.id === selectedNoteId)
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const res = await fetch('/api/notes')
-      const data = await res.json()
+      try{
+        setIsLoading(true)
+        const res = await fetch('/api/notes')
+        if (!res.ok) {
+          throw new Error(`Failed to fetch notes: ${res.status}`)
+        }
 
-      setNotes(data)
+        const data = await res.json()
+        setNotes(data)
 
-      if (data.length > 0) {
-        setSelectedNoteId(data[0].id)
-        setNoteContent(data.reduce((acc, note) => {
-          acc[note.id] = note.content || ''
-          return acc
-        }, {}))
+        if (data.length > 0) {
+          setSelectedNoteId(data[0].id)
+          setNoteContent(data.reduce((acc, note) => {
+            acc[note.id] = note.content || ''
+            return acc
+          }, {}))
+        }
+      } catch (err) {
+        setError(err.message)
+        console.error('Error fetching notes:', err)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchNotes()
   }, [])
 
-
-
-
+  
   const handleCreateNote = async () =>{
     const id = uuidv4()
     const title = `Untitled`
@@ -100,7 +111,6 @@ export default function Page() {
     <>
       <div className= 'flex h-screen'>
         <Sidebar
-          notes={notes}
           selectedNoteId={selectedNoteId}
           onSelectNote={setSelectedNoteId}
           onCreateNote={handleCreateNote}
