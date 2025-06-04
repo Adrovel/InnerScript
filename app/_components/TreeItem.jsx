@@ -2,20 +2,33 @@ import clsx from "clsx"
 
 import { useState } from "react";
 
-import { ChevronRight, FileText } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 
-export default function TreeItem({ item, depth = 0 }) {
+export default function TreeItem({ item, depth = 0, setSelectedNoteId, selectedNoteId }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleToggle = () => setIsOpen(!isOpen)
+
+  const handleSelect = () => {
+    if (!item.isFolder) {
+      setSelectedNoteId(item.id)
+    }
+  }
+
+  const isSelected = selectedNoteId === item.id
 
   return (
     <>
     <div key={item.id}
       className={clsx(
-        'flex justify-between items-center text-sm cursor-pointer rounded py-2 px-2 hover:bg-sky-200 transition-colors'
+        'flex justify-between items-center text-sm cursor-pointer rounded py-2 px-2 transition-colors',
+        {
+          'bg-sky-200 text-blue-800 border-l-4 border-blue-500': isSelected,
+          'hover:bg-sky-200': !isSelected,
+        }
       )}
       style={{ paddingLeft: `${depth * 1.25 + 0.5}rem` }}
+      onClick={handleSelect}
     >
       {item.isFolder ? (
         <div className='flex items-center' onClick={handleToggle}>
@@ -38,7 +51,13 @@ export default function TreeItem({ item, depth = 0 }) {
     {isOpen && item.isFolder && item.Contents && (
       <div>
         {item.Contents.map((child) => (
-          <TreeItem key={child.id} item={child} depth={depth+1} />
+          <TreeItem 
+            key={child.id} 
+            item={child} 
+            depth={depth+1} 
+            setSelectedNoteId={setSelectedNoteId}
+            selectedNoteId={selectedNoteId}
+          />
         ))}
       </div>
     )}

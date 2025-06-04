@@ -4,52 +4,16 @@ import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
-import { PlusIcon, ChevronRight, ChevronLeft } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 
-import TreeItem from './temp/TreeItem';
+import TreeItem from './TreeItem';
 
-const tempExplorer = [
-  {
-    id: 1,
-    name: "First Folder",
-    isFolder: true,
-    Contents: [
-      {
-        id: 2,
-        name: "First File",
-        isFolder: false,
-      },
-      {
-        id: 5,
-        name: "Third File",
-        isFolder: false,
-      }
-    ]
-  },
-  {
-    id: 3,
-    name: "Second Folder",
-    isFolder: true,
-    Contents: [
-      {
-        id: 5,
-        name: "Second File",
-        isFolder: false,
-      }
-    ]
-  },
-  {
-    id: 4,
-    name: "Fourth File",
-    isFolder: false,
-  }
-]
-
-export default function Sidebar({onSelectNote, onCreateNote, selectedNoteId}) {
-  const [explorer, setExplorer] = useState({})
+export default function Sidebar({setSelectedNoteId, selectedNoteId}) {
+  const [explorer, setExplorer] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    
     const fetchData = async () => {
       try {
         setIsLoading(true)
@@ -70,16 +34,11 @@ export default function Sidebar({onSelectNote, onCreateNote, selectedNoteId}) {
     fetchData();
   }, [])
 
-  // Log state updates for debugging
-  useEffect(() => {
-    console.log('🔄 State updated - Explorer:', explorer)
-  }, [explorer])
-
   return (
     <div className="w-64 h-full border-r flex flex-col bg-[#f0f4f8]">
       <div className="flex items-center justify-between px-4 py-2 border-b">
         <h2 className="text-lg font-semibold">Notes</h2>
-        <Button variant="ghost" size="icon" onClick={onCreateNote} className="h-4 w-4">
+        <Button variant="ghost" size="icon" className="h-4 w-4">
           <PlusIcon />
         </Button>
       </div>
@@ -90,7 +49,12 @@ export default function Sidebar({onSelectNote, onCreateNote, selectedNoteId}) {
           </div>
         ):(
           explorer.map((item)=> (
-            <TreeItem key={item.id} item={item}/>
+            <TreeItem 
+              key={item.id} 
+              item={item} 
+              setSelectedNoteId={setSelectedNoteId} 
+              selectedNoteId={selectedNoteId} 
+            />
           ))
         )}
       </ScrollArea>

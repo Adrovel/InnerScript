@@ -2,38 +2,29 @@
 
 import { useEffect, useState } from 'react'
 
-export default function PlainEditor({
-  noteId,
-  title,
-  content, 
-  onTitleChange, 
-  onContentChange 
-}) {
+export default function PlainEditor({ noteId }) {
   
-  const [localTitle, setLocalTitle] = useState(title)
-  const [localContent, setLocalContent] = useState(content)
+  const [localTitle, setLocalTitle] = useState(``)
+  const [localContent, setLocalContent] = useState(``)
 
-   // Sync props → local state when switching notes
-   
-   useEffect(() => {
-     const timeout = setTimeout(() => {
-       if (noteId) {
-         fetch('/api/notes', {
-           method: 'PUT',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ id: noteId, title: localTitle, content: localContent }),
-          })
-        }
-      }, 1000)
-      
-      return () => clearTimeout(timeout)
-    }, [localTitle, localContent, noteId])
-    
-    useEffect(() => {
-     setLocalTitle(title)
-     setLocalContent(content)
-   }, [title, content, noteId])
- 
+  // Local state for note data.
+  useEffect(() => {
+    // For some reason, this is triggered two times on ititial render.
+    console.log('🔄 PlainEditor useEffect triggered')
+    const fetchNoteData = async () => {
+      try {
+        const id = noteId.split('_')[1]
+        const res = await fetch(`/api/notes/${id}`)
+        const data = await res.json()
+        setLocalTitle(data.note.name)
+        setLocalContent(data.note.content)
+      } 
+      catch (err) {
+        console.error('Error fetching note data:', err)
+      }
+    }
+    fetchNoteData()
+  }, [noteId])
   
   return (
     <div className="flex flex-col h-full ">

@@ -7,7 +7,7 @@ import { data } from '@/temp_data'
 
 import DropDownMenu from './DropdownMenu'
 
-export default function ChatPanel({noteContent}) {
+export default function ChatPanel() {
   const [selectedFiles, setSelectedFiles] = useState([])
 
   const textareaRef = useRef(null)
@@ -18,9 +18,7 @@ export default function ChatPanel({noteContent}) {
     handleInputChange,
     setInput,
     append,
-  } = useChat({
-    body: { noteContent },
-  })
+  } = useChat()
 
   useEffect(() => {
     const textarea = textareaRef.current

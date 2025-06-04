@@ -23,7 +23,7 @@ function buildExplorerStructure(folders, notes) {
   })
 
   notes.forEach(ele => {
-    const note = {id: `note_${ele.id}`, name: ele.name, idFolder: false, content: ele.content}
+    const note = {id: `note_${ele.id}`, name: ele.name, idFolder: false}
     if (ele.folder_id) {
       folderMap.get(`fol_${ele.folder_id}`)?.Contents.push(note)
     }
@@ -35,7 +35,7 @@ function buildExplorerStructure(folders, notes) {
   return explorer
 }
 
-export async function GET(req) {
+export async function GET() {
   try {
     const client = await pool.connect();
 
@@ -44,7 +44,7 @@ export async function GET(req) {
       ORDER BY created_at DESC
     `
     const notesQuery = `
-      SELECT * FROM notes
+      SELECT id, name, folder_id FROM notes
       ORDER BY created_at DESC
     `
 
