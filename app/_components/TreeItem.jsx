@@ -12,6 +12,7 @@ export default function TreeItem({ item, depth = 0, setSelectedNoteId, selectedN
   const handleSelect = () => {
     if (!item.isFolder) {
       setSelectedNoteId(item.id)
+      window.history.replaceState({}, '', '/Journal/' + item.id)
     }
   }
 

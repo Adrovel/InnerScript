@@ -22,7 +22,7 @@ Cons:
 export default function Page() {
 
   const [selectedNoteId, setSelectedNoteId] = useState('')
-  const [isLoading, setIsLoading] = useState(true) 
+  const [isLoading, setIsLoading] = useState(true)
 
   return (
     <>
@@ -33,7 +33,13 @@ export default function Page() {
         />
         <main className="flex-1 p-0 overflow-auto">
           {selectedNoteId !== '' && (
-            <PlainEditor noteId={selectedNoteId} />
+            <PlainEditor 
+              noteId={selectedNoteId}
+              // localTitle={localTitle}
+              // setLocalTitle={setLocalTitle}
+              // localContent={localContent}
+              // setLocalContent={setLocalContent}
+            />
           )}
         </main>
         <ChatPanel />

@@ -2,15 +2,29 @@
 
 import { useEffect, useState } from 'react'
 
-export default function PlainEditor({ noteId }) {
-  
-  const [localTitle, setLocalTitle] = useState(``)
-  const [localContent, setLocalContent] = useState(``)
+const noteUpdate = async (noteId, name, content) => {
+  try {
+    const id = noteId.split('_')[1]
+    const res = await fetch(`/api/notes/${id}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ name: name, content: content})
+    })
 
-  // Local state for note data.
+    if (!res.ok) throw new Error('Failed to update note')
+    console.log('Note updated successfully')
+  }
+  catch (err) {
+    console.error('Error updating note:', err)
+  }
+}
+
+export default function PlainEditor({ noteId }) {
+  const [localTitle, setLocalTitle] = useState('')
+  const [localContent, setLocalContent] = useState('')
+  const [counter, setCounter] = useState(0)
+  
   useEffect(() => {
-    // For some reason, this is triggered two times on ititial render.
-    console.log('🔄 PlainEditor useEffect triggered')
     const fetchNoteData = async () => {
       try {
         const id = noteId.split('_')[1]
@@ -25,6 +39,18 @@ export default function PlainEditor({ noteId }) {
     }
     fetchNoteData()
   }, [noteId])
+
+  const onTitleChange = async (newTitle) => {
+    await noteUpdate(noteId, newTitle, localContent)
+    setCounter(prev => prev + 1)
+    console.log(counter)
+  }
+
+  const onContentChange = async (newContent) => {
+    await noteUpdate(noteId, localTitle, newContent)
+    setCounter(prev => prev + 1)
+    console.log(counter)
+  }
   
   return (
     <div className="flex flex-col h-full ">
