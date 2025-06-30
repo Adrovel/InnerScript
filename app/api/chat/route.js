@@ -1,34 +1,78 @@
-import { OpenAI } from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { openai } from "@ai-sdk/openai"
+import { streamText } from "ai"
 
-// Create an OpenAI API client (that's edge friendly!)
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { generateEmbedding } from "@/lib/utils"
 
-// Set the maximum duration for streaming responses
-export const maxDuration = 30;
+import { Pool } from "pg";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
 export async function POST(req) {
-  const { messages, noteContent } = await req.json();
+  const { messages, noteIDs } = await req.json()
 
-  // Add the note content as context to the system message
-  const systemMessage = {
-    role: 'system',
-    content: `You are a helpful AI assistant. The user has shared a note with you: ${noteContent}. 
-    Please help them understand and work with this note. Be concise and helpful.`
-  };
+  const latestMessage = messages[messages.length - 1]
+  const userQuestion = latestMessage?.content || ""
 
-  // Request the OpenAI API for the response
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
-    stream: true,
-    messages: [systemMessage, ...messages],
-  });
+  let context = ""
+  if (noteIDs && noteIDs.length > 0 && userQuestion) {
+    context = await createContext(userQuestion, noteIDs)
+  }
 
-  // Convert the response into a friendly text-stream
-  const stream = OpenAIStream(response);
+  console.log("Context from notes:", context)
 
-  // Return a StreamingTextResponse, which can be consumed by the client
-  return new StreamingTextResponse(stream);
+  const enhancedMessages = [...messages]
+  if (context) {
+    enhancedMessages[enhancedMessages.length - 1] = {
+      ...latestMessage,
+      content: `Context from notes: ${context}
+      Question: ${userQuestion}`
+    }
+  }
+
+  console.log("Enhanced messages:", enhancedMessages)
+
+  const result = await streamText({
+    model: openai("gpt-4o-mini"),
+    messages: enhancedMessages,
+    system: "You are a helpful assistant. When provided with context from user's notes, use that information to answer questions accurately. If the context doesn't contain relevant information, let the user know."
+  })
+
+  return result.toDataStreamResponse()
+}
+
+
+export async function createContext(question, noteIDs) {
+  const client = await pool.connect()
+
+  const questionEmbedding = await generateEmbedding(question)
+  console.log("Question embedding:", questionEmbedding)
+
+  try {
+    const embeddingVector = `[${questionEmbedding.join(',')}]`
+    const query = `
+      SELECT 
+        id, 
+        content,
+        (1 - (embedding <=> $1::vector)) as similarity
+      FROM notes
+      WHERE id = ANY($2)
+      ORDER BY embedding <=> $1::vector
+      LIMIT 3
+    `
+    const result = await client.query(query, [embeddingVector, noteIDs])
+    const relevantNotes = result.rows.filter(note => note.similarity > 0.75)
+
+    const context = relevantNotes
+      .map(note => note.content)
+      .join('\n\n')
+    
+    return context
+  }
+  catch (err) {
+    console.error("Error in RAG:", err)
+    return err
+  }
+  finally {
+    client.release()
+  }
 }
