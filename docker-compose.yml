@@ -1,0 +1,35 @@
+services:
+  app:
+    # Next.js dev image (main app container)
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: ["3000:3000"] # Host:Container ports, exposed ports
+    env_file: .env.local # Environment variables file for the container to gain access.
+    depends_on: # Only starts if the database is healthy (ready)
+      db:
+        condition: service_healthy
+    volumes: # Volumes for code sync. Local code gets synced with the container's code.
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped # Restart the container if it exits unexpectedly.
+
+  db:
+    image: postgres:18-alpine # The version of the PostgreSQL image to use.
+    ports: ["5432:5432"] # The mapping host port -> container port for communication.
+    environment: # Database environment variables (we can use .env.local for database)
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=InnerScript123#
+      - POSTGRES_DB=innerscript
+    volumes: # The data storage location for the database.
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck: # Command to check if postgres is ready and healthy.
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+# Store the data stored in container to a location in the host_device (mostly a docker folder)
+volumes:
+  postgres_data:
