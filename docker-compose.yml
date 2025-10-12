@@ -9,7 +9,7 @@ services:
     depends_on: # Only starts if the database is healthy (ready)
       db:
         condition: service_healthy
-    volumes: # Volumes for code sync. Local code gets synced with the container's code.
+    volumes: # Volumes for code sync. Container code gets synced with the local's code.
       - .:/app
       - /app/node_modules
     restart: unless-stopped # Restart the container if it exits unexpectedly.
