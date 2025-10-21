@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useFileContext } from './FilesContext'
 
-const noteUpdate = async (noteId, name, content) => {
+const noteUpdate = async (selectedNoteId, name, content) => {
   try {
-    const id = noteId.split('_')[1]
+    const id = selectedNoteId.split('_')[1]
     const res = await fetch(`/api/notes/${id}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
@@ -19,39 +20,41 @@ const noteUpdate = async (noteId, name, content) => {
   }
 }
 
-export default function PlainEditor({ noteId }) {
+export default function PlainEditor() {
+  const { selectedNoteId } = useFileContext()
+
   const [localTitle, setLocalTitle] = useState('')
   const [localContent, setLocalContent] = useState('')
   const [counter, setCounter] = useState(0)
-  
+
   useEffect(() => {
     const fetchNoteData = async () => {
       try {
-        const id = noteId.split('_')[1]
+        const id = selectedNoteId.split('_')[1]
         const res = await fetch(`/api/notes/${id}`)
         const data = await res.json()
         setLocalTitle(data.note.name)
         setLocalContent(data.note.content)
-      } 
+      }
       catch (err) {
         console.error('Error fetching note data:', err)
       }
     }
     fetchNoteData()
-  }, [noteId])
+  }, [selectedNoteId])
 
   const onTitleChange = async (newTitle) => {
-    await noteUpdate(noteId, newTitle, localContent)
+    await noteUpdate(selectedNoteId, newTitle, localContent)
     setCounter(prev => prev + 1)
     console.log(counter)
   }
 
   const onContentChange = async (newContent) => {
-    await noteUpdate(noteId, localTitle, newContent)
+    await noteUpdate(selectedNoteId, localTitle, newContent)
     setCounter(prev => prev + 1)
     console.log(counter)
   }
-  
+
   return (
     <div className="flex flex-col h-full ">
       <input

@@ -1,24 +1,23 @@
-import Sidebar from '../_components/Sidebar'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { FileProvider } from '../_components/FilesContext'
 import PlainEditor from '../_components/PlainEditor'
 import ChatPanel from '../_components/ChatPanel'
 
-import { getTreeData } from './action'
+import { getFileData } from './action'
+import { AppSidebar } from '../_components/app-sidebar'
 
 export default async function Page() {
 
-  const sidebarData = await getTreeData()
+  const sidebarData = await getFileData()
 
   return (
-    <>
-      <div className="flex h-screen">
-        <Sidebar
-          sidebarData={sidebarData}
-        />
-        {/* <main className="flex-1 p-0 overflow-auto">
-            <PlainEditor/>
+    <FileProvider sidebarMetadata={sidebarData}>
+      <SidebarProvider>
+        <AppSidebar />
+        <main>
+          <SidebarTrigger />
         </main>
-        <ChatPanel />*/}
-      </div>
-    </>
+      </SidebarProvider>
+    </FileProvider>
   );
 }
