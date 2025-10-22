@@ -5,9 +5,26 @@ import { useChat } from '@ai-sdk/react'
 import { Send, X } from 'lucide-react'
 
 import DropDownMenu from './DropdownMenu'
+import { useFileContext } from './FilesContext'
 
 export default function ChatPanel() {
+  const { sidebarMetadata } = useFileContext()
   const [selectedFiles, setSelectedFiles] = useState([])
+
+  // Flatten the tree structure to get all files
+  const flattenFiles = (items) => {
+    const files = []
+    items.forEach(item => {
+      if (item.type === 'file') {
+        files.push(item)
+      } else if (item.children) {
+        files.push(...flattenFiles(item.children))
+      }
+    })
+    return files
+  }
+
+  const data = flattenFiles(sidebarMetadata || [])
 
   const textareaRef = useRef(null)
 
@@ -35,7 +52,7 @@ export default function ChatPanel() {
   }
 
   return (
-    <aside className="w-[300px] border-l p-4 overflow-y-auto bg-[#F5F7FF]">
+    <aside className="w-[300px] border-l p-4 overflow-y-auto bg-background">
     <div className="flex flex-col h-full ">
       <div className="flex-1 space-y-2 overflow-y-auto text-sm custom-scroll">
         {messages.map((msg, idx) => (
@@ -46,8 +63,8 @@ export default function ChatPanel() {
             <div
               className={`p-2 rounded-lg break-words whitespace-pre-wrap ${
                 msg.role === 'user'
-                ? 'mr-1 bg-[#5B8DEF] max-w-[80%] text-white'
-                : 'mr-1 bg-[#E2E8F8] max-w-[100%] text-[#2A3142]'
+                ? 'mr-1 bg-primary max-w-[80%] text-primary-foreground'
+                : 'mr-1 bg-secondary max-w-[100%] text-secondary-foreground'
               }`}
               style={{
                 borderRadius: msg.role === 'user' ? '15px 0 15px 15px' : '0 15px 15px 15px',
@@ -59,7 +76,7 @@ export default function ChatPanel() {
         ))}
       </div>
 
-      <div className="mt-4 flex-col gap-2 bg-[#D6E3FF] rounded-lg px-2 py-2 border-1 border-[#B7CEFF]">
+      <div className="mt-4 flex-col gap-2 bg-accent rounded-lg px-2 py-2 border border-border">
 
         <textarea
           ref={textareaRef}
@@ -81,10 +98,10 @@ export default function ChatPanel() {
         />
         <div className='flex justify-between'>
           <DropDownMenu options={data} selectedOptions={selectedFiles} setSelectedOptions={setSelectedFiles}/>
-          <div className='bg-[#8baef4] rounded-full w-8 h-8 flex items-center justify-center'>
+          <div className='bg-primary rounded-full w-8 h-8 flex items-center justify-center'>
             <button
               onClick={handleSend}
-              className="rounded-full bg-transparent text-black"
+              className="rounded-full bg-transparent text-primary-foreground"
             >
               <Send size={18} className="stroke-[2]" />
             </button>

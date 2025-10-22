@@ -41,7 +41,7 @@ export default function DropDownMenu({ options, selectedOptions, setSelectedOpti
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="relative w-8 h-8 flex items-center justify-center bg-[#8baef4] rounded-full">
+        <div className="relative w-8 h-8 flex items-center justify-center bg-primary rounded-full">
           <button>
             <Files size={18} className='stroke-[2]'/>
           </button> 
@@ -51,8 +51,8 @@ export default function DropDownMenu({ options, selectedOptions, setSelectedOpti
           </span>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="bg-white border rounded-md shadow-md p-0">
-        <Command shouldFilter={false} className="bg-white rounded-md">
+      <PopoverContent className="bg-popover border rounded-md shadow-md p-0">
+        <Command shouldFilter={false} className="bg-popover rounded-md">
           <CommandInput placeholder="Search for File" onValueChange={setQuery} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>

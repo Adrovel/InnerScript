@@ -65,7 +65,7 @@ export default function PlainEditor() {
           onTitleChange(e.target.value)
         }}
         placeholder="Untitled Note"
-        className="text-4xl font-semibold p-3 outline-none bg-[#f8fafc] text-center"
+        className="text-4xl font-semibold p-3 outline-none bg-background text-center"
       />
       <textarea
         value={localContent}
