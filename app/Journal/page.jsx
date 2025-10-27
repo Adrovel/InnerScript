@@ -14,9 +14,9 @@ export default async function Page() {
     <FileProvider sidebarMetadata={sidebarData}>
       <SidebarProvider>
         <AppSidebar />
-        <main>
-          <SidebarTrigger />
-        </main>
+        <main className="flex-1 w-full">
+            <SidebarTrigger />
+       </main>
       </SidebarProvider>
     </FileProvider>
   );

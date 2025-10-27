@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -13,8 +12,7 @@ import { TreeItem } from "./tree-item"
 import { ResuableContextMenu } from './resuable-context-menu'
 
 export function AppSidebar() {
-  const { sidebarMetadata, setSelectedNoteId } = useFileContext()
-  const [expandedIds, setExpandedIds] = useState(new Set())
+  const { sidebarMetadata, selectedNoteId, setSelectedNoteId } = useFileContext()
 
   const handleSidebarAction = (action) => {
     switch (action) {
@@ -30,21 +28,20 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <h2 className="text-lg font-semibold">Journal</h2>
+        <h2 className="text-2xl font-serif pl-2">Journals</h2>
       </SidebarHeader>
       <ResuableContextMenu
         menuType="sidebarEmpty"
         onAction={handleSidebarAction}
       >
         <SidebarContent>
-          <SidebarMenu className="p-2">
+          <SidebarMenu>
             {sidebarMetadata.map(item => (
               <TreeItem
                 key={item.id}
                 item={item}
-                expandedIds={expandedIds}
-                setExpandedIds={setExpandedIds}
                 onSelectNote={setSelectedNoteId}
+                selectedNoteId={selectedNoteId}
               />
             ))}
           </SidebarMenu>

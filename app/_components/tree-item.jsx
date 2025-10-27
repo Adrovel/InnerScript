@@ -1,6 +1,7 @@
 'use client'
 
-import { Folder, FolderOpen, FileText } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronRight } from 'lucide-react'
 import {
   SidebarMenuItem,
   SidebarMenuButton,
@@ -8,27 +9,17 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ResuableContextMenu } from './resuable-context-menu'
 
-export function TreeItem({ item, expandedIds, setExpandedIds, onSelectNote, isSub = false }) {
-  const isExpanded = expandedIds.has(item.id)
+export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
+  const [isOpen, setIsOpen] = useState(false)
   const isFolder = item.type === 'folder'
   const hasChildren = item.children && item.children.length > 0
+  const isSelected = !isFolder && selectedNoteId === item.id
 
-  // Use a set to handle expanded state. If the item is a folder, toggle
-  // the expanded state. If the item is a note, select it.
   const handleClick = () => {
-    if (isFolder) {
-      setExpandedIds(prev => {
-        const newSet = new Set(prev)
-        if (newSet.has(item.id)) {
-          newSet.delete(item.id)
-        } else {
-          newSet.add(item.id)
-        }
-        return newSet
-      })
-    } else {
+    if (!isFolder) {
       onSelectNote(item.id)
     }
   }
@@ -37,39 +28,66 @@ export function TreeItem({ item, expandedIds, setExpandedIds, onSelectNote, isSu
     console.log(`${action} action triggered for ${isFolder ? 'folder' : 'file'}: ${item.title}`)
   }
 
-  const MenuItem = isSub ? SidebarMenuSubItem : SidebarMenuItem
-  const MenuButton = isSub ? SidebarMenuSubButton : SidebarMenuButton
+  const MenuItem = depth === 0 ? SidebarMenuItem : SidebarMenuSubItem
+  const MenuButton = depth === 0 ? SidebarMenuButton : SidebarMenuSubButton
+  const paddingLeft = `${depth * 16 + 16}px`
+
+  if (isFolder) {
+    return (
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <MenuItem>
+          <ResuableContextMenu
+            menuType="folderItems"
+            onAction={handleContextMenuAction}
+          >
+            <CollapsibleTrigger asChild>
+              <MenuButton
+                onClick={handleClick}
+                isActive={false}
+                className="rounded-none whitespace-nowrap"
+                style={{ paddingLeft }}
+              >
+                <span className='font-sans flex-1 text-left truncate'>{item.title}</span>
+                <ChevronRight className={`h-4 w-4 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`} />
+              </MenuButton>
+            </CollapsibleTrigger>
+          </ResuableContextMenu>
+        </MenuItem>
+
+        {hasChildren && (
+          <CollapsibleContent>
+            <SidebarMenuSub className="m-0 p-0">
+              {item.children.map(child => (
+                <TreeItem
+                  key={child.id}
+                  item={child}
+                  onSelectNote={onSelectNote}
+                  selectedNoteId={selectedNoteId}
+                  depth={depth + 1}
+                />
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        )}
+      </Collapsible>
+    )
+  }
 
   return (
     <MenuItem>
       <ResuableContextMenu
-        menuType={isFolder ? "folderItems" : "noteItems"}
+        menuType="noteItems"
         onAction={handleContextMenuAction}
       >
-        <MenuButton onClick={handleClick} isActive={false}>
-          {isFolder ? (
-            isExpanded ? <FolderOpen className="size-4" /> : <Folder className="size-4" />
-          ) : (
-            <FileText className="size-4" />
-          )}
-          <span>{item.title}</span>
+        <MenuButton
+          onClick={handleClick}
+          isActive={isSelected}
+          className="rounded-none whitespace-nowrap"
+          style={{ paddingLeft }}
+        >
+          <span className='font-sans flex-1 text-left truncate'>{item.title}</span>
         </MenuButton>
       </ResuableContextMenu>
-
-      {isFolder && hasChildren && isExpanded && (
-        <SidebarMenuSub>
-          {item.children.map(child => (
-            <TreeItem
-              key={child.id}
-              item={child}
-              expandedIds={expandedIds}
-              setExpandedIds={setExpandedIds}
-              onSelectNote={onSelectNote}
-              isSub={true}
-            />
-          ))}
-        </SidebarMenuSub>
-      )}
     </MenuItem>
   )
 }
