@@ -1,5 +1,7 @@
 'use client'
 
+
+import { useState } from "react"
 import {
   Popover,
   PopoverContent,
@@ -12,8 +14,8 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
+import { Button } from "@/components/ui/button"
 import { Files, X } from 'lucide-react'
-import { useState } from "react"
 
 export default function DropDownMenu({ options, selectedOptions, setSelectedOptions }) {
   const [query, setQuery] = useState("")
@@ -42,9 +44,9 @@ export default function DropDownMenu({ options, selectedOptions, setSelectedOpti
     <Popover>
       <PopoverTrigger asChild>
         <div className="relative w-8 h-8 flex items-center justify-center bg-primary rounded-full">
-          <button>
-            <Files size={18} className='stroke-[2]'/>
-          </button> 
+          <Button size="icon" className="rounded-full bg-cyan-200">
+            <Files size={18}/>
+          </Button> 
           <span 
             className="absolute -bottom-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 py-0.5 rounded-full">
             {selectedOptions.length}

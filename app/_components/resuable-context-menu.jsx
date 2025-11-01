@@ -14,13 +14,13 @@ const MENU_CONFIGS = {
       { label: "New Folder", actionKey: "newFolder" }
     ]
   },
-  noteItems: {
+  note: {
     items: [
       { label: "Rename", actionKey: "rename" },
       { label: "Delete", actionKey: "delete", variant: 'destructive' }
     ]
   },
-  folderItems: {
+  folder: {
     items: [
       { label: "New File", actionKey: "newFile" },
       { label: "New Folder", actionKey: "newFolder" },

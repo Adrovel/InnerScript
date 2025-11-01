@@ -7,7 +7,7 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from "@/components/ui/sidebar"
-import { useFileContext } from "./FilesContext"
+import { useFileContext } from "./files-context"
 import { TreeItem } from "./tree-item"
 import { ResuableContextMenu } from './resuable-context-menu'
 
@@ -26,15 +26,15 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar>
+    <Sidebar className="border-black/10">
       <SidebarHeader>
-        <h2 className="text-2xl font-serif pl-2">Journals</h2>
+        <h2 className="text-2xl font-serif p-2">Notes</h2>
       </SidebarHeader>
       <ResuableContextMenu
         menuType="sidebarEmpty"
         onAction={handleSidebarAction}
       >
-        <SidebarContent>
+        <SidebarContent className="p-2">
           <SidebarMenu>
             {sidebarMetadata.map(item => (
               <TreeItem
