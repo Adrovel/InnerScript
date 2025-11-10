@@ -13,6 +13,7 @@ import { ResuableContextMenu } from './resuable-context-menu'
 
 export function AppSidebar() {
   const { sidebarMetadata, selectedNoteId, setSelectedNoteId } = useFileContext()
+  console.log("Sidebar Metadata", sidebarMetadata)
 
   const handleSidebarAction = (action) => {
     switch (action) {
@@ -26,7 +27,7 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar className="border-black/10">
+    <Sidebar className="border-border">
       <SidebarHeader>
         <h2 className="text-2xl font-serif p-2">Notes</h2>
       </SidebarHeader>

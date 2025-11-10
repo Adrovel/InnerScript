@@ -1,6 +1,5 @@
 'use client'
 
-
 import { useState } from "react"
 import {
   Popover,
@@ -17,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Files, X } from 'lucide-react'
 
-export default function DropDownMenu({ options, selectedOptions, setSelectedOptions }) {
+export function PopoverMenu({ options, selectedOptions, setSelectedOptions }) {
   const [query, setQuery] = useState("")
   var visible = []
 
@@ -30,7 +29,7 @@ export default function DropDownMenu({ options, selectedOptions, setSelectedOpti
   }
   
   const filtered = options.filter(post => 
-    post.title.toLowerCase().startsWith(query.toLowerCase())
+    post.name.toLowerCase().startsWith(query.toLowerCase())
   )
   
   if (query === "" && selectedOptions.length > 0) {
@@ -44,7 +43,7 @@ export default function DropDownMenu({ options, selectedOptions, setSelectedOpti
     <Popover>
       <PopoverTrigger asChild>
         <div className="relative w-8 h-8 flex items-center justify-center bg-primary rounded-full">
-          <Button size="icon" className="rounded-full bg-cyan-200">
+          <Button size="icon" className="rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
             <Files size={18}/>
           </Button> 
           <span 
@@ -61,10 +60,10 @@ export default function DropDownMenu({ options, selectedOptions, setSelectedOpti
             {visible.map((item) => (
               <CommandItem
                 key={item.id}
-                value={item.title}
+                value={item.name}
                 onSelect={() => toggleItem(item)}
               >
-                {item.title}
+                {item.name}
                 {selectedOptions.some((file) => file.id === item.id) && (
                   <button className="ml-auto">
                   <X size={16} />

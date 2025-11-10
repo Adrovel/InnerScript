@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { useFileContext } from './files-context'
 import { Button } from '@/components/ui/button'
-import DropDownMenu from './dropdown-menu'
+import { PopoverMenu } from './chat-popover-menu'
 import { Send } from 'lucide-react'
 
 const messages = [
@@ -34,43 +34,47 @@ export default function ChatPanel() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  useEffect(scrollToBottom, []) // Placeholder; integrate with messages later
+  useEffect(scrollToBottom, []) // Placeholder; `integrate with messages later
 
   return (
-    <aside className="h-screen flex flex-col bg-sidebar border-l border-black/10">
+    <aside className="h-screen min-w-[350px] flex flex-col bg-sidebar border-l border-border">
       <div className="p-4">
         <h2 className="text-2xl font-serif">Chat</h2>
       </div>
+      {/* Messages area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
+        {messages.map((message) => (
           <div 
-            key={message.id || index} 
+            key={message.id} 
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div 
-              className={`p-3 rounded-lg max-w-xs ${message.role === 'user' ? 'bg-cyan-200 text-black' : 'bg-background text-black border border-black/10'}`}
+              className={`p-3 rounded-sm max-w-xs 
+                ${message.role === 'user' 
+                  ? 'bg-sidebar-primary text-sidebar-primary-foreground' 
+                  : 'bg-background text-black border border-black/10'
+                }`}
             >
-              {message.parts.map((part, pIndex) => (
-                <span key={pIndex}>{part.content}</span>
-              ))}
+              <span>{message.parts[0].content}</span>
             </div>
           </div>
-        ))}
+        ))} 
        </div>
-       <div className="p-2 space-y-2 border border-black/20 rounded-2xl bg-background m-2">
+      {/* Input area */}
+       <div className="p-2 space-y-2 border border-border rounded-2xl bg-background m-2">
         <textarea 
           placeholder="Type your message..."
           className="w-full min-h-8 resize-none outline-none flex field-sizing-content max-h-32"
         />
         <div className="flex justify-between">
-          <DropDownMenu 
+          <PopoverMenu 
             options={flattenedFiles}
             selectedOptions={selectedFiles}
             setSelectedOptions={setSelectedFiles}
           />
           <Button 
             size="icon" 
-            className="rounded-full bg-cyan-200"
+            className="rounded-full bg-sidebar-primary text-sidebar-primary-foreground"
           >
             <Send size={16}/>
           </Button>

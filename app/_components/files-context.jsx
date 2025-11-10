@@ -7,7 +7,7 @@ const FileContext = createContext(null)
 export function FileProvider({ children, sidebarMetadata }) {
   const [selectedNoteId, setSelectedNoteId] = useState(null)
 
-  const value = { selectedNoteId, setSelectedNoteId, sidebarMetadata }
+  const value = { sidebarMetadata, selectedNoteId, setSelectedNoteId }
 
   return (
     <FileContext.Provider value={value}>

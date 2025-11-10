@@ -51,7 +51,7 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
                 className="rounded-sm"
                 style={{ paddingLeft }}
               >
-                <span className="font-sans flex-1 text-left truncate">{item.title}</span>
+                <span className="font-sans flex-1 text-left truncate">{item.name}</span>
                 <ChevronRight className={`h-4 w-4 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`} />
               </MenuButton>
             </CollapsibleTrigger>
@@ -89,7 +89,7 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
           className="rounded-sm whitespace-nowrap"
           style={{ paddingLeft }}
         >
-          <span className='font-sans flex-1 text-left truncate'>{item.title}</span>
+          <span className='font-sans flex-1 text-left truncate'>{item.name}</span>
         </MenuButton>
       </ResuableContextMenu>
     </MenuItem>

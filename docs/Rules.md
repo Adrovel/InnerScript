@@ -7,4 +7,4 @@ Working blind is idotic. Create a rough sketch of what you want to build, implem
 2. Define data layer first.
 Your data layer is the connection between frontend and backend, if you can succefully design it then both developers can work seamlessly. (Backend -> JSON -> Frontend). 
 
-3. If you think and know you can build it. And is 100% confident how to debug it, then ask the AI to code it for you. Otherwise build it yourself, you can ask AI for assistance or for directions.
+3. If you think and know you can build it and is 100% confident how to debug it, then ask the AI to code it for you. Otherwise build it yourself, you can ask AI for assistance or for directions.
