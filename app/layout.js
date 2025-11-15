@@ -1,5 +1,7 @@
 import { Domine, Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./(providers)/providers";
+
 
 const domine = Domine({
   variable: "--font-domine",
@@ -24,7 +26,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${domine.variable} ${inter.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

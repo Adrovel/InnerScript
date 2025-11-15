@@ -10,7 +10,8 @@ export async function getExplorerData() {
       [{
         model: db.Notes,
         as: 'notes',
-        required: false
+        required: false,
+        attributes: ['id', 'title', 'createdAt']
       }],
       [
         ['createdAt', 'DESC'],
@@ -33,15 +34,15 @@ function buildTree(foldersWithNotes) {
 
   foldersWithNotes.forEach(folder => {
     const folderItem = {
-      id: folder.id,
+      id: `folder-${folder.id}`,
       name: folder.name,
       type: 'folder',
-      createdAt: folder.createdAt || new Date().toISOString(),
+      createdAt: folder.createdAt,
       children: folder.notes ? folder.notes.map(note => ({
-        id: `note-${note.id}`,
+        id: note.id,
         name: note.title,
         type: 'note',
-        createdAt: note.createdAt || new Date().toISOString()
+        createdAt: note.createdAt
       })) : []
     }
     map.set(folder.id, folderItem)

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { useFileContext } from './files-context'
+import { useSidebarMetadataContext } from './files-context'
 import { Button } from '@/components/ui/button'
 import { PopoverMenu } from './chat-popover-menu'
 import { Send } from 'lucide-react'
@@ -24,8 +24,8 @@ function flattenFiles(items) {
   return files
 }
 
-export default function ChatPanel() {
-  const { sidebarMetadata } = useFileContext()
+export function ChatPanel() {
+  const { sidebarMetadata } =  useSidebarMetadataContext()
   const flattenedFiles = flattenFiles(sidebarMetadata || [])
   const [selectedFiles, setSelectedFiles] = useState([])
   const messagesEndRef = useRef(null)

@@ -7,13 +7,13 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from "@/components/ui/sidebar"
-import { useFileContext } from "./files-context"
+import { useSidebarMetadataContext, useSelectedNoteContext } from "./files-context"
 import { TreeItem } from "./tree-item"
 import { ResuableContextMenu } from './resuable-context-menu'
 
 export function AppSidebar() {
-  const { sidebarMetadata, selectedNoteId, setSelectedNoteId } = useFileContext()
-  console.log("Sidebar Metadata", sidebarMetadata)
+  const sidebarMetadata = useSidebarMetadataContext()
+  const [selectedNoteId, setSelectedNoteId] = useSelectedNoteContext()
 
   const handleSidebarAction = (action) => {
     switch (action) {

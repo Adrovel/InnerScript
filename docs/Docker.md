@@ -41,3 +41,7 @@ To run a command in a container
 
 List running services.
 ```docker compose ps```
+
+Remove a container
+```docker compose rm <container_name>```
+
