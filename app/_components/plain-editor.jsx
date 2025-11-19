@@ -1,78 +1,77 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { useSelectedNoteContext } from "./files-context"
+import StarterKit from "@tiptap/starter-kit"
+import { useEditor, EditorContent } from "@tiptap/react"
+
+async function fetchNoteById(noteId) {
+  const res = await fetch(`/api/notes/${noteId}`, { cache: 'no-store' })
+  if (!res.ok) {
+    throw new Error('Unable to load the selected note')
+  }
+  const { note } = await res.json()
+  return note
+}
+
+const EMPTY_STATE_HTML = '<p class="text-muted-foreground">Select a note from the sidebar to start writing.</p>'
 
 export function PlainEditor() {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const selectedNoteId = useSelectedNoteContext()[0]
+  const [selectedNoteId] = useSelectedNoteContext()
 
-  // Fetch note data using TanStack Query
-  const { data: noteData, isLoading, error } = useQuery({
+  const {
+    data: note,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['note', selectedNoteId],
-    queryFn: async () => {
-      if (!selectedNoteId) return null
-      
-      const response = await fetch(`/api/notes/${selectedNoteId}`)
-      if (!response.ok) {
-        throw new Error('Failed to load note')
-      }
-      const data = await response.json()
-      return data.note
-    },
-    enabled: !!selectedNoteId
+    queryFn: () => fetchNoteById(selectedNoteId),
+    enabled: Boolean(selectedNoteId),
+    refetchOnWindowFocus: false,
   })
 
-  // Update editor state when note data changes
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: EMPTY_STATE_HTML,
+    autofocus: 'start',
+    immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        class: 'prose prose-neutral dark:prose-invert max-w-none flex-1 w-full min-h-full px-8 py-10 focus:outline-none',
+      },
+    },
+  })
+
   useEffect(() => {
-    if (noteData) {
-      setTitle(noteData.title || 'Untitled Note')
-      setContent(noteData.content || '')
-    } else if (error) {
-      setTitle('Untitled Note')
-      setContent('')
+    if (!editor) return
+
+    if (!selectedNoteId) {
+      editor.setEditable(false)
+      editor.commands.setContent(EMPTY_STATE_HTML, false)
+      return
     }
-  }, [noteData, error])
+
+    editor.setEditable(true)
+    editor.commands.setContent(note?.content || '<p></p>', false)
+  }, [editor, selectedNoteId, note])
 
   return (
-    <div className="flex flex-col h-full bg-background">
-      {isLoading && (
-        <div className="flex items-center justify-center h-32">
-          <div className="text-sm text-muted-foreground">Loading note...</div>
-        </div>
-      )}
-      
-      {error && (
-        <div className="flex items-center justify-center h-32">
-          <div className="text-sm text-destructive">Error loading note: {error.message}</div>
-        </div>
-      )}
-      
-      {!isLoading && !error && (
-        <>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value)
-              console.log('Title Changed')
-            }}
-            placeholder="Untitled Note"
-            className="text-4xl font-semibold py-3 outline-none bg-background px-12"
-          />
-          <textarea
-            value={content}
-            onChange={(e) => {
-              setContent(e.target.value)
-              console.log('Content Changed')
-            }}
-            placeholder="Start writing..."
-            className="flex-1 w-full resize-none px-12 py-4 rounded-md text-lg outline-none font-sans bg-transparent h-full"
-          />
-        </>
-      )}
-    </div>
+    <section className="flex flex-1 min-h-screen w-full bg-background">
+      <div className="relative flex flex-1">
+        <EditorContent editor={editor} className="flex flex-1" />
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 text-sm text-muted-foreground">
+            Loading note…
+          </div>
+        )}
+        {isError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80 text-sm text-destructive">
+            {error?.message ?? 'Unable to load note'}
+          </div>
+        )}
+      </div>
+    </section>
   )
 }

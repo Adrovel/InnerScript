@@ -1,26 +1,22 @@
 'use server'
 
-import { readAllRecords } from "@/lib/db/sequelize-query"
+import { readRecordsWithOptions } from "@/lib/db/sequelize-query"
 import { db } from "@/lib/db"
 
 export async function getExplorerData() {
   try {
-    const foldersWithNotes = await readAllRecords(
-      db.Folders,
-      [{
-        model: db.Notes,
-        as: 'notes',
-        required: false,
-        attributes: ['id', 'title', 'createdAt']
-      }],
-      [
-        ['createdAt', 'DESC'],
-        ['notes', 'createdAt', 'DESC']
-      ]
-    )
+    const [folders, notes] = await Promise.all([
+      readRecordsWithOptions(db.Folders, {
+        attributes: ['id', 'name', 'parent_id', 'createdAt'],
+        order: [['createdAt', 'DESC']]
+      }),
+      readRecordsWithOptions(db.Notes, {
+        attributes: ['id', 'title', 'folder_id', 'createdAt'],
+        order: [['createdAt', 'DESC']]
+      })
+    ])
     
-    const tree = buildTree(foldersWithNotes)
-    // console.log("Tree", tree)
+    const tree = buildTree(folders, notes)
     return { tree }
   } catch (error) {
     console.error("Error fetching explorer data:", error)
@@ -28,32 +24,81 @@ export async function getExplorerData() {
   }
 }
 
-function buildTree(foldersWithNotes) {
-  const map = new Map()
+function buildTree(folders, notes) {
+  const folderMap = new Map()
   const rootItems = []
 
-  foldersWithNotes.forEach(folder => {
+  folders.forEach(folder => {
     const folderItem = {
-      id: `folder-${folder.id}`,
+      id: folder.id,
       name: folder.name,
       type: 'folder',
       createdAt: folder.createdAt,
-      children: folder.notes ? folder.notes.map(note => ({
-        id: note.id,
-        name: note.title,
-        type: 'note',
-        createdAt: note.createdAt
-      })) : []
+      parent_id: folder.parent_id,
+      children: []
     }
-    map.set(folder.id, folderItem)
+    folderMap.set(folder.id, folderItem)
+  })
+
+  folders.forEach(folder => {
+    const folderItem = folderMap.get(folder.id)
+    
     if (folder.parent_id) {
-      const parent = map.get(folder.parent_id)
+      const parent = folderMap.get(folder.parent_id)
       if (parent) {
         parent.children.push(folderItem)
+      } else {
+        rootItems.push(folderItem)
       }
     } else {
       rootItems.push(folderItem)
     }
   })
-  return rootItems
+
+  notes.forEach(note => {
+    const noteItem = {
+      id: note.id,
+      name: note.title,
+      type: 'note',
+      createdAt: note.createdAt
+    }
+
+    if (note.folder_id) {
+      const parentFolder = folderMap.get(note.folder_id)
+      if (parentFolder) {
+        parentFolder.children.push(noteItem)
+      } else {
+        rootItems.push(noteItem)
+      }
+    } else {
+      rootItems.push(noteItem)
+    }
+  })
+
+  return sortTreeItems(rootItems)
+}
+
+function sortTreeItems(items) {
+  if (!items?.length) return items
+
+  const folders = []
+  const notes = []
+
+  items.forEach(item => {
+    if (item.type === 'folder') {
+      if (item.children?.length) {
+        item.children = sortTreeItems(item.children)
+      }
+      folders.push(item)
+    } else {
+      notes.push(item)
+    }
+  })
+
+  const sortByDate = (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  
+  folders.sort(sortByDate)
+  notes.sort(sortByDate)
+
+  return [...folders, ...notes]
 }
