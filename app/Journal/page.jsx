@@ -15,8 +15,8 @@ export default async function Page() {
     <FileProvider sidebarMetadata={sidebarData.tree}>
       <SidebarProvider>
         <AppSidebar />
-        <main className="flex-1 w-full">
-            <SidebarTrigger className="fixed"/>
+        <main className="flex-1 w-full relative">
+            <SidebarTrigger className="absolute top-3 left-3 z-50"/>
             <PlainEditor />
        </main>
        {/* <ChatPanel /> */}

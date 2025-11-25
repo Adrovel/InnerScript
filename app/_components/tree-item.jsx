@@ -15,10 +15,23 @@ import {
   CollapsibleContent,
   CollapsibleTrigger 
 } from "@/components/ui/collapsible"
-import { ResuableContextMenu } from './resuable-context-menu'
+import { ReusableContextMenu } from './reusable-context-menu'
+import { useContextMenuDialog } from '@/hooks/use-context-menu-dialog'
+import { SidebarActionDialog } from './sidebar-action-dialog'
 
 export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const {
+    dialog,
+    openDialog,
+    closeDialog,
+    setInputValue,
+    executeAction,
+    getDialogTitle,
+    getDialogDescription,
+    requiresInput,
+    getConfirmText
+  } = useContextMenuDialog()
   const isFolder = item.type === 'folder'
   const hasChildren = item.children && item.children.length > 0
   const isSelected = !isFolder && selectedNoteId === item.id
@@ -26,23 +39,29 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
   const MenuItem = depth === 0 ? SidebarMenuItem : SidebarMenuSubItem
   const MenuButton = depth === 0 ? SidebarMenuButton : SidebarMenuSubButton
 
+
   const handleClick = () => {
     if (!isFolder) {
       onSelectNote(item.id)
     }
   }
-
-  const handleContextMenuAction = (action) => {
-    console.log(`${action} action triggered for ${isFolder ? 'folder' : 'file'}: ${item.title}`)
+  const handleSidebarAction = action => {
+    openDialog(action, {
+      entityType: item.type,
+      entityId: item.id,
+      currentName: item.name
+    })
   }
+  const handleDialogConfirm = async () => await executeAction()
   
   if (isFolder) {
     return (
+      <>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <MenuItem>
-          <ResuableContextMenu
+          <ReusableContextMenu
             menuType="folder"
-            onAction={handleContextMenuAction}
+            onAction={handleSidebarAction}
           >
             <CollapsibleTrigger asChild>
               <MenuButton
@@ -55,7 +74,7 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
                 <ChevronRight className={`h-4 w-4 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`} />
               </MenuButton>
             </CollapsibleTrigger>
-          </ResuableContextMenu>
+          </ReusableContextMenu>
         </MenuItem>
 
         {hasChildren && (
@@ -74,14 +93,30 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
           </CollapsibleContent>
         )}
       </Collapsible>
+
+      <SidebarActionDialog
+        open={dialog.open}
+        onOpenChange={closeDialog}
+        title={getDialogTitle()}
+        description={getDialogDescription()}
+        inputValue={dialog.inputValue}
+        onInputChange={e => setInputValue(e.target.value)}
+        onConfirm={handleDialogConfirm}
+        onCancel={closeDialog}
+        confirmText={getConfirmText()}
+        requiresInput={requiresInput()}
+        isDestructive={dialog.action === 'delete'}
+      />
+      </>
     )
   }
 
   return (
+    <>
     <MenuItem>
-      <ResuableContextMenu
+      <ReusableContextMenu
         menuType="note"
-        onAction={handleContextMenuAction}
+        onAction={handleSidebarAction}
       >
         <MenuButton
           onClick={handleClick}
@@ -91,7 +126,22 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
         >
           <span className='font-sans flex-1 text-left truncate'>{item.name}</span>
         </MenuButton>
-      </ResuableContextMenu>
+      </ReusableContextMenu>
     </MenuItem>
+
+    <SidebarActionDialog
+        open={dialog.open}
+        onOpenChange={closeDialog}
+        title={getDialogTitle()}
+        description={getDialogDescription()}
+        inputValue={dialog.inputValue}
+        onInputChange={e => setInputValue(e.target.value)}
+        onConfirm={handleDialogConfirm}
+        onCancel={closeDialog}
+        confirmText={getConfirmText()}
+        requiresInput={requiresInput()}
+        isDestructive={dialog.action === 'delete'}
+    />
+    </>
   )
 }

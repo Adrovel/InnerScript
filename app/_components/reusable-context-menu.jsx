@@ -31,23 +31,22 @@ const MENU_CONFIGS = {
   }
 }
 
-export function ResuableContextMenu({
+export function ReusableContextMenu({
   children,
   menuType,
   onAction,
-  data=null,
   className = "w-32"
 }) {
   const config = MENU_CONFIGS[menuType]
 
   if (!config) {
-    console.warn(`ResuableContextMenu: Unknown menuType "${menuType}"`)
+    console.warn(`ReusableContextMenu: Unknown menuType "${menuType}"`)
     return children
   }
 
   const handleAction = (actionKey) => {
     if (onAction) {
-      onAction(actionKey, data)
+      onAction(actionKey)
     }
   }
 

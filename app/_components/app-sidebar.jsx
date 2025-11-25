@@ -9,29 +9,41 @@ import {
 } from "@/components/ui/sidebar"
 import { useSidebarMetadataContext, useSelectedNoteContext } from "./files-context"
 import { TreeItem } from "./tree-item"
-import { ResuableContextMenu } from './resuable-context-menu'
+import { ReusableContextMenu } from './reusable-context-menu'
+import { SidebarActionDialog } from './sidebar-action-dialog'
+import { useContextMenuDialog } from '@/hooks/use-context-menu-dialog'
 
 export function AppSidebar() {
   const sidebarMetadata = useSidebarMetadataContext()
   const [selectedNoteId, setSelectedNoteId] = useSelectedNoteContext()
+  const {
+    dialog,
+    openDialog,
+    closeDialog,
+    setInputValue,
+    executeAction,
+    getDialogTitle,
+    getDialogDescription,
+    requiresInput,
+    getConfirmText
+  } = useContextMenuDialog()
 
+  // Handles the context menu actions of explorer. Creates record with default values.
   const handleSidebarAction = (action) => {
-    switch (action) {
-      case 'newFile':
-        console.log('New File action triggered')
-        break
-      case 'newFolder':
-        console.log('New Folder action triggered')
-        break
-    }
+    openDialog(action)
+  }
+
+  const handleDialogConfirm = async () => {
+    await executeAction()
   }
 
   return (
+    <>
     <Sidebar className="border-border">
       <SidebarHeader>
         <h2 className="text-2xl font-serif p-2">Notes</h2>
       </SidebarHeader>
-      <ResuableContextMenu
+      <ReusableContextMenu
         menuType="sidebarEmpty"
         onAction={handleSidebarAction}
       >
@@ -47,8 +59,23 @@ export function AppSidebar() {
             ))}
           </SidebarMenu>
         </SidebarContent>
-      </ResuableContextMenu>
+      </ReusableContextMenu>
       <SidebarFooter />
     </Sidebar>
+
+    <SidebarActionDialog
+      open={dialog.open}
+      onOpenChange={closeDialog}
+      title={getDialogTitle()}
+      description={getDialogDescription()}
+      inputValue={dialog.inputValue}
+      onInputChange={e => setInputValue(e.target.value)}
+      onConfirm={handleDialogConfirm}
+      onCancel={closeDialog}
+      confirmText={getConfirmText()}
+      requiresInput={requiresInput}
+      isDestructive={dialog.action === 'delete'}
+    />
+    </>
   )
 }

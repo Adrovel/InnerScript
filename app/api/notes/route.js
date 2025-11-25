@@ -1,24 +1,20 @@
 import { NextResponse } from 'next/server'
-import { Pool } from 'pg'
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+import { db } from '@/lib/db'
+import { createRecord } from '@/lib/db/sequelize-query'
 
 export async function POST(req) {
   try {
-    const {name, content} = await req.json()
-    console.log('Creating note:', (name, content))
+    const {title, content, folder_id} = await req.json()
+    console.log('Creating note:', {title, content, folder_id})
 
-    const client = await pool.connect()
-    const insertQuery = `
-      INSERT INTO notes (name, content)
-      VALUES ($1, $2)
-      RETURNING id, name, content
-    `
-    const res = await client.query(insertQuery, [name, content])
-    client.release()
-    console.log('Insert result:', res.rows[0])
+    const note = await createRecord(db.Notes, {
+      title: title, 
+      content: content, 
+      folder_id: folder_id === '' ? null : folder_id
+    })
 
-    return NextResponse.json({ message: 'Note created successfully', note: res.rows[0] }, {status: 201})
+    return NextResponse.json({ message: 'Note created successfully', note }, {status: 201})
   }
   catch (err) {
     console.error('Error creating note:', err)

@@ -41,7 +41,7 @@ export function PlainEditor() {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'prose prose-neutral dark:prose-invert max-w-none flex-1 w-full min-h-full focus:outline-none',
+        class: 'prose prose-lg prose-neutral dark:prose-invert max-w-none flex-1 w-full min-h-full focus:outline-none text-lg leading-8',
       },
     },
   })
@@ -82,15 +82,16 @@ export function PlainEditor() {
         <div className="flex-1 overflow-y-auto" id="editor-container">
             <div className="max-w-3xl mx-auto px-8 py-12 pb-32">
                  {selectedNoteId && (
-                    <div className="flex justify-between items-baseline mb-8 border-b border-gray-100 pb-4">
+                    <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-8 border-b border-gray-100 pb-4 gap-2 md:gap-0">
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Note Title"
                             className="text-4xl text-gray-900 font-bold tracking-tight outline-none bg-transparent w-full placeholder:text-gray-300"
+                            style={{ fontFamily: 'var(--font-playfair_display)' }}
                         />
-                        <div className="text-right shrink-0 ml-4">
+                        <div className="shrink-0 md:ml-4 text-left md:text-right">
                             <div className="text-sm font-medium text-gray-500">{formattedDate.dayMonth}</div>
                             <div className="text-xs text-gray-400">{formattedDate.year}</div>
                         </div>

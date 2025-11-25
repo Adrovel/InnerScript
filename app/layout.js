@@ -1,10 +1,10 @@
-import { Domine, Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./(providers)/providers";
 
 
-const domine = Domine({
-  variable: "--font-domine",
+const playfair_display = Playfair_Display({
+  variable: "--font-playfair_display",
   subsets: ["latin"],
   weight: "400"
 });
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${domine.variable} ${inter.variable} antialiased`}
+        className={`${playfair_display.variable} ${inter.variable} antialiased`}
       >
         <Providers>{children}</Providers>
       </body>
