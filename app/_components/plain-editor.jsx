@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useMemo, useState } from "react"
-import { useQuery } from "@tanstack/react-query"
+import { useEffect, useMemo, useState, useCallback, useRef } from "react"
+import { useQuery, useMutation } from "@tanstack/react-query"
 import { useSelectedNoteContext } from "./files-context"
 import StarterKit from "@tiptap/starter-kit"
 import { useEditor, EditorContent } from "@tiptap/react"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, Loader2 } from "lucide-react"
 
 async function fetchNoteById(noteId) {
   const res = await fetch(`/api/notes/${noteId}`, { cache: 'no-store' })
@@ -16,11 +16,25 @@ async function fetchNoteById(noteId) {
   return note
 }
 
+async function updateNote(noteId, data) {
+  const res = await fetch(`/api/notes/${noteId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) {
+    throw new Error('Failed to save note')
+  }
+  return res.json()
+}
+
 const EMPTY_STATE_HTML = '<p class="text-muted-foreground">Select a note from the sidebar to start writing.</p>'
 
 export function PlainEditor() {
   const [selectedNoteId] = useSelectedNoteContext()
   const [title, setTitle] = useState("")
+  const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
+  const debounceTimer = useRef(null)
 
   const {
     data: note,
@@ -34,6 +48,33 @@ export function PlainEditor() {
     refetchOnWindowFocus: false,
   })
 
+  const { mutate: saveNote } = useMutation({
+    mutationFn: (data) => updateNote(selectedNoteId, data),
+    onMutate: () => setSaveStatus('saving'),
+    onSuccess: () => {
+      setSaveStatus('saved')
+    },
+    onError: () => {
+      setSaveStatus('unsaved')
+    },
+  })
+
+  // Debounced save function
+  const debouncedSave = useCallback((content, contentJson, noteTitle) => {
+    if (!selectedNoteId) return
+    
+    setSaveStatus('unsaved')
+    if (debounceTimer.current) clearTimeout(debounceTimer.current)
+    
+    debounceTimer.current = setTimeout(() => {
+      saveNote({ 
+        title: noteTitle, 
+        content: content,
+        content_json: contentJson
+      })
+    }, 1000) // Save 1 second after user stops typing
+  }, [saveNote, selectedNoteId])
+
   const editor = useEditor({
     extensions: [StarterKit],
     content: EMPTY_STATE_HTML,
@@ -43,6 +84,12 @@ export function PlainEditor() {
       attributes: {
         class: 'prose prose-lg prose-neutral dark:prose-invert max-w-none flex-1 w-full min-h-full focus:outline-none text-lg leading-8',
       },
+    },
+    onUpdate: ({ editor }) => {
+      // Trigger save whenever content changes
+      if (selectedNoteId) {
+        debouncedSave(editor.getText(), editor.getJSON(), title)
+      }
     },
   })
 
@@ -58,13 +105,49 @@ export function PlainEditor() {
 
     if (note) {
         editor.setEditable(true)
-        if (editor.getHTML() !== note.content) {
-             editor.commands.setContent(note.content || '<p></p>', false)
+        
+        // Prefer loading from content_json if available, otherwise fallback to content
+        if (note.content_json) {
+          // Load from structured JSON
+          const currentJson = editor.getJSON()
+          const noteJsonStr = JSON.stringify(note.content_json)
+          const currentJsonStr = JSON.stringify(currentJson)
+          
+          if (noteJsonStr !== currentJsonStr) {
+            editor.commands.setContent(note.content_json, false)
+          }
+        } else if (note.content) {
+          // Fallback: load from plain text content
+          // Wrap plain text in a paragraph for TipTap
+          const wrappedContent = `<p>${note.content}</p>`
+          if (editor.getHTML() !== wrappedContent) {
+            editor.commands.setContent(wrappedContent, false)
+          }
+        } else {
+          // Empty note
+          if (editor.getHTML() !== '<p></p>') {
+            editor.commands.setContent('<p></p>', false)
+          }
         }
+        
         setTitle(note.title || "")
     }
 
   }, [editor, selectedNoteId, note])
+
+  // Also save when title changes
+  useEffect(() => {
+    if (selectedNoteId && editor && title) {
+      debouncedSave(editor.getText(), editor.getJSON(), title)
+    }
+  }, [title, editor, selectedNoteId, debouncedSave])
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current)
+    }
+  }, [])
 
     const formattedDate = useMemo(() => {
         if (!note?.createdAt) return { dayMonth: '...', year: '....' }
@@ -103,8 +186,9 @@ export function PlainEditor() {
                 </div>
 
                  <div className="absolute bottom-8 right-8 text-muted-foreground/50 flex items-center gap-2 text-xs select-none pointer-events-none">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Saved</span>
+                    {saveStatus === 'saving' && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {saveStatus === 'saved' && <CheckCircle2 className="w-4 h-4" />}
+                    <span>{saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}</span>
                  </div>
 
                  {isLoading && (
