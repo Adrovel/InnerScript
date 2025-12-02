@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useMemo, useState, useCallback, useRef } from "react"
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useSelectedNoteContext } from "./files-context"
 import StarterKit from "@tiptap/starter-kit"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { CheckCircle2, Loader2 } from "lucide-react"
+import { MoodTagSelector } from "./mood-tag-selector"
 
 async function fetchNoteById(noteId) {
   const res = await fetch(`/api/notes/${noteId}`, { cache: 'no-store' })
@@ -28,13 +29,29 @@ async function updateNote(noteId, data) {
   return res.json()
 }
 
+async function fetchAllTags() {
+  const res = await fetch('/api/tags', { cache: 'force-cache' })
+  if (!res.ok) throw new Error('Failed to load tags')
+  const { tags } = await res.json()
+  return tags
+}
+
 const EMPTY_STATE_HTML = '<p class="text-muted-foreground">Select a note from the sidebar to start writing.</p>'
 
 export function PlainEditor() {
   const [selectedNoteId] = useSelectedNoteContext()
   const [title, setTitle] = useState("")
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
+  const [selectedTagIds, setSelectedTagIds] = useState([])
   const debounceTimer = useRef(null)
+  const queryClient = useQueryClient()
+
+  // Query for available tags
+  const { data: availableTags = [] } = useQuery({
+    queryKey: ['tags'],
+    queryFn: fetchAllTags,
+    staleTime: 1000 * 60 * 60, // 1 hour cache
+  })
 
   const {
     data: note,
@@ -59,21 +76,47 @@ export function PlainEditor() {
     },
   })
 
+  // Mutation for updating tags (immediate save)
+  const { mutate: saveTags } = useMutation({
+    mutationFn: (tagIds) => updateNote(selectedNoteId, { tag_ids: tagIds }),
+    onSuccess: () => {
+      // Invalidate the note query to refetch with updated tags
+      queryClient.invalidateQueries(['note', selectedNoteId])
+    },
+  })
+
   // Debounced save function
   const debouncedSave = useCallback((content, contentJson, noteTitle) => {
     if (!selectedNoteId) return
-    
+
     setSaveStatus('unsaved')
     if (debounceTimer.current) clearTimeout(debounceTimer.current)
-    
+
     debounceTimer.current = setTimeout(() => {
-      saveNote({ 
-        title: noteTitle, 
+      saveNote({
+        title: noteTitle,
         content: content,
         content_json: contentJson
       })
     }, 1000) // Save 1 second after user stops typing
   }, [saveNote, selectedNoteId])
+
+  // Handle tag toggle (immediate save)
+  const handleTagToggle = useCallback((tagId) => {
+    if (!selectedNoteId) return
+
+    setSelectedTagIds((prev) => {
+      const isSelected = prev.includes(tagId)
+      const newTagIds = isSelected
+        ? prev.filter(id => id !== tagId)
+        : [...prev, tagId]
+
+      // Immediately save tags (no debounce)
+      saveTags(newTagIds)
+
+      return newTagIds
+    })
+  }, [selectedNoteId, saveTags])
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -100,19 +143,20 @@ export function PlainEditor() {
       editor.setEditable(false)
       editor.commands.setContent(EMPTY_STATE_HTML, false)
       setTitle("Please select a note from the sidebar to start writing.")
+      setSelectedTagIds([])
       return
     }
 
     if (note) {
       editor.setEditable(true)
-      
+
       // Prefer loading from content_json if available, otherwise fallback to content
       if (note.content_json) {
         // Load from structured JSON
         const currentJson = editor.getJSON()
         const noteJsonStr = JSON.stringify(note.content_json)
         const currentJsonStr = JSON.stringify(currentJson)
-        
+
         if (noteJsonStr !== currentJsonStr) {
           editor.commands.setContent(note.content_json, false)
         }
@@ -129,8 +173,15 @@ export function PlainEditor() {
           editor.commands.setContent('<p></p>', false)
         }
       }
-      
+
       setTitle(note.title || "")
+
+      // Load tags
+      if (note.tags) {
+        setSelectedTagIds(note.tags.map(t => t.id))
+      } else {
+        setSelectedTagIds([])
+      }
     }
 
   }, [editor, selectedNoteId, note])
@@ -164,20 +215,30 @@ export function PlainEditor() {
       <div className="flex-1 overflow-y-auto" id="editor-container">
         <div className="max-w-4xl mx-auto px-8 py-12 pb-32">
           {selectedNoteId && (
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 border-b border-gray-100 pb-4 gap-2 md:gap-0">
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Note Title"
-                className="text-4xl text-gray-900 font-bold tracking-tight outline-none w-full bg-transparent placeholder:text-gray-300 py-2 leading-tight"
-                style={{ fontFamily: 'var(--font-playfair_display)' }}
-              />
-              <div className="shrink-0 md:ml-4 text-left md:text-right">
-                <div className="text-sm font-medium text-gray-500">{formattedDate.dayMonth}</div>
-                <div className="text-xs text-gray-400">{formattedDate.year}</div>
+            <>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 border-b border-gray-100 pb-4 gap-2 md:gap-0">
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Note Title"
+                  className="text-4xl text-gray-900 font-bold tracking-tight outline-none w-full bg-transparent placeholder:text-gray-300 py-2 leading-tight"
+                  style={{ fontFamily: 'var(--font-playfair_display)' }}
+                />
+                <div className="shrink-0 md:ml-4 text-left md:text-right">
+                  <div className="text-sm font-medium text-gray-500">{formattedDate.dayMonth}</div>
+                  <div className="text-xs text-gray-400">{formattedDate.year}</div>
+                </div>
               </div>
-            </div>
+
+              {/* Mood Tag Selector */}
+              <MoodTagSelector
+                availableTags={availableTags}
+                selectedTagIds={selectedTagIds}
+                onTagToggle={handleTagToggle}
+                disabled={!selectedNoteId}
+              />
+            </>
           )}
 
           <div className="editor-content min-h-[60vh] outline-none">
