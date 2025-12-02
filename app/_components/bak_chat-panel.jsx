@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { useSidebarMetadataContext } from './files-context'
 import { Button } from '@/components/ui/button'
-import { PopoverMenu } from './chat-popover-menu'
+import { PopoverMenu } from './bak_chat-popover-menu'
 import { Send } from 'lucide-react'
 
 const messages = [

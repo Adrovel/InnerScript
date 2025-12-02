@@ -104,33 +104,33 @@ export function PlainEditor() {
     }
 
     if (note) {
-        editor.setEditable(true)
+      editor.setEditable(true)
+      
+      // Prefer loading from content_json if available, otherwise fallback to content
+      if (note.content_json) {
+        // Load from structured JSON
+        const currentJson = editor.getJSON()
+        const noteJsonStr = JSON.stringify(note.content_json)
+        const currentJsonStr = JSON.stringify(currentJson)
         
-        // Prefer loading from content_json if available, otherwise fallback to content
-        if (note.content_json) {
-          // Load from structured JSON
-          const currentJson = editor.getJSON()
-          const noteJsonStr = JSON.stringify(note.content_json)
-          const currentJsonStr = JSON.stringify(currentJson)
-          
-          if (noteJsonStr !== currentJsonStr) {
-            editor.commands.setContent(note.content_json, false)
-          }
-        } else if (note.content) {
-          // Fallback: load from plain text content
-          // Wrap plain text in a paragraph for TipTap
-          const wrappedContent = `<p>${note.content}</p>`
-          if (editor.getHTML() !== wrappedContent) {
-            editor.commands.setContent(wrappedContent, false)
-          }
-        } else {
-          // Empty note
-          if (editor.getHTML() !== '<p></p>') {
-            editor.commands.setContent('<p></p>', false)
-          }
+        if (noteJsonStr !== currentJsonStr) {
+          editor.commands.setContent(note.content_json, false)
         }
-        
-        setTitle(note.title || "")
+      } else if (note.content) {
+        // Fallback: load from plain text content
+        // Wrap plain text in a paragraph for TipTap
+        const wrappedContent = `<p>${note.content}</p>`
+        if (editor.getHTML() !== wrappedContent) {
+          editor.commands.setContent(wrappedContent, false)
+        }
+      } else {
+        // Empty note
+        if (editor.getHTML() !== '<p></p>') {
+          editor.commands.setContent('<p></p>', false)
+        }
+      }
+      
+      setTitle(note.title || "")
     }
 
   }, [editor, selectedNoteId, note])
@@ -150,60 +150,59 @@ export function PlainEditor() {
   }, [])
 
     const formattedDate = useMemo(() => {
-        if (!note?.createdAt) return { dayMonth: '...', year: '....' }
-        const date = new Date(note.createdAt)
-        return {
-            dayMonth: new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long' }).format(date),
-            year: date.getFullYear()
-        }
+      if (!note?.createdAt) return { dayMonth: '...', year: '....' }
+      const date = new Date(note.createdAt)
+      return {
+        dayMonth: new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long' }).format(date),
+        year: date.getFullYear()
+      }
     }, [note?.createdAt])
 
 
   return (
-      <main className="flex-1 flex flex-col h-full bg-white relative shadow-sm z-0 overflow-hidden">
-        
-        <div className="flex-1 overflow-y-auto" id="editor-container">
-            <div className="max-w-3xl mx-auto px-8 py-12 pb-32">
-                 {selectedNoteId && (
-                    <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-8 border-b border-gray-100 pb-4 gap-2 md:gap-0">
-                        <input
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            placeholder="Note Title"
-                            className="text-4xl text-gray-900 font-bold tracking-tight outline-none bg-transparent w-full placeholder:text-gray-300"
-                            style={{ fontFamily: 'var(--font-playfair_display)' }}
-                        />
-                        <div className="shrink-0 md:ml-4 text-left md:text-right">
-                            <div className="text-sm font-medium text-gray-500">{formattedDate.dayMonth}</div>
-                            <div className="text-xs text-gray-400">{formattedDate.year}</div>
-                        </div>
-                    </div>
-                 )}
-
-                <div className="editor-content min-h-[60vh] outline-none">
-                    <EditorContent editor={editor} />
-                </div>
-
-                 <div className="absolute bottom-8 right-8 text-muted-foreground/50 flex items-center gap-2 text-xs select-none pointer-events-none">
-                    {saveStatus === 'saving' && <Loader2 className="w-4 h-4 animate-spin" />}
-                    {saveStatus === 'saved' && <CheckCircle2 className="w-4 h-4" />}
-                    <span>{saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}</span>
-                 </div>
-
-                 {isLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-20">
-                        <div className="text-sm text-gray-500">Loading note...</div>
-                    </div>
-                )}
-
-                {isError && (
-                     <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-20">
-                        <div className="text-sm text-red-500">{error?.message ?? 'Unable to load note'}</div>
-                    </div>
-                )}
+    <main className="flex-1 flex flex-col h-full bg-white relative shadow-sm z-0 overflow-hidden"> 
+      <div className="flex-1 overflow-y-auto" id="editor-container">
+        <div className="max-w-4xl mx-auto px-8 py-12 pb-32">
+          {selectedNoteId && (
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 border-b border-gray-100 pb-4 gap-2 md:gap-0">
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Note Title"
+                className="text-4xl text-gray-900 font-bold tracking-tight outline-none w-full bg-transparent placeholder:text-gray-300 py-2 leading-tight"
+                style={{ fontFamily: 'var(--font-playfair_display)' }}
+              />
+              <div className="shrink-0 md:ml-4 text-left md:text-right">
+                <div className="text-sm font-medium text-gray-500">{formattedDate.dayMonth}</div>
+                <div className="text-xs text-gray-400">{formattedDate.year}</div>
+              </div>
             </div>
+          )}
+
+          <div className="editor-content min-h-[60vh] outline-none">
+            <EditorContent editor={editor} />
+          </div>
+
+          <div className="absolute bottom-8 right-8 text-muted-foreground/50 flex items-center gap-2 text-xs select-none pointer-events-none">
+            {saveStatus === 'saving' && <Loader2 className="w-4 h-4 animate-spin" />}
+            {saveStatus === 'saved' && <CheckCircle2 className="w-4 h-4" />}
+            <span>{saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}</span>
+          </div>
+
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-20">
+              <div className="text-sm text-gray-500">Loading note...</div>
+            </div>
+          )}
+
+          {isError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-20">
+              <div className="text-sm text-red-500">{error?.message ?? 'Unable to load note'}</div>
+            </div>
+          )}
         </div>
+      </div>
     </main>
   )
 }
