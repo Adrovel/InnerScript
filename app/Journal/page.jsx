@@ -16,7 +16,7 @@ export default async function Page() {
     <FileProvider sidebarMetadata={sidebarData.tree}>
       <SidebarProvider>
         <AppSidebar />
-        <main className="flex-1 w-full relative flex flex-col">
+        <main className="flex-1 w-full min-w-0 max-w-full relative flex flex-col overflow-hidden">
             <TopBar />
             <PlainEditor />
        </main>

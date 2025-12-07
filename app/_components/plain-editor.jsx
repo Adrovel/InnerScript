@@ -36,6 +36,7 @@ export function PlainEditor() {
   const [title, setTitle] = useState("")
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
   const debounceTimer = useRef(null)
+  const prevActiveTabId = useRef(activeTabId)
 
   const {
     data: note,
@@ -50,7 +51,7 @@ export function PlainEditor() {
   })
 
   const { mutate: saveNote } = useMutation({
-    mutationFn: (data) => updateNote(activeTabId, data),
+    mutationFn: ({ noteId, data }) => updateNote(noteId, data),
     onMutate: () => setSaveStatus('saving'),
     onSuccess: () => {
       setSaveStatus('saved')
@@ -62,16 +63,21 @@ export function PlainEditor() {
 
   // Debounced save function
   const debouncedSave = useCallback((content, contentJson, noteTitle) => {
-    if (!activeTabId) return
+    // Capture activeTabId at the time debouncedSave is called
+    const currentTabId = activeTabId
+    if (!currentTabId) return
     
     setSaveStatus('unsaved')
     if (debounceTimer.current) clearTimeout(debounceTimer.current)
     
     debounceTimer.current = setTimeout(() => {
       saveNote({ 
-        title: noteTitle, 
-        content: content,
-        content_json: contentJson
+        noteId: currentTabId,
+        data: {
+          title: noteTitle, 
+          content: content,
+          content_json: contentJson
+        }
       })
     }, 1000) // Save 1 second after user stops typing
   }, [saveNote, activeTabId])
@@ -100,7 +106,7 @@ export function PlainEditor() {
     if (!activeTabId) {
       editor.setEditable(false)
       editor.commands.setContent(EMPTY_STATE_HTML, false)
-      setTitle("Please select a note from the sidebar to start writing.")
+      setTitle("Loading...")
       return
     }
 
@@ -139,8 +145,14 @@ export function PlainEditor() {
 
   }, [editor, activeTabId, note, updateTabTitle])
 
-  // Also save when title changes
+  // Also save when title changes (only for user edits, not tab switches)
   useEffect(() => {
+    // Skip if activeTabId just changed (tab switch) - the note load effect handles that
+    if (prevActiveTabId.current !== activeTabId) {
+      prevActiveTabId.current = activeTabId
+      return
+    }
+    
     if (activeTabId && editor && title) {
       debouncedSave(editor.getText(), editor.getJSON(), title)
       // Update tab title when user changes title

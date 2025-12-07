@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -18,28 +18,11 @@ export function AppSidebar() {
   const sidebarMetadata = useSidebarMetadataContext()
   const { openNote } = useOpenTabsContext()
   const [activeTabId] = useActiveTabContext()
-  
-  // Create a map of note IDs to titles for quick lookup
-  const noteTitleMap = useMemo(() => {
-    const map = new Map()
-    const buildMap = (items) => {
-      items.forEach(item => {
-        if (item.type !== 'folder') {
-          map.set(item.id, item.name)
-        }
-        if (item.children) {
-          buildMap(item.children)
-        }
-      })
-    }
-    buildMap(sidebarMetadata)
-    return map
-  }, [sidebarMetadata])
 
   const handleSelectNote = useCallback((noteId) => {
-    const title = noteTitleMap.get(noteId) || 'Untitled'
-    openNote(noteId, title)
-  }, [openNote, noteTitleMap])
+    openNote(noteId)
+  }, [openNote])
+  
   const {
     dialog,
     openDialog,
@@ -97,7 +80,7 @@ export function AppSidebar() {
       onConfirm={handleDialogConfirm}
       onCancel={closeDialog}
       confirmText={getConfirmText()}
-      requiresInput={requiresInput}
+      requiresInput={requiresInput()}
       isDestructive={dialog.action === 'delete'}
     />
     </>

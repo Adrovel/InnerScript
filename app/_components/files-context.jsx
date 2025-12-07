@@ -11,18 +11,16 @@ export function FileProvider({ children, sidebarMetadata }) {
   const [activeTabId, setActiveTabId] = useState(null)
 
   // Helper function to open a note (adds tab if not exists, switches to it)
-  const openNote = useCallback((noteId, title) => {
+  const openNote = useCallback((noteId) => {
     if (!noteId) return
     
     setOpenTabs(prevTabs => {
       const existingTab = prevTabs.find(tab => tab.id === noteId)
       if (existingTab) {
-        // Tab already exists, just switch to it
         setActiveTabId(noteId)
         return prevTabs
       } else {
-        // Add new tab
-        const newTab = { id: noteId, title: title || 'Untitled' }
+        const newTab = { id: noteId }
         setActiveTabId(noteId)
         return [...prevTabs, newTab]
       }
