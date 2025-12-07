@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback, useRef } from "react"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { useSelectedNoteContext } from "./files-context"
+import { useActiveTabContext, useOpenTabsContext } from "./files-context"
 import StarterKit from "@tiptap/starter-kit"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { CheckCircle2, Loader2 } from "lucide-react"
@@ -31,7 +31,8 @@ async function updateNote(noteId, data) {
 const EMPTY_STATE_HTML = '<p class="text-muted-foreground">Select a note from the sidebar to start writing.</p>'
 
 export function PlainEditor() {
-  const [selectedNoteId] = useSelectedNoteContext()
+  const [activeTabId] = useActiveTabContext()
+  const { updateTabTitle } = useOpenTabsContext()
   const [title, setTitle] = useState("")
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
   const debounceTimer = useRef(null)
@@ -42,14 +43,14 @@ export function PlainEditor() {
     isError,
     error,
   } = useQuery({
-    queryKey: ['note', selectedNoteId],
-    queryFn: () => fetchNoteById(selectedNoteId),
-    enabled: Boolean(selectedNoteId),
+    queryKey: ['note', activeTabId],
+    queryFn: () => fetchNoteById(activeTabId),
+    enabled: Boolean(activeTabId),
     refetchOnWindowFocus: false,
   })
 
   const { mutate: saveNote } = useMutation({
-    mutationFn: (data) => updateNote(selectedNoteId, data),
+    mutationFn: (data) => updateNote(activeTabId, data),
     onMutate: () => setSaveStatus('saving'),
     onSuccess: () => {
       setSaveStatus('saved')
@@ -61,7 +62,7 @@ export function PlainEditor() {
 
   // Debounced save function
   const debouncedSave = useCallback((content, contentJson, noteTitle) => {
-    if (!selectedNoteId) return
+    if (!activeTabId) return
     
     setSaveStatus('unsaved')
     if (debounceTimer.current) clearTimeout(debounceTimer.current)
@@ -73,7 +74,7 @@ export function PlainEditor() {
         content_json: contentJson
       })
     }, 1000) // Save 1 second after user stops typing
-  }, [saveNote, selectedNoteId])
+  }, [saveNote, activeTabId])
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -87,7 +88,7 @@ export function PlainEditor() {
     },
     onUpdate: ({ editor }) => {
       // Trigger save whenever content changes
-      if (selectedNoteId) {
+      if (activeTabId) {
         debouncedSave(editor.getText(), editor.getJSON(), title)
       }
     },
@@ -96,7 +97,7 @@ export function PlainEditor() {
   useEffect(() => {
     if (!editor) return
 
-    if (!selectedNoteId) {
+    if (!activeTabId) {
       editor.setEditable(false)
       editor.commands.setContent(EMPTY_STATE_HTML, false)
       setTitle("Please select a note from the sidebar to start writing.")
@@ -130,17 +131,22 @@ export function PlainEditor() {
         }
       }
       
-      setTitle(note.title || "")
+      const noteTitle = note.title || ""
+      setTitle(noteTitle)
+      // Update tab title when note is loaded
+      updateTabTitle(activeTabId, noteTitle)
     }
 
-  }, [editor, selectedNoteId, note])
+  }, [editor, activeTabId, note, updateTabTitle])
 
   // Also save when title changes
   useEffect(() => {
-    if (selectedNoteId && editor && title) {
+    if (activeTabId && editor && title) {
       debouncedSave(editor.getText(), editor.getJSON(), title)
+      // Update tab title when user changes title
+      updateTabTitle(activeTabId, title)
     }
-  }, [title, editor, selectedNoteId, debouncedSave])
+  }, [title, editor, activeTabId, debouncedSave, updateTabTitle])
 
   // Cleanup timer on unmount
   useEffect(() => {
@@ -162,8 +168,8 @@ export function PlainEditor() {
   return (
     <main className="flex-1 flex flex-col h-full bg-white relative shadow-sm z-0 overflow-hidden"> 
       <div className="flex-1 overflow-y-auto" id="editor-container">
-        <div className="max-w-4xl mx-auto px-8 py-12 pb-32">
-          {selectedNoteId && (
+        <div className="max-w-4xl mx-auto px-8 pt-8 h-full">
+          {activeTabId && (
             <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 border-b border-gray-100 pb-4 gap-2 md:gap-0">
               <input
                 type="text"

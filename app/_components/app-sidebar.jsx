@@ -1,5 +1,6 @@
 'use client'
 
+import { useCallback, useMemo } from 'react'
 import {
   Sidebar,
   SidebarContent,
@@ -7,7 +8,7 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from "@/components/ui/sidebar"
-import { useSidebarMetadataContext, useSelectedNoteContext } from "./files-context"
+import { useSidebarMetadataContext, useOpenTabsContext, useActiveTabContext } from "./files-context"
 import { TreeItem } from "./tree-item"
 import { ReusableContextMenu } from './reusable-context-menu'
 import { SidebarActionDialog } from './sidebar-action-dialog'
@@ -15,7 +16,30 @@ import { useContextMenuDialog } from '@/hooks/use-context-menu-dialog'
 
 export function AppSidebar() {
   const sidebarMetadata = useSidebarMetadataContext()
-  const [selectedNoteId, setSelectedNoteId] = useSelectedNoteContext()
+  const { openNote } = useOpenTabsContext()
+  const [activeTabId] = useActiveTabContext()
+  
+  // Create a map of note IDs to titles for quick lookup
+  const noteTitleMap = useMemo(() => {
+    const map = new Map()
+    const buildMap = (items) => {
+      items.forEach(item => {
+        if (item.type !== 'folder') {
+          map.set(item.id, item.name)
+        }
+        if (item.children) {
+          buildMap(item.children)
+        }
+      })
+    }
+    buildMap(sidebarMetadata)
+    return map
+  }, [sidebarMetadata])
+
+  const handleSelectNote = useCallback((noteId) => {
+    const title = noteTitleMap.get(noteId) || 'Untitled'
+    openNote(noteId, title)
+  }, [openNote, noteTitleMap])
   const {
     dialog,
     openDialog,
@@ -53,8 +77,8 @@ export function AppSidebar() {
               <TreeItem
                 key={item.id}
                 item={item}
-                onSelectNote={setSelectedNoteId}
-                selectedNoteId={selectedNoteId}
+                onSelectNote={handleSelectNote}
+                selectedNoteId={activeTabId}
               />
             ))}
           </SidebarMenu>
