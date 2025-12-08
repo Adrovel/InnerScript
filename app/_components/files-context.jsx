@@ -91,9 +91,3 @@ export function useActiveTabContext() {
   }
   return context
 }
-
-// Keep for backward compatibility (will be removed after updating all usages)
-export function useSelectedNoteContext() {
-  const [activeTabId] = useActiveTabContext()
-  return [activeTabId, () => {}]
-}
