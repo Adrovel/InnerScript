@@ -235,13 +235,6 @@ export function PlainEditor() {
       {activeTabId && (
         <footer className="bg-sidebar px-4 py-2 h-8 flex items-center">
           <div className="max-w mx-auto w-full flex items-center justify-end text-xs text-gray-500 gap-4">
-            <div className="flex items-center gap-2">
-              {saveStatus === 'saving' && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
-              {saveStatus === 'saved' && <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />}
-              <span className="text-gray-500">
-                {saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}
-              </span>
-            </div>
             <span className="flex items-center gap-1.5">
               <span className="font-medium">{wordCount}</span>
               <span className="text-gray-400">{wordCount === 1 ? 'word' : 'words'}</span>
@@ -250,6 +243,13 @@ export function PlainEditor() {
               <span className="font-medium">{charCount}</span>
               <span className="text-gray-400">{charCount === 1 ? 'character' : 'characters'}</span>
             </span>
+            <div className="flex items-center gap-2">
+              {saveStatus === 'saving' && <Loader2 className="w-3 h-3 animate-spin text-gray-400" />}
+              {saveStatus === 'saved' && <CheckCircle2 className="w-3 h-3 text-green-500" />}
+              <span className="text-gray-500">
+                {saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}
+              </span>
+            </div>
           </div>
         </footer>
       )}

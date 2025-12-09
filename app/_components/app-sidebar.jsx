@@ -8,11 +8,13 @@ import {
   SidebarHeader,
   SidebarMenu,
 } from "@/components/ui/sidebar"
+import { Button } from '@/components/ui/button'
 import { useSidebarMetadataContext, useOpenTabsContext, useActiveTabContext } from "./files-context"
 import { TreeItem } from "./tree-item"
 import { ReusableContextMenu } from './reusable-context-menu'
 import { SidebarActionDialog } from './sidebar-action-dialog'
 import { useContextMenuDialog } from '@/hooks/use-context-menu-dialog'
+import { FolderPlusIcon, FileIcon } from 'lucide-react'
 
 export function AppSidebar() {
   const sidebarMetadata = useSidebarMetadataContext()
@@ -54,6 +56,24 @@ export function AppSidebar() {
         onAction={handleSidebarAction}
       >
         <SidebarContent className="p-2">
+          <div className='flex w-full gap-2 mb-2'>
+            <Button 
+              variant="outline" 
+              className="flex-1"
+              onClick={() => handleSidebarAction("newFolder")}
+            >
+              <FolderPlusIcon className="w-4 h-4 mr-2" />
+              New Folder
+            </Button>
+            <Button 
+              variant="outline" 
+              className="flex-1"
+              onClick={() => handleSidebarAction("newFile")}
+            >
+              <FileIcon className="w-4 h-4 mr-2" />
+              New File
+            </Button>
+          </div>
           <SidebarMenu>
             {sidebarMetadata.map(item => (
               <TreeItem

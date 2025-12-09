@@ -6,9 +6,6 @@ import { ChevronRight } from 'lucide-react'
 import {
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
 } from "@/components/ui/sidebar"
 import {
   Collapsible,
@@ -19,7 +16,7 @@ import { ReusableContextMenu } from './reusable-context-menu'
 import { useContextMenuDialog } from '@/hooks/use-context-menu-dialog'
 import { SidebarActionDialog } from './sidebar-action-dialog'
 
-export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
+export function TreeItem({ item, onSelectNote, selectedNoteId}) {
   const [isOpen, setIsOpen] = useState(false)
   const {
     dialog,
@@ -35,9 +32,6 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
   const isFolder = item.type === 'folder'
   const hasChildren = item.children && item.children.length > 0
   const isSelected = !isFolder && selectedNoteId === item.id
-  const paddingLeft = `${depth * 16 + 16}px`
-  const MenuItem = depth === 0 ? SidebarMenuItem : SidebarMenuSubItem
-  const MenuButton = depth === 0 ? SidebarMenuButton : SidebarMenuSubButton
 
 
   const handleClick = () => {
@@ -58,38 +52,36 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
     return (
       <>
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <MenuItem>
+        <SidebarMenuItem>
           <ReusableContextMenu
             menuType="folder"
             onAction={handleSidebarAction}
           >
             <CollapsibleTrigger asChild>
-              <MenuButton
+              <SidebarMenuButton
                 onClick={handleClick}
                 isActive={false}
-                className="rounded-sm"
-                style={{ paddingLeft }}
+                className="rounded-sm whitespace-nowrap"
               >
-                <span className="font-sans flex-1 text-left truncate">{item.name}</span>
                 <ChevronRight className={`h-4 w-4 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-90" : ""}`} />
-              </MenuButton>
+                <span className="font-sans flex-1 text-left truncate">{item.name}</span>
+              </SidebarMenuButton>
             </CollapsibleTrigger>
           </ReusableContextMenu>
-        </MenuItem>
+        </SidebarMenuItem>
 
         {hasChildren && (
-          <CollapsibleContent>
-            <SidebarMenuSub className="m-0 p-0">
+          <CollapsibleContent style={{ paddingLeft: `16px` }}>
+            <div className="border-l border-sidebar-border pl-2 flex flex-col gap-1">
               {item.children.map(child => (
                 <TreeItem
                   key={child.id}
                   item={child}
                   onSelectNote={onSelectNote}
                   selectedNoteId={selectedNoteId}
-                  depth={depth + 1}
                 />
               ))}
-            </SidebarMenuSub>
+            </div>
           </CollapsibleContent>
         )}
       </Collapsible>
@@ -113,21 +105,21 @@ export function TreeItem({ item, onSelectNote, selectedNoteId, depth = 0 }) {
 
   return (
     <>
-    <MenuItem>
+    <SidebarMenuItem>
       <ReusableContextMenu
         menuType="note"
         onAction={handleSidebarAction}
       >
-        <MenuButton
+        <SidebarMenuButton
           onClick={handleClick}
           isActive={isSelected}
           className="rounded-sm whitespace-nowrap"
-          style={{ paddingLeft }}
         >
+          <div className="h-4 w-4 shrink-0" />
           <span className='font-sans flex-1 text-left truncate'>{item.name}</span>
-        </MenuButton>
+        </SidebarMenuButton>
       </ReusableContextMenu>
-    </MenuItem>
+    </SidebarMenuItem>
 
     <SidebarActionDialog
         open={dialog.open}
