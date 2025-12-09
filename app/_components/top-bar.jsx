@@ -21,22 +21,24 @@ export function TopBar() {
   }
 
   return (
-    <div className="flex items-center w-full h-10 bg-background border-b overflow-hidden">
+    <div className="flex items-center w-full h-10 bg-sidebar overflow-visible">
       <SidebarTrigger className="ml-1 shrink-0"/>
-      <div className="flex items-center gap-1 flex-1 min-w-0 px-2">
+      <div className="flex items-center flex-1 min-w-0 px-2">
         {openTabs.map((tab) => {
           const isActive = tab.id === activeTabId
           return (
             <Item
               key={tab.id}
               onClick={() => handleTabClick(tab.id)}
-              variant='outline'
+              variant='default'
+              size="sm"
               className={cn(
-                "flex-1 min-w-0 shrink",
+                "relative bg-accent/70 flex-1 min-w-0 max-w-[200px] shrink overflow-visible px-4 py-2 shadow-sm transition-all duration-150",
                 isActive
-                  ? "border-primary text-foreground bg-accent/50"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:bg-accent/30"
+                  ? "text-foreground bg-white shadow-md"
+                  : "text-muted-background hover:text-foreground hover:bg-accent/40"
               )}
+              style={{ borderRadius: '20px 20px 0px 0px' }}
             >
               <ItemContent className="min-w-0 flex-1 overflow-hidden">
                 <ItemTitle className="w-full min-w-0">

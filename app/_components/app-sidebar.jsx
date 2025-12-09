@@ -48,7 +48,7 @@ export function AppSidebar() {
     <>
     <Sidebar className="border-border">
       <SidebarHeader>
-        <h2 className="text-2xl font-serif p-2">Notes</h2>
+        <h2 className="text-2xl font-serif p-2">Scripts</h2>
       </SidebarHeader>
       <ReusableContextMenu
         menuType="sidebarEmpty"
