@@ -35,6 +35,8 @@ export function PlainEditor() {
   const { updateTabTitle } = useOpenTabsContext()
   const [title, setTitle] = useState("")
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
+  const [wordCount, setWordCount] = useState(0)
+  const [charCount, setCharCount] = useState(0)
   const debounceTimer = useRef(null)
   const prevActiveTabId = useRef(activeTabId)
 
@@ -93,6 +95,12 @@ export function PlainEditor() {
       },
     },
     onUpdate: ({ editor }) => {
+      // Update word and character counts
+      const text = editor.getText()
+      const words = text.trim().split(/\s+/).filter(word => word.length > 0)
+      setWordCount(words.length)
+      setCharCount(text.length)
+
       // Trigger save whenever content changes
       if (activeTabId) {
         debouncedSave(editor.getText(), editor.getJSON(), title)
@@ -107,19 +115,21 @@ export function PlainEditor() {
       editor.setEditable(false)
       editor.commands.setContent(EMPTY_STATE_HTML, false)
       setTitle("Loading...")
+      setWordCount(0)
+      setCharCount(0)
       return
     }
 
     if (note) {
       editor.setEditable(true)
-      
+
       // Prefer loading from content_json if available, otherwise fallback to content
       if (note.content_json) {
         // Load from structured JSON
         const currentJson = editor.getJSON()
         const noteJsonStr = JSON.stringify(note.content_json)
         const currentJsonStr = JSON.stringify(currentJson)
-        
+
         if (noteJsonStr !== currentJsonStr) {
           editor.commands.setContent(note.content_json, false)
         }
@@ -136,7 +146,13 @@ export function PlainEditor() {
           editor.commands.setContent('<p></p>', false)
         }
       }
-      
+
+      // Update counts after loading content
+      const text = editor.getText()
+      const words = text.trim().split(/\s+/).filter(word => word.length > 0)
+      setWordCount(words.length)
+      setCharCount(text.length)
+
       const noteTitle = note.title || ""
       setTitle(noteTitle)
       // Update tab title when note is loaded
@@ -178,11 +194,11 @@ export function PlainEditor() {
 
 
   return (
-    <main className="flex-1 flex flex-col h-full bg-white relative shadow-sm z-0 overflow-hidden"> 
-      <div className="flex-1 overflow-y-auto" id="editor-container">
+    <main className="flex-1 flex flex-col h-full bg-white relative shadow-sm z-0 overflow-hidden">
+      <div className="flex-1 overflow-y-auto border-b border-l border-border" id="editor-container">
         <div className="max-w-4xl mx-auto px-8 pt-8 h-full">
           {activeTabId && (
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 border-b border-gray-100 pb-4 gap-2 md:gap-0">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 pb-4 gap-2 md:gap-0">
               <input
                 type="text"
                 value={title}
@@ -202,12 +218,6 @@ export function PlainEditor() {
             <EditorContent editor={editor} />
           </div>
 
-          <div className="absolute bottom-8 right-8 text-muted-foreground/50 flex items-center gap-2 text-xs select-none pointer-events-none">
-            {saveStatus === 'saving' && <Loader2 className="w-4 h-4 animate-spin" />}
-            {saveStatus === 'saved' && <CheckCircle2 className="w-4 h-4" />}
-            <span>{saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}</span>
-          </div>
-
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-20">
               <div className="text-sm text-gray-500">Loading note...</div>
@@ -221,6 +231,28 @@ export function PlainEditor() {
           )}
         </div>
       </div>
+
+      {activeTabId && (
+        <footer className="bg-sidebar px-4 py-2 h-8 flex items-center">
+          <div className="max-w mx-auto w-full flex items-center justify-end text-xs text-gray-500 gap-4">
+            <div className="flex items-center gap-2">
+              {saveStatus === 'saving' && <Loader2 className="w-3.5 h-3.5 animate-spin text-gray-400" />}
+              {saveStatus === 'saved' && <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />}
+              <span className="text-gray-500">
+                {saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved' : 'Unsaved'}
+              </span>
+            </div>
+            <span className="flex items-center gap-1.5">
+              <span className="font-medium">{wordCount}</span>
+              <span className="text-gray-400">{wordCount === 1 ? 'word' : 'words'}</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="font-medium">{charCount}</span>
+              <span className="text-gray-400">{charCount === 1 ? 'character' : 'characters'}</span>
+            </span>
+          </div>
+        </footer>
+      )}
     </main>
   )
 }

@@ -35,7 +35,6 @@ export function AppSidebar() {
     getConfirmText
   } = useContextMenuDialog()
 
-  // Handles the context menu actions of explorer. Creates record with default values.
   const handleSidebarAction = (action) => {
     openDialog(action)
   }
@@ -46,7 +45,7 @@ export function AppSidebar() {
 
   return (
     <>
-    <Sidebar className="border-border">
+    <Sidebar className="border-none">
       <SidebarHeader>
         <h2 className="text-2xl font-serif p-2">Scripts</h2>
       </SidebarHeader>

@@ -2,10 +2,11 @@
 
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Item, ItemContent, ItemTitle, ItemActions } from '@/components/ui/item'
-import { useOpenTabsContext, useActiveTabContext } from './files-context'
+import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { useOpenTabsContext, useActiveTabContext } from './files-context'
+
 
 export function TopBar() {
   const { openTabs, closeTab } = useOpenTabsContext()
@@ -21,7 +22,7 @@ export function TopBar() {
   }
 
   return (
-    <div className="flex items-center w-full h-10 bg-sidebar overflow-visible">
+    <div className="flex items-center w-full h-10 bg-sidebar overflow-visible border-b border-border">
       <SidebarTrigger className="ml-1 shrink-0"/>
       <div className="flex items-center flex-1 min-w-0 px-2">
         {openTabs.map((tab) => {
