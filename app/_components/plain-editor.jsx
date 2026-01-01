@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState, useCallback, useRef } from "react"
 import { useQuery, useMutation } from "@tanstack/react-query"
-import { useActiveTabContext, useOpenTabsContext } from "./files-context"
 import StarterKit from "@tiptap/starter-kit"
 import { useEditor, EditorContent } from "@tiptap/react"
 import { CheckCircle2, Loader2 } from "lucide-react"
+import { NoteHeader } from "./note-header"
+import { useActiveTabContext, useOpenTabsContext } from "./files-context"
 
 async function fetchNoteById(noteId) {
   const res = await fetch(`/api/notes/${noteId}`, { cache: 'no-store' })
@@ -34,18 +35,14 @@ export function PlainEditor() {
   const [activeTabId] = useActiveTabContext()
   const { updateTabTitle } = useOpenTabsContext()
   const [title, setTitle] = useState("")
-  const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved'
+  const [saveStatus, setSaveStatus] = useState('saved')
   const [wordCount, setWordCount] = useState(0)
   const [charCount, setCharCount] = useState(0)
   const debounceTimer = useRef(null)
   const prevActiveTabId = useRef(activeTabId)
+  const loadedTitle = useRef("")
 
-  const {
-    data: note,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: note, isLoading, isError, error } = useQuery({
     queryKey: ['note', activeTabId],
     queryFn: () => fetchNoteById(activeTabId),
     enabled: Boolean(activeTabId),
@@ -63,25 +60,23 @@ export function PlainEditor() {
     },
   })
 
-  // Debounced save function
   const debouncedSave = useCallback((content, contentJson, noteTitle) => {
-    // Capture activeTabId at the time debouncedSave is called
     const currentTabId = activeTabId
     if (!currentTabId) return
-    
+
     setSaveStatus('unsaved')
     if (debounceTimer.current) clearTimeout(debounceTimer.current)
-    
+
     debounceTimer.current = setTimeout(() => {
-      saveNote({ 
+      saveNote({
         noteId: currentTabId,
         data: {
-          title: noteTitle, 
+          title: noteTitle,
           content: content,
           content_json: contentJson
         }
       })
-    }, 1000) // Save 1 second after user stops typing
+    }, 1000)
   }, [saveNote, activeTabId])
 
   const editor = useEditor({
@@ -113,7 +108,7 @@ export function PlainEditor() {
 
     if (!activeTabId) {
       editor.setEditable(false)
-      editor.commands.setContent(EMPTY_STATE_HTML, false)
+      editor.commands.setContent(EMPTY_STATE_HTML, { contentType: 'html', emitUpdate: false })
       setTitle("Loading...")
       setWordCount(0)
       setCharCount(0)
@@ -131,19 +126,19 @@ export function PlainEditor() {
         const currentJsonStr = JSON.stringify(currentJson)
 
         if (noteJsonStr !== currentJsonStr) {
-          editor.commands.setContent(note.content_json, false)
+          editor.commands.setContent(note.content_json, { contentType: 'json', emitUpdate: false })
         }
       } else if (note.content) {
         // Fallback: load from plain text content
         // Wrap plain text in a paragraph for TipTap
         const wrappedContent = `<p>${note.content}</p>`
         if (editor.getHTML() !== wrappedContent) {
-          editor.commands.setContent(wrappedContent, false)
+          editor.commands.setContent(wrappedContent, { emitUpdate: false })
         }
       } else {
         // Empty note
         if (editor.getHTML() !== '<p></p>') {
-          editor.commands.setContent('<p></p>', false)
+          editor.commands.setContent('<p></p>', { emitUpdate: false })
         }
       }
 
@@ -155,6 +150,7 @@ export function PlainEditor() {
 
       const noteTitle = note.title || ""
       setTitle(noteTitle)
+      loadedTitle.current = noteTitle
       // Update tab title when note is loaded
       updateTabTitle(activeTabId, noteTitle)
     }
@@ -163,15 +159,19 @@ export function PlainEditor() {
 
   // Also save when title changes (only for user edits, not tab switches)
   useEffect(() => {
-    // Skip if activeTabId just changed (tab switch) - the note load effect handles that
+    // Skip if this is a tab switch (activeTabId just changed)
     if (prevActiveTabId.current !== activeTabId) {
       prevActiveTabId.current = activeTabId
+      // Update tab title without saving
+      if (title) {
+        updateTabTitle(activeTabId, title)
+      }
       return
     }
-    
-    if (activeTabId && editor && title) {
+
+    // Only save if title differs from loaded title (user edited it)
+    if (activeTabId && editor && title && title !== loadedTitle.current) {
       debouncedSave(editor.getText(), editor.getJSON(), title)
-      // Update tab title when user changes title
       updateTabTitle(activeTabId, title)
     }
   }, [title, editor, activeTabId, debouncedSave, updateTabTitle])
@@ -195,8 +195,13 @@ export function PlainEditor() {
 
   return (
     <main className="flex-1 flex flex-col h-full bg-white relative shadow-sm z-0 overflow-hidden">
+      {activeTabId && (
+        <div className="px-8 pt-3">
+          <NoteHeader />
+        </div>
+      )}
       <div className="flex-1 overflow-y-auto border-b border-l border-border" id="editor-container">
-        <div className="max-w-4xl mx-auto px-8 pt-8 h-full">
+        <div className="max-w-4xl mx-auto px-8 pt-6 h-full">
           {activeTabId && (
             <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 pb-4 gap-2 md:gap-0">
               <input

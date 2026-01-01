@@ -9,7 +9,7 @@ import {
   SidebarMenu,
 } from "@/components/ui/sidebar"
 import { Button } from '@/components/ui/button'
-import { useSidebarMetadataContext, useOpenTabsContext, useActiveTabContext } from "./files-context"
+import { useSidebarMetadataContext, useOpenTabsContext, useActiveTabContext, useRefreshSidebarMetadata } from "./files-context"
 import { TreeItem } from "./tree-item"
 import { ReusableContextMenu } from './reusable-context-menu'
 import { SidebarActionDialog } from './sidebar-action-dialog'
@@ -20,6 +20,7 @@ export function AppSidebar() {
   const sidebarMetadata = useSidebarMetadataContext()
   const { openNote } = useOpenTabsContext()
   const [activeTabId] = useActiveTabContext()
+  const refreshSidebarMetadata = useRefreshSidebarMetadata()
 
   const handleSelectNote = useCallback((noteId) => {
     openNote(noteId)
@@ -35,7 +36,7 @@ export function AppSidebar() {
     getDialogDescription,
     requiresInput,
     getConfirmText
-  } = useContextMenuDialog()
+  } = useContextMenuDialog(refreshSidebarMetadata)
 
   const handleSidebarAction = (action) => {
     openDialog(action)
@@ -56,22 +57,22 @@ export function AppSidebar() {
         onAction={handleSidebarAction}
       >
         <SidebarContent className="p-2">
-          <div className='flex w-full gap-2 mb-2'>
+          <div className='flex w-full gap-2 mb-1'>
             <Button 
               variant="outline" 
               className="flex-1"
               onClick={() => handleSidebarAction("newFolder")}
             >
-              <FolderPlusIcon className="w-4 h-4 mr-2" />
-              New Folder
+              <FolderPlusIcon className="w-4 h-4 mr-1" />
+              Folder
             </Button>
             <Button 
               variant="outline" 
               className="flex-1"
               onClick={() => handleSidebarAction("newFile")}
             >
-              <FileIcon className="w-4 h-4 mr-2" />
-              New File
+              <FileIcon className="w-4 h-4 mr-1" />
+              Note
             </Button>
           </div>
           <SidebarMenu>

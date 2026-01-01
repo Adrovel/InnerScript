@@ -37,7 +37,7 @@ export function TopBar() {
                 "relative bg-accent/70 flex-1 min-w-0 max-w-[200px] shrink overflow-visible px-4 py-2 shadow-sm transition-all duration-150",
                 isActive
                   ? "text-foreground bg-white shadow-md"
-                  : "text-muted-background hover:text-foreground hover:bg-accent/40"
+                  : "text-muted-background hover:text-foreground text-accent-foreground hover:bg-accent/40"
               )}
               style={{ borderRadius: '20px 20px 0px 0px' }}
             >

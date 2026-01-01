@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function useContextMenuDialog() {
+export function useContextMenuDialog(onRefresh) {
   const [dialog, setDialog] = useState({
     open: false,
     action: null,
@@ -128,6 +128,11 @@ export function useContextMenuDialog() {
       if (onSuccess) {
         const data = await response.json()
         onSuccess(data)
+      }
+
+      // Refresh sidebar metadata after successful action
+      if (onRefresh) {
+        await onRefresh()
       }
 
       closeDialog()

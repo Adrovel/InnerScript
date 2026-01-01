@@ -6,9 +6,24 @@ const SidebarMetadataContext = createContext(null)
 const OpenTabsContext = createContext(null)
 const ActiveTabContext = createContext(null)
 
-export function FileProvider({ children, sidebarMetadata }) {
-  const [openTabs, setOpenTabs] = useState([]) // Array of { id, title }
+export function FileProvider({ children, sidebarMetadata: initialSidebarMetadata }) {
+  const [sidebarMetadata, setSidebarMetadata] = useState(initialSidebarMetadata)
+  const [openTabs, setOpenTabs] = useState([]) 
   const [activeTabId, setActiveTabId] = useState(null)
+
+  // Refresh sidebar metadata from API
+  const refreshSidebarMetadata = useCallback(async () => {
+    try {
+      const response = await fetch('/api/explorer')
+      if (!response.ok) {
+        throw new Error('Failed to fetch explorer data')
+      }
+      const data = await response.json()
+      setSidebarMetadata(data.tree)
+    } catch (error) {
+      console.error('Error refreshing sidebar metadata:', error)
+    }
+  }, [])
 
   // Helper function to open a note (adds tab if not exists, switches to it)
   const openNote = useCallback((noteId) => {
@@ -30,13 +45,10 @@ export function FileProvider({ children, sidebarMetadata }) {
   // Helper function to close a tab
   const closeTab = useCallback((noteId) => {
     setOpenTabs(prevTabs => {
-      const filteredTabs = prevTabs.filter(tab => tab.id !== noteId)
-      
-      // If closing the active tab, switch to adjacent tab
+      const filteredTabs = prevTabs.filter(tab => tab.id !== noteId)   
       if (activeTabId === noteId) {
         const currentIndex = prevTabs.findIndex(tab => tab.id === noteId)
         if (filteredTabs.length > 0) {
-          // Switch to next tab if available, otherwise previous tab
           const newIndex = currentIndex < filteredTabs.length ? currentIndex : currentIndex - 1
           setActiveTabId(filteredTabs[newIndex]?.id || null)
         } else {
@@ -58,7 +70,7 @@ export function FileProvider({ children, sidebarMetadata }) {
   }, [])
 
   return (
-    <SidebarMetadataContext.Provider value={sidebarMetadata}>
+    <SidebarMetadataContext.Provider value={{ sidebarMetadata, refreshSidebarMetadata }}>
       <OpenTabsContext.Provider value={{ openTabs, setOpenTabs, openNote, closeTab, updateTabTitle }}>
         <ActiveTabContext.Provider value={[activeTabId, setActiveTabId]}>
           {children}
@@ -73,7 +85,15 @@ export function useSidebarMetadataContext() {
   if (!context) {
     throw new Error('useSidebarMetadataContext must be used within a FileProvider')
   }
-  return context
+  return context.sidebarMetadata
+}
+
+export function useRefreshSidebarMetadata() {
+  const context = useContext(SidebarMetadataContext)
+  if (!context) {
+    throw new Error('useRefreshSidebarMetadata must be used within a FileProvider')
+  }
+  return context.refreshSidebarMetadata
 }
 
 export function useOpenTabsContext() {

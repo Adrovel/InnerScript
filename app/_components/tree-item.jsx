@@ -10,14 +10,16 @@ import {
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger 
+  CollapsibleTrigger
 } from "@/components/ui/collapsible"
 import { ReusableContextMenu } from './reusable-context-menu'
 import { useContextMenuDialog } from '@/hooks/use-context-menu-dialog'
 import { SidebarActionDialog } from './sidebar-action-dialog'
+import { useRefreshSidebarMetadata } from './files-context'
 
 export function TreeItem({ item, onSelectNote, selectedNoteId}) {
   const [isOpen, setIsOpen] = useState(false)
+  const refreshSidebarMetadata = useRefreshSidebarMetadata()
   const {
     dialog,
     openDialog,
@@ -28,7 +30,7 @@ export function TreeItem({ item, onSelectNote, selectedNoteId}) {
     getDialogDescription,
     requiresInput,
     getConfirmText
-  } = useContextMenuDialog()
+  } = useContextMenuDialog(refreshSidebarMetadata)
   const isFolder = item.type === 'folder'
   const hasChildren = item.children && item.children.length > 0
   const isSelected = !isFolder && selectedNoteId === item.id
@@ -47,7 +49,7 @@ export function TreeItem({ item, onSelectNote, selectedNoteId}) {
     })
   }
   const handleDialogConfirm = async () => await executeAction()
-  
+
   if (isFolder) {
     return (
       <>
@@ -71,7 +73,10 @@ export function TreeItem({ item, onSelectNote, selectedNoteId}) {
         </SidebarMenuItem>
 
         {hasChildren && (
-          <CollapsibleContent style={{ paddingLeft: `16px` }}>
+          <CollapsibleContent
+            style={{ paddingLeft: `16px` }}
+            className="data-[state=open]:slide-in-from-top-1 data-[state=open]:duration-200"
+          >
             <div className="border-l border-sidebar-border pl-2 flex flex-col gap-1">
               {item.children.map(child => (
                 <TreeItem

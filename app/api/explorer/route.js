@@ -1,10 +1,9 @@
-'use server'
-
+import { NextResponse } from 'next/server'
 import { readRecordsWithOptions } from "@/lib/db/sequelize-query"
 import { db } from "@/lib/db"
 import { buildTree } from "@/lib/explorer-tree"
 
-export async function getExplorerData() {
+export async function GET() {
   try {
     const [folders, notes] = await Promise.all([
       readRecordsWithOptions(db.Folders, {
@@ -18,9 +17,9 @@ export async function getExplorerData() {
     ])
     
     const tree = buildTree(folders, notes)
-    return { tree }
+    return NextResponse.json({ tree })
   } catch (error) {
     console.error("Error fetching explorer data:", error)
-    throw error
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
