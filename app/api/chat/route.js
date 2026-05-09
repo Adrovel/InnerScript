@@ -1,78 +1,69 @@
-import { openai } from "@ai-sdk/openai"
-import { streamText } from "ai"
-
-import { generateEmbedding } from "@/lib/ai/generate-embedding"
-
-import { Pool } from "pg";
+import { NextResponse } from 'next/server'
+import { openai } from '@ai-sdk/openai'
+import { streamText } from 'ai'
+import { generateEmbedding } from '@/lib/ai/generate-embedding'
+import { Pool } from 'pg'
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
 export async function POST(req) {
-  const { messages, noteIDs } = await req.json()
+  try {
+    const { messages, noteIDs } = await req.json()
 
-  const latestMessage = messages[messages.length - 1]
-  const userQuestion = latestMessage?.content || ""
+    const latestMessage = messages[messages.length - 1]
+    const userQuestion = latestMessage?.content || ''
 
-  let context = ""
-  if (noteIDs && noteIDs.length > 0 && userQuestion) {
-    context = await createContext(userQuestion, noteIDs)
-  }
-
-  console.log("Context from notes:", context)
-
-  const enhancedMessages = [...messages]
-  if (context) {
-    enhancedMessages[enhancedMessages.length - 1] = {
-      ...latestMessage,
-      content: `Context from notes: ${context}
-      Question: ${userQuestion}`
+    let context = ''
+    if (noteIDs?.length > 0 && userQuestion) {
+      context = await createContext(userQuestion, noteIDs)
     }
+
+    const enhancedMessages = [...messages]
+    if (context) {
+      enhancedMessages[enhancedMessages.length - 1] = {
+        ...latestMessage,
+        content: `Context from notes:\n${context}\n\nQuestion: ${userQuestion}`,
+      }
+    }
+
+    const result = await streamText({
+      model: openai('gpt-4o-mini'),
+      messages: enhancedMessages,
+      system:
+        'You are a helpful journaling assistant. Use the provided note context to answer questions accurately. If the context is not relevant, say so.',
+    })
+
+    return result.toDataStreamResponse()
+  } catch (err) {
+    console.error('Chat error:', err)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
-
-  console.log("Enhanced messages:", enhancedMessages)
-
-  const result = await streamText({
-    model: openai("gpt-4o-mini"),
-    messages: enhancedMessages,
-    system: "You are a helpful assistant. When provided with context from user's notes, use that information to answer questions accurately. If the context doesn't contain relevant information, let the user know."
-  })
-
-  return result.toDataStreamResponse()
 }
 
-
-export async function createContext(question, noteIDs) {
-  const client = await pool.connect()
-
-  const questionEmbedding = await generateEmbedding(question)
-  console.log("Question embedding:", questionEmbedding)
-
+async function createContext(question, noteIDs) {
+  let client
   try {
+    const questionEmbedding = await generateEmbedding(question)
     const embeddingVector = `[${questionEmbedding.join(',')}]`
-    const query = `
-      SELECT 
-        id, 
-        content,
-        (1 - (embedding <=> $1::vector)) as similarity
-      FROM notes
-      WHERE id = ANY($2)
-      ORDER BY embedding <=> $1::vector
-      LIMIT 3
-    `
-    const result = await client.query(query, [embeddingVector, noteIDs])
-    const relevantNotes = result.rows.filter(note => note.similarity > 0.75)
 
-    const context = relevantNotes
-      .map(note => note.content)
+    client = await pool.connect()
+    const result = await client.query(
+      `SELECT content, 1 - (embedding <=> $1::vector) AS similarity
+       FROM notes
+       WHERE id = ANY($2)
+       ORDER BY embedding <=> $1::vector
+       LIMIT 3`,
+      [embeddingVector, noteIDs]
+    )
+
+    return result.rows
+      .filter(r => r.similarity > 0.75)
+      .map(r => r.content)
       .join('\n\n')
-    
-    return context
-  }
-  catch (err) {
-    console.error("Error in RAG:", err)
-    return err
-  }
-  finally {
-    client.release()
+  } catch (err) {
+    console.error('RAG context error:', err)
+    return ''
+  } finally {
+    client?.release()
   }
 }

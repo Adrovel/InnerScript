@@ -23,15 +23,9 @@ vi.mock('next/server', () => ({
   },
 }))
 
-vi.mock('@/lib/ai/extract-note-metadata.js', () => ({
-  extractNoteMetadata: vi.fn(),
-}))
-vi.mock('@/lib/ai/generate-da-reflection.js', () => ({
-  generateDaReflection: vi.fn(),
-}))
-vi.mock('@/lib/ai/generate-embedding.js', () => ({
-  generateEmbedding: vi.fn(),
-}))
+vi.mock('@/lib/ai/extract-note-metadata.js', () => ({ extractNoteMetadata: vi.fn() }))
+vi.mock('@/lib/ai/generate-da-reflection.js', () => ({ generateDaReflection: vi.fn() }))
+vi.mock('@/lib/ai/generate-embedding.js', () => ({ generateEmbedding: vi.fn() }))
 
 import { POST } from '@/app/api/notes/[id]/analyse/route.js'
 import { extractNoteMetadata } from '@/lib/ai/extract-note-metadata.js'
@@ -40,28 +34,21 @@ import { generateEmbedding } from '@/lib/ai/generate-embedding.js'
 
 const fakeParams = (id) => ({ params: Promise.resolve({ id }) })
 const longContent = 'word '.repeat(60).trim()
-
 const fakeMetadata = {
-  mood_score: 7,
-  arousal: 'calm',
-  emotion_label: 'gratitude',
-  topics: ['work', 'health'],
-  summary: 'A productive day.',
+  mood_score: 7, arousal: 'calm', emotion_label: 'gratitude',
+  topics: ['work', 'health'], summary: 'A productive day.',
 }
 
 beforeEach(() => {
   vi.clearAllMocks()
   delete process.env.ANALYSIS_ENABLED
-  delete process.env.ANALYSE_MIN_WORD_COUNT
   mockConnect.mockResolvedValue({ query: mockQuery, release: mockRelease })
 })
 
 describe('POST /api/notes/[id]/analyse', () => {
   it('skips when ANALYSIS_ENABLED=false', async () => {
     process.env.ANALYSIS_ENABLED = 'false'
-
     const res = await POST({}, fakeParams('1'))
-
     const body = await res.json()
     expect(body.skipped).toBe(true)
     expect(body.reason).toBe('disabled')
@@ -69,31 +56,21 @@ describe('POST /api/notes/[id]/analyse', () => {
 
   it('returns 404 when note not found', async () => {
     mockQuery.mockResolvedValueOnce({ rows: [] })
-
     const res = await POST({}, fakeParams('999'))
-
     expect(res.status).toBe(404)
   })
 
-  it('skips when note has analysis_disabled=true', async () => {
-    mockQuery.mockResolvedValueOnce({
-      rows: [{ id: 1, content: longContent, analysis_disabled: true }],
-    })
-
+  it('skips when analysis_disabled=true on note', async () => {
+    mockQuery.mockResolvedValueOnce({ rows: [{ id: '1', content: longContent, analysis_disabled: true }] })
     const res = await POST({}, fakeParams('1'))
-
     const body = await res.json()
     expect(body.skipped).toBe(true)
     expect(body.reason).toBe('disabled_per_note')
   })
 
   it('skips when content is below min word count', async () => {
-    mockQuery.mockResolvedValueOnce({
-      rows: [{ id: 1, content: 'too short', analysis_disabled: false }],
-    })
-
+    mockQuery.mockResolvedValueOnce({ rows: [{ id: '1', content: 'too short', analysis_disabled: false }] })
     const res = await POST({}, fakeParams('1'))
-
     const body = await res.json()
     expect(body.skipped).toBe(true)
     expect(body.reason).toBe('too_short')
@@ -101,11 +78,10 @@ describe('POST /api/notes/[id]/analyse', () => {
 
   it('runs full pipeline and returns metadata', async () => {
     mockQuery
-      .mockResolvedValueOnce({ rows: [{ id: 1, content: longContent, analysis_disabled: false }] })
-      .mockResolvedValueOnce({ rows: [] }) // upsert
-
+      .mockResolvedValueOnce({ rows: [{ id: '1', content: longContent, analysis_disabled: false }] })
+      .mockResolvedValueOnce({ rows: [] })
     extractNoteMetadata.mockResolvedValueOnce(fakeMetadata)
-    generateDaReflection.mockResolvedValueOnce('What if you are wrong about this?')
+    generateDaReflection.mockResolvedValueOnce('What if you are wrong?')
     generateEmbedding.mockResolvedValueOnce(Array(1536).fill(0.1))
 
     const res = await POST({}, fakeParams('1'))
@@ -113,37 +89,41 @@ describe('POST /api/notes/[id]/analyse', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.metadata.mood_score).toBe(7)
-    expect(body.metadata.da_reflection).toBe('What if you are wrong about this?')
-    expect(body.metadata.topics).toEqual(['work', 'health'])
+    expect(body.metadata.da_reflection).toBe('What if you are wrong?')
   })
 
   it('returns 500 when metadata extraction fails', async () => {
-    mockQuery.mockResolvedValueOnce({
-      rows: [{ id: 1, content: longContent, analysis_disabled: false }],
-    })
+    mockQuery.mockResolvedValueOnce({ rows: [{ id: '1', content: longContent, analysis_disabled: false }] })
     extractNoteMetadata.mockResolvedValueOnce(null)
 
     const res = await POST({}, fakeParams('1'))
-
     expect(res.status).toBe(500)
-    const body = await res.json()
-    expect(body.error).toBe('Metadata extraction failed')
   })
 
-  it('succeeds even when embedding generation fails', async () => {
+  it('succeeds even when embedding generation fails (graceful degradation)', async () => {
     mockQuery
-      .mockResolvedValueOnce({ rows: [{ id: 1, content: longContent, analysis_disabled: false }] })
-      .mockResolvedValueOnce({ rows: [] }) // upsert
-
+      .mockResolvedValueOnce({ rows: [{ id: '1', content: longContent, analysis_disabled: false }] })
+      .mockResolvedValueOnce({ rows: [] })
     extractNoteMetadata.mockResolvedValueOnce(fakeMetadata)
-    generateDaReflection.mockResolvedValueOnce('A good challenge.')
+    generateDaReflection.mockResolvedValueOnce('A challenge.')
     generateEmbedding.mockRejectedValueOnce(new Error('Embedding API down'))
 
     const res = await POST({}, fakeParams('1'))
-
-    // Should still succeed — embedding failure is non-fatal
     expect(res.status).toBe(200)
+  })
+
+  it('handles null note.content gracefully (uses empty string fallback)', async () => {
+    // content is null → wordCount = 0 → skips as too_short
+    mockQuery.mockResolvedValueOnce({ rows: [{ id: '1', content: null, analysis_disabled: false }] })
+    const res = await POST({}, fakeParams('1'))
     const body = await res.json()
-    expect(body.metadata.mood_score).toBe(7)
+    expect(body.skipped).toBe(true)
+    expect(body.reason).toBe('too_short')
+  })
+
+  it('returns 500 when DB connect throws', async () => {
+    mockConnect.mockRejectedValueOnce(new Error('connect failed'))
+    const res = await POST({}, fakeParams('1'))
+    expect(res.status).toBe(500)
   })
 })

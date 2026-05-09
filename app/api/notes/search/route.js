@@ -5,6 +5,7 @@ import { generateEmbedding } from '@/lib/ai/generate-embedding'
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
 export async function POST(req) {
+  let client
   try {
     const { query } = await req.json()
     if (!query?.trim()) return NextResponse.json({ notes: [] })
@@ -12,7 +13,7 @@ export async function POST(req) {
     const embedding = await generateEmbedding(query)
     const vector = `[${embedding.join(',')}]`
 
-    const client = await pool.connect()
+    client = await pool.connect()
 
     const result = await client.query(
       `SELECT n.id, n.title, n.content,
@@ -26,7 +27,6 @@ export async function POST(req) {
     )
 
     if (result.rows.length > 0) {
-      client.release()
       return NextResponse.json({ notes: result.rows, mode: 'semantic' })
     }
 
@@ -38,11 +38,12 @@ export async function POST(req) {
        LIMIT 10`,
       [`%${query}%`]
     )
-    client.release()
 
     return NextResponse.json({ notes: fallback.rows, mode: 'fulltext' })
   } catch (err) {
     console.error('Search error:', err)
     return NextResponse.json({ error: 'Search failed' }, { status: 500 })
+  } finally {
+    client?.release()
   }
 }

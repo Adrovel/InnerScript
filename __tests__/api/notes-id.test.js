@@ -34,14 +34,13 @@ beforeEach(() => {
 
 describe('GET /api/notes/[id]', () => {
   it('returns the note when found', async () => {
-    const note = { id: 1, title: 'Test', content: 'Hello', folder_id: null, analysis_disabled: false }
+    const note = { id: '1', title: 'Test', content: 'Hello', folder_id: null, analysis_disabled: false }
     mockQuery.mockResolvedValueOnce({ rows: [note] })
 
     const res = await GET({}, fakeParams('1'))
 
     expect(res.status).toBe(200)
-    const body = await res.json()
-    expect(body.note).toEqual(note)
+    expect((await res.json()).note).toEqual(note)
   })
 
   it('returns 404 when note not found', async () => {
@@ -50,52 +49,79 @@ describe('GET /api/notes/[id]', () => {
     const res = await GET({}, fakeParams('999'))
 
     expect(res.status).toBe(404)
-    const body = await res.json()
-    expect(body.error).toBe('Note not found')
+    expect((await res.json()).error).toBe('Note not found')
+  })
+
+  it('returns 500 when DB connect throws', async () => {
+    mockConnect.mockRejectedValueOnce(new Error('connect failed'))
+
+    const res = await GET({}, fakeParams('1'))
+
+    expect(res.status).toBe(500)
+  })
+
+  it('returns 500 when query throws', async () => {
+    mockQuery.mockRejectedValueOnce(new Error('query failed'))
+
+    const res = await GET({}, fakeParams('1'))
+
+    expect(res.status).toBe(500)
   })
 })
 
 describe('PUT /api/notes/[id]', () => {
-  function mockRequest(body) {
-    return { json: async () => body }
-  }
+  const req = (body) => ({ json: async () => body })
 
   it('updates the note and returns it', async () => {
-    const updated = { id: 1, title: 'Updated', content: 'New content' }
+    const updated = { id: '1', title: 'Updated', content: 'New content' }
     mockQuery.mockResolvedValueOnce({ rows: [updated] })
 
-    const res = await PUT(mockRequest({ title: 'Updated', content: 'New content' }), fakeParams('1'))
+    const res = await PUT(req({ title: 'Updated', content: 'New content' }), fakeParams('1'))
 
     expect(res.status).toBe(200)
-    const body = await res.json()
-    expect(body.note).toEqual(updated)
+    expect((await res.json()).note).toEqual(updated)
   })
 
-  it('returns 404 when update target not found', async () => {
+  it('returns 404 when note not found', async () => {
     mockQuery.mockResolvedValueOnce({ rows: [] })
 
-    const res = await PUT(mockRequest({ title: 'X', content: 'Y' }), fakeParams('999'))
+    const res = await PUT(req({ title: 'X', content: 'Y' }), fakeParams('999'))
 
     expect(res.status).toBe(404)
+  })
+
+  it('returns 500 when DB connect throws', async () => {
+    mockConnect.mockRejectedValueOnce(new Error('connect failed'))
+
+    const res = await PUT(req({ title: 'X', content: 'Y' }), fakeParams('1'))
+
+    expect(res.status).toBe(500)
   })
 })
 
 describe('DELETE /api/notes/[id]', () => {
-  it('deletes the note and returns success message', async () => {
-    mockQuery.mockResolvedValueOnce({ rows: [{ id: 1 }] })
+  it('deletes the note and returns success', async () => {
+    mockQuery.mockResolvedValueOnce({ rows: [{ id: '1' }] })
 
     const res = await DELETE({}, fakeParams('1'))
 
     expect(res.status).toBe(200)
-    const body = await res.json()
-    expect(body.message).toBe('Note deleted')
+    expect((await res.json()).message).toBe('Note deleted')
   })
 
-  it('returns 404 when note to delete does not exist', async () => {
+  it('returns 404 when note does not exist', async () => {
     mockQuery.mockResolvedValueOnce({ rows: [] })
 
     const res = await DELETE({}, fakeParams('999'))
 
     expect(res.status).toBe(404)
+  })
+
+  it('returns 500 when DB connect throws', async () => {
+    mockConnect.mockRejectedValueOnce(new Error('connect failed'))
+
+    const res = await DELETE({}, fakeParams('1'))
+
+    expect(res.status).toBe(500)
   })
 })
