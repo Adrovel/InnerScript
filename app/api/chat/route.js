@@ -1,7 +1,7 @@
 import { openai } from "@ai-sdk/openai"
 import { streamText } from "ai"
 
-import { generateEmbedding } from "@/lib/utils"
+import { generateEmbedding } from "@/lib/ai/generate-embedding"
 
 import { Pool } from "pg";
 

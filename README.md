@@ -10,3 +10,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Steps 
+ 1. Clone repo
+ ask and setup .env.local file
+ 2. docker compose build
+ 3. docker compose up

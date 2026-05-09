@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  serverExternalPackages: ['sequelize', 'pg', 'pg-hstore', 'pg-native'],
+}
 
-export default nextConfig;
+export default nextConfig

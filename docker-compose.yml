@@ -12,17 +12,19 @@ services:
     volumes: # Volumes for code sync. Container code gets synced with the local's code.
       - .:/app
       - /app/node_modules
+    mem_limit: 1g
     restart: unless-stopped # Restart the container if it exits unexpectedly.
 
   db:
-    image: postgres:18-alpine # The version of the PostgreSQL image to use.
-    ports: ["5432:5432"] # The mapping host port -> container port for communication.
+    image: pgvector/pgvector:pg17 # Includes pgvector extension pre-installed.
+    ports: ["5433:5432"] # The mapping host port -> container port for communication.
     environment: # Database environment variables (we can use .env.local for database)
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=InnerScript123#
       - POSTGRES_DB=innerscript
     volumes: # The data storage location for the database.
       - postgres_data:/var/lib/postgresql/data
+    mem_limit: 256m
     healthcheck: # Command to check if postgres is ready and healthy.
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s

@@ -1,25 +1,17 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { useFileContext } from './files-context'
 import { Button } from '@/components/ui/button'
 import { PopoverMenu } from './chat-popover-menu'
-import { Send } from 'lucide-react'
-
-const messages = [
-  {id: 1, role: 'user', parts: [{type: 'text', content: 'Hello!'}]},
-  {id: 2, role: 'assistant', parts: [{type: 'text', content: 'Hi there! How can I assist you today?'}]},
-]
+import { Send, Bot } from 'lucide-react'
 
 function flattenFiles(items) {
   const files = []
   items.forEach(item => {
-    if (item.type === 'note') {
-      files.push(item)
-    } else if (item.children) {
-      files.push(...flattenFiles(item.children))
-    }
+    if (item.type === 'note') files.push(item)
+    else if (item.children) files.push(...flattenFiles(item.children))
   })
   return files
 }
@@ -30,56 +22,106 @@ export default function ChatPanel() {
   const [selectedFiles, setSelectedFiles] = useState([])
   const messagesEndRef = useRef(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  const noteIDs = selectedFiles.map(f => f.id.replace('note-', ''))
 
-  useEffect(scrollToBottom, []) // Placeholder; `integrate with messages later
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    api: '/api/chat',
+    body: { noteIDs },
+  })
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   return (
-    <aside className="h-screen min-w-[350px] flex flex-col bg-sidebar border-l border-border">
-      <div className="p-4">
-        <h2 className="text-2xl font-serif">Chat</h2>
+    <aside className="h-screen w-[320px] shrink-0 flex flex-col bg-card border-l border-border">
+      {/* Header */}
+      <div className="px-4 pt-5 pb-3 border-b border-border flex items-center gap-2">
+        <Bot size={15} className="text-primary" />
+        <h2 className="text-sm font-semibold tracking-tight">Ask your notes</h2>
       </div>
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+
+      {/* Note selector */}
+      <div className="px-3 py-2 border-b border-border">
+        <PopoverMenu
+          options={flattenedFiles}
+          selectedOptions={selectedFiles}
+          setSelectedOptions={setSelectedFiles}
+        />
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {messages.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full gap-2 text-center text-muted-foreground">
+            <Bot size={28} className="text-muted-foreground/40" />
+            <p className="text-xs leading-relaxed max-w-[200px]">
+              Select notes above, then ask anything about them.
+            </p>
+          </div>
+        )}
         {messages.map((message) => (
-          <div 
-            key={message.id} 
+          <div
+            key={message.id}
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div 
-              className={`p-3 rounded-sm max-w-xs 
-                ${message.role === 'user' 
-                  ? 'bg-sidebar-primary text-sidebar-primary-foreground' 
-                  : 'bg-background text-black border border-black/10'
+            <div
+              className={`px-3 py-2 rounded-xl max-w-[240px] text-xs leading-relaxed
+                ${message.role === 'user'
+                  ? 'bg-primary text-primary-foreground rounded-br-sm'
+                  : 'bg-muted text-foreground rounded-bl-sm border border-border'
                 }`}
             >
-              <span>{message.parts[0].content}</span>
+              {message.content}
             </div>
           </div>
-        ))} 
-       </div>
-      {/* Input area */}
-       <div className="p-2 space-y-2 border border-border rounded-2xl bg-background m-2">
-        <textarea 
-          placeholder="Type your message..."
-          className="w-full min-h-8 resize-none outline-none flex field-sizing-content max-h-32"
-        />
-        <div className="flex justify-between">
-          <PopoverMenu 
-            options={flattenedFiles}
-            selectedOptions={selectedFiles}
-            setSelectedOptions={setSelectedFiles}
+        ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="px-3 py-2 rounded-xl rounded-bl-sm bg-muted border border-border">
+              <span className="flex gap-1 items-center">
+                <span className="size-1.5 rounded-full bg-muted-foreground/50 animate-bounce [animation-delay:0ms]" />
+                <span className="size-1.5 rounded-full bg-muted-foreground/50 animate-bounce [animation-delay:150ms]" />
+                <span className="size-1.5 rounded-full bg-muted-foreground/50 animate-bounce [animation-delay:300ms]" />
+              </span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Input */}
+      <form
+        onSubmit={handleSubmit}
+        className="p-3 border-t border-border"
+      >
+        <div className="flex items-end gap-2 bg-muted rounded-xl px-3 py-2 border border-border focus-within:border-ring focus-within:ring-1 focus-within:ring-ring transition-all">
+          <textarea
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Ask something…"
+            rows={1}
+            className="flex-1 resize-none outline-none bg-transparent text-xs leading-relaxed placeholder:text-muted-foreground/60 max-h-24 field-sizing-content"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleSubmit(e)
+              }
+            }}
           />
-          <Button 
-            size="icon" 
-            className="rounded-full bg-sidebar-primary text-sidebar-primary-foreground"
+          <Button
+            type="submit"
+            size="icon"
+            disabled={isLoading || !input?.trim()}
+            className="size-6 shrink-0 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-40"
           >
-            <Send size={16}/>
+            <Send size={11} />
           </Button>
         </div>
-      </div>
+        <p className="text-[10px] text-muted-foreground/50 mt-1.5 text-center">
+          Shift+Enter for new line
+        </p>
+      </form>
     </aside>
   )
 }
