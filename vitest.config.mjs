@@ -3,10 +3,14 @@ import path from 'path'
 
 export default defineConfig({
   test: {
-    environment: 'node',
     globals: true,
     setupFiles: ['./vitest.setup.mjs'],
     include: ['**/__tests__/**/*.test.{js,jsx}'],
+    environment: 'node',
+    environmentMatchGlobs: [
+      ['__tests__/components/**', 'jsdom'],
+      ['__tests__/hooks/**', 'jsdom'],
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
