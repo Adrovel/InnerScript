@@ -8,9 +8,10 @@ COPY package*.json ./
 RUN npm ci
 # Copy all the files to the container
 COPY . .
+RUN npm run build
 # Exposes the application port for host machine to communicate.
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 # Start the application
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "run", "start:railway" ]

@@ -1,6 +1,10 @@
+import { headers } from "next/headers";
+
 export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  await headers();
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f7f2e9] text-[#201b16]">
       <span className="absolute right-[8%] top-[14%] rotate-6 rounded-full border border-[#ddcdb7] bg-white px-3 py-2 text-xs font-black uppercase text-[#8a5a30]">
