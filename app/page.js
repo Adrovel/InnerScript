@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#f7f2e9] text-[#201b16]">
