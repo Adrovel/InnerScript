@@ -6,6 +6,8 @@ import { AppSidebar } from '../_components/app-sidebar'
 import NoteMetadataPanel from '../_components/note-metadata-panel'
 import { getExplorerData } from './action'
 
+export const dynamic = 'force-dynamic'
+
 async function getTodayNote() {
   try {
     const res = await fetch(
