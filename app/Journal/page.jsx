@@ -1,9 +1,10 @@
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { FileProvider } from '../_components/files-context'
 import PlainEditor from '../_components/plain-editor'
-import ChatPanel from '../_components/chat-panel'
+import RightRail from '../_components/right-rail'
 import { AppSidebar } from '../_components/app-sidebar'
-import NoteMetadataPanel from '../_components/note-metadata-panel'
+import CommandPalette from '../_components/command-palette'
+import KeyboardShortcutsMount from '../_components/keyboard-shortcuts-mount'
 import { getExplorerData } from './action'
 
 export const dynamic = 'force-dynamic'
@@ -33,14 +34,15 @@ export default async function Page() {
     <FileProvider sidebarMetadata={sidebarData.tree} initialNoteId={todayNoteId}>
       <SidebarProvider>
         <AppSidebar />
-        <main className="flex-1 w-full flex min-h-screen">
-          <div className="flex-1 relative">
-            <SidebarTrigger className="fixed z-10" />
+        <main className="flex-1 flex min-h-screen overflow-hidden">
+          <div className="flex-1 relative overflow-hidden">
+            <SidebarTrigger className="fixed top-3 left-3 z-10" />
             <PlainEditor />
           </div>
-          <NoteMetadataPanel />
+          <RightRail />
         </main>
-        <ChatPanel />
+        <CommandPalette />
+        <KeyboardShortcutsMount />
       </SidebarProvider>
     </FileProvider>
   )

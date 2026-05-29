@@ -60,10 +60,8 @@ function Skeleton() {
 export default function NoteMetadataPanel() {
   const { selectedNoteId, metadata } = useFileContext()
 
-  if (!selectedNoteId) return null
-
   return (
-    <aside className="w-60 shrink-0 border-l border-sidebar-border bg-sidebar flex flex-col overflow-y-auto">
+    <div className="flex flex-col h-full overflow-y-auto bg-sidebar">
       {/* Header */}
       <div className="px-4 pt-5 pb-3 border-b border-sidebar-border">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-sidebar-foreground/50">
@@ -72,7 +70,11 @@ export default function NoteMetadataPanel() {
       </div>
 
       <div className="flex-1 px-4 py-4 space-y-5">
-        {!metadata && !selectedNoteId && null}
+        {!selectedNoteId && (
+          <p className="text-xs text-sidebar-foreground/50 leading-relaxed">
+            Select a note to see AI analysis.
+          </p>
+        )}
 
         {!metadata && selectedNoteId && (
           <p className="text-xs text-sidebar-foreground/50 leading-relaxed">
@@ -135,6 +137,6 @@ export default function NoteMetadataPanel() {
           </p>
         </div>
       )}
-    </aside>
+    </div>
   )
 }

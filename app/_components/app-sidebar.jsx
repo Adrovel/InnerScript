@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { BarChart2, PenLine, FolderPlus } from 'lucide-react'
+import { BarChart2, PenLine, FolderPlus, Search } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -49,15 +49,25 @@ export function AppSidebar() {
           </h2>
           <div className="flex items-center gap-1">
             <button
+              onClick={() => {
+                const e = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true })
+                document.dispatchEvent(e)
+              }}
+              title="Search (⌘K)"
+              className="p-1.5 rounded-md text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
+            >
+              <Search size={13} />
+            </button>
+            <button
               onClick={() => handleSidebarAction('newFolder')}
-              title="New folder"
+              title="New folder (⌘⇧N)"
               className="p-1.5 rounded-md text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
             >
               <FolderPlus size={14} />
             </button>
             <button
               onClick={() => handleSidebarAction('newFile')}
-              title="New note"
+              title="New note (⌘N)"
               className="p-1.5 rounded-md text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
             >
               <PenLine size={14} />
@@ -73,9 +83,18 @@ export function AppSidebar() {
         <SidebarContent className="p-2">
           <SidebarMenu>
             {sidebarMetadata.length === 0 && (
-              <p className="text-xs text-sidebar-foreground/40 px-2 py-3 leading-relaxed">
-                Right-click to create a note or folder.
-              </p>
+              <div className="flex flex-col items-center gap-3 px-3 py-8 text-center">
+                <span className="text-3xl select-none">✦</span>
+                <p className="text-xs text-sidebar-foreground/50 leading-relaxed">
+                  No notes yet. Start writing.
+                </p>
+                <button
+                  onClick={() => handleSidebarAction('newFile')}
+                  className="text-xs px-3 py-1.5 rounded-md bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground hover:bg-sidebar-accent/80 transition-colors"
+                >
+                  + New note
+                </button>
+              </div>
             )}
             {sidebarMetadata.map(item => (
               <TreeItem

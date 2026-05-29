@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useFileContext } from "./files-context"
+import { PanelRight } from 'lucide-react'
 
 export default function PlainEditor() {
-  const { selectedNoteId, setMetadata } = useFileContext()
+  const { selectedNoteId, setMetadata, cycleRail, railOpen } = useFileContext()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [saveStatus, setSaveStatus] = useState('idle') // idle | saving | saved | error
@@ -82,8 +83,18 @@ export default function PlainEditor() {
 
   return (
     <div className="flex flex-col h-full bg-background relative">
+      {/* Toolbar */}
+      <div className="absolute top-3 right-4 flex items-center gap-3 z-10 select-none">
+        <button
+          onClick={cycleRail}
+          title="Toggle side panel (⌘J)"
+          className={`p-1.5 rounded-md transition-colors ${railOpen ? 'text-primary bg-primary/10' : 'text-muted-foreground hover:text-foreground hover:bg-muted'}`}
+        >
+          <PanelRight size={15} />
+        </button>
+
       {/* Save status */}
-      <div className="absolute top-4 right-6 flex items-center gap-2 text-xs text-muted-foreground select-none z-10">
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
         {saveStatus === 'saving' && (
           <span className="flex items-center gap-1.5">
             <span className="size-1.5 rounded-full bg-amber-400 animate-pulse" />
@@ -99,6 +110,7 @@ export default function PlainEditor() {
         {saveStatus === 'error' && (
           <span className="text-destructive">Save failed</span>
         )}
+      </div>
       </div>
 
       <div className="flex-1 flex flex-col max-w-2xl w-full mx-auto px-6 pt-16 pb-12">
