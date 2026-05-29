@@ -112,7 +112,7 @@ Goal: make the project coherent before code changes.
 
 ### Joel Tasks
 
-- [ ] Read `Cracking-Google.md`, `01-Production-RAG-Backend.md`, and `02-Distributed-Rate-Limiter.md`.
+- [X] Read `Cracking-Google.md`, `01-Production-RAG-Backend.md`, and `02-Distributed-Rate-Limiter.md`.
 - [ ] Confirm the one-line product thesis in `planning/Features.md`.
 - [ ] Confirm the top 6 high-Google-impact features.
 - [ ] Decide whether the MVP prioritizes local-first open source or hosted demo first.
