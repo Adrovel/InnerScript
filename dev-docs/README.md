@@ -21,6 +21,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [Atomic Action Plan](./planning/Atomic-Action-Plan.md)
 - [Architecture](./architecture/Architecture.md)
 - [Stack and Tools](./architecture/Stack-and-Tools.md)
+- [Design Choices](./architecture/Design-Choices.md)
 - [Semantic Meaning Research](./research/Semantic-Meaning-Research.md)
 - [Google Signal Benchmarks](./research/Google-Signal-Benchmarks.md)
 - [Direction Guardrails](./guardrails/Direction-Guardrails.md)

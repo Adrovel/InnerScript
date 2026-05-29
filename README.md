@@ -14,6 +14,7 @@ Implementation-facing docs live in [dev-docs](./dev-docs/):
 - [Atomic Action Plan](./dev-docs/planning/Atomic-Action-Plan.md)
 - [Architecture](./dev-docs/architecture/Architecture.md)
 - [Stack and Tools](./dev-docs/architecture/Stack-and-Tools.md)
+- [Design Choices](./dev-docs/architecture/Design-Choices.md)
 - [Google Signal Benchmarks](./dev-docs/research/Google-Signal-Benchmarks.md)
 - [Semantic Meaning and Search Research](./dev-docs/research/Semantic-Meaning-Research.md)
 - [Direction Guardrails](./dev-docs/guardrails/Direction-Guardrails.md)

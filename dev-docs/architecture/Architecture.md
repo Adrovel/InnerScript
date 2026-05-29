@@ -16,46 +16,86 @@ The same core domain model should serve both profiles. Hosted mode adds account 
 ## High-Level System
 
 ```text
-Client
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                                  Client                                      │
+│                                                                              │
+│  Next.js / React app                                                         │
+│  ┌────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────┐ ┌──────────┐ │
+│  │ Journal    │ │ Voice input  │ │ Import review│ │ Search   │ │ People   │ │
+│  └────────────┘ └──────────────┘ └──────────────┘ └──────────┘ └──────────┘ │
+│                                      ┌─────────────────────┐                 │
+│                                      │ Insights / Digest   │                 │
+│                                      └─────────────────────┘                 │
+└───────────────────────────────────────┬──────────────────────────────────────┘
+                                        │ HTTP / streaming responses
+                                        ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                              Application API                                 │
+│                                                                              │
+│  Next.js API routes for local-first MVP                                      │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ │
+│  │ Entries    │ │ Sources    │ │ Imports    │ │ Search     │ │ People     │ │
+│  └────────────┘ └────────────┘ └────────────┘ └────────────┘ └────────────┘ │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌──────────────────────────┐ │
+│  │ Voice/STT  │ │ Analysis   │ │ Insights   │ │ Export / Local setup     │ │
+│  └────────────┘ └────────────┘ └────────────┘ └──────────────────────────┘ │
+└───────────────┬──────────────────────────────┬───────────────────────────────┘
+                │                              │
+                │ cost-bearing hosted calls    │ local/open-source calls
+                ▼                              ▼
+┌─────────────────────────────────┐    ┌───────────────────────────────────────┐
+│ Hosted Protection Layer          │    │ Semantic Processing Pipeline          │
+│ hosted profile only              │    │                                       │
+│                                  │    │  parse                                │
+│  Next.js limiter client          │    │   -> normalize                        │
+│       │                          │    │   -> chunk                            │
+│       ▼                          │    │   -> embed                            │
+│  Go rate limiter service         │    │   -> analyze                          │
+│       │                          │    │   -> link people/entities             │
+│       ▼                          │    │   -> generate source-backed insight   │
+│  Redis + Lua atomic quotas       │    │                                       │
+│                                  │    │  Provider adapters:                   │
+│  protects: STT, embeddings,      │    │  - embeddings                         │
+│  analysis, search, digest, chat  │    │  - speech-to-text                     │
+└─────────────────────────────────┘    │  - structured LLM extraction          │
+                                       └──────────────────┬────────────────────┘
+                                                          │
+                                                          ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                                  Storage                                     │
+│                                                                              │
+│  PostgreSQL + pgvector                                                       │
+│  ┌─────────┐ ┌─────────┐ ┌────────┐ ┌────────────────┐ ┌──────────────┐    │
+│  │ entries │ │ sources │ │ chunks │ │ entry_metadata │ │ assumptions  │    │
+│  └─────────┘ └─────────┘ └────────┘ └────────────────┘ └──────────────┘    │
+│  ┌────────┐ ┌──────────────┐ ┌─────────┐                                   │
+│  │ people │ │ interactions │ │ digests │                                   │
+│  └────────┘ └──────────────┘ └─────────┘                                   │
+│                                                                              │
+│  Optional local file storage                                                 │
+│  - imported source files                                                     │
+│  - audio only when explicitly retained                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+```
+
+## Local vs Hosted Boundaries
+
+```text
+Local open-source mode
   Next.js app
-    Journal
-    Voice capture
-    Import review
-    Search
-    People
-    Insights
+    -> local API routes
+    -> local PostgreSQL + pgvector
+    -> optional AI provider key
+    -> no Redis required
+    -> no Go service required
 
-Application API
-  Entries API
-  Sources API
-  Imports API
-  Transcription API
-  Analysis API
-  Search API
-  People API
-  Insights API
-
-Semantic Pipeline
-  Parse
-  Normalize
-  Chunk
-  Embed
-  Analyze
-  Link entities
-  Generate insight
-
-Storage
-  PostgreSQL
-  pgvector
-  optional local file storage
-
-Hosted Systems
-  Auth
-  Redis
-  Go rate limiter
-  job queue
-  billing
-  observability
+Hosted consumer mode
+  Next.js app
+    -> auth and user isolation
+    -> cost-bearing endpoints checked by Go rate limiter
+    -> hosted PostgreSQL + pgvector
+    -> Redis for quotas/cache/jobs
+    -> billing, observability, account export/delete
 ```
 
 ## Core Data Model
@@ -342,4 +382,3 @@ Track:
 - rate limiter allowed/denied counts
 - Redis latency for hosted mode
 - semantic search precision evaluation set
-
