@@ -106,7 +106,7 @@ Important:
 | 7 | User ownership/auth/billing | 12 | 38 | Hosted-only |
 | 7 | Account export/delete/quotas | 12 | 28 | Hosted trust requirements |
 
-## Phase 0 - Direction Lock
+## Phase 0 - Direction Lock — Estimate: Joel 12h / 2.0 days, Prithvi 6h / 2.0 days
 
 Goal: make the project coherent before code changes.
 
@@ -136,11 +136,11 @@ Goal: make the project coherent before code changes.
 - [ ] Next phase tasks have clear owners.
 - [ ] No implementation starts without a stable schema direction.
 
-## Phase 1 - Local Journal Core
+## Phase 1 - Local Journal Core — Estimate: Joel 18h / 3.0 days, Prithvi 54h / 18.0 days
 
 Goal: make InnerScript useful as a plain local journal before AI.
 
-### Layer 1: Schema and API
+### Layer 1: Schema and API — Estimate: Joel 6h / 1.0 day, Prithvi 18h / 6.0 days
 
 #### Joel
 
@@ -162,7 +162,7 @@ Goal: make InnerScript useful as a plain local journal before AI.
 - [ ] Add tests for entry CRUD.
 - [ ] Add tests for source creation.
 
-### Layer 2: Editor
+### Layer 2: Editor — Estimate: Joel 4h / 0.7 days, Prithvi 14h / 4.7 days
 
 #### Joel
 
@@ -179,7 +179,7 @@ Goal: make InnerScript useful as a plain local journal before AI.
 - [ ] Add retry behavior for failed save.
 - [ ] Add component test for autosave.
 
-### Layer 3: Daily Entry
+### Layer 3: Daily Entry — Estimate: Joel 3h / 0.5 days, Prithvi 8h / 2.7 days
 
 #### Joel
 
@@ -193,7 +193,7 @@ Goal: make InnerScript useful as a plain local journal before AI.
 - [ ] Add test for "existing today entry is reused."
 - [ ] Add test for "missing today entry is created or suggested" according to Joel's decision.
 
-### Layer 4: Export
+### Layer 4: Export — Estimate: Joel 5h / 0.8 days, Prithvi 14h / 4.7 days
 
 #### Joel
 
@@ -214,11 +214,11 @@ Goal: make InnerScript useful as a plain local journal before AI.
 - [ ] Tests cover CRUD and export.
 - [ ] No AI key is required for core journaling.
 
-## Phase 2 - Semantic Core
+## Phase 2 - Semantic Core — Estimate: Joel 30h / 5.0 days, Prithvi 72h / 24.0 days
 
 Goal: turn entries into searchable semantic memory.
 
-### Layer 1: Chunking
+### Layer 1: Chunking — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
 
 #### Joel
 
@@ -236,7 +236,7 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Add tests for paragraph chunking.
 - [ ] Add tests for max token fallback.
 
-### Layer 2: Embeddings
+### Layer 2: Embeddings — Estimate: Joel 8h / 1.3 days, Prithvi 22h / 7.3 days
 
 #### Joel
 
@@ -252,7 +252,7 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Add mocked embedding tests.
 - [ ] Add "embedding unavailable" state.
 
-### Layer 3: Search
+### Layer 3: Search — Estimate: Joel 14h / 2.3 days, Prithvi 32h / 10.7 days
 
 #### Joel
 
@@ -276,13 +276,13 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Manual evaluation exists.
 - [ ] Search quality is measured, not guessed.
 
-## Phase 3 - External Data Integrations
+## Phase 3 - External Data Integrations — Estimate: Joel 24h / 4.0 days, Prithvi 84h / 28.0 days
 
 Goal: ingest journal-related text from other apps without brittle private APIs.
 
 See `guardrails/External-Data-Integrations.md`.
 
-### Layer 1: Import Framework
+### Layer 1: Import Framework — Estimate: Joel 8h / 1.3 days, Prithvi 24h / 8.0 days
 
 #### Joel
 
@@ -299,7 +299,7 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Add parser interface.
 - [ ] Add tests for duplicate import protection.
 
-### Layer 2: Markdown and Text Imports
+### Layer 2: Markdown and Text Imports — Estimate: Joel 4h / 0.7 days, Prithvi 16h / 5.3 days
 
 #### Joel
 
@@ -313,7 +313,7 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Show preview before confirm.
 - [ ] Add parser tests.
 
-### Layer 3: WhatsApp Export Import
+### Layer 3: WhatsApp Export Import — Estimate: Joel 6h / 1.0 day, Prithvi 24h / 8.0 days
 
 #### Joel
 
@@ -330,7 +330,7 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Add tests for common WhatsApp export lines.
 - [ ] Add tests for malformed lines.
 
-### Layer 4: Voice Journaling
+### Layer 4: Voice Journaling — Estimate: Joel 6h / 1.0 day, Prithvi 20h / 6.7 days
 
 #### Joel
 
@@ -354,11 +354,11 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Voice transcript creates editable entries.
 - [ ] Imported content enters chunking/search pipeline.
 
-## Phase 4 - People and Interactions
+## Phase 4 - People and Interactions — Estimate: Joel 18h / 3.0 days, Prithvi 54h / 18.0 days
 
 Goal: make people a first-class semantic layer.
 
-### Layer 1: People CRUD
+### Layer 1: People CRUD — Estimate: Joel 5h / 0.8 days, Prithvi 20h / 6.7 days
 
 #### Joel
 
@@ -378,7 +378,7 @@ Goal: make people a first-class semantic layer.
 - [ ] Build `/people/[id]`.
 - [ ] Add people API tests.
 
-### Layer 2: Interactions
+### Layer 2: Interactions — Estimate: Joel 7h / 1.2 days, Prithvi 20h / 6.7 days
 
 #### Joel
 
@@ -394,7 +394,7 @@ Goal: make people a first-class semantic layer.
 - [ ] Add source-backed interaction summaries.
 - [ ] Add tests for link/unlink behavior.
 
-### Layer 3: People Insights
+### Layer 3: People Insights — Estimate: Joel 6h / 1.0 day, Prithvi 14h / 4.7 days
 
 #### Joel
 
@@ -414,11 +414,11 @@ Goal: make people a first-class semantic layer.
 - [ ] Person page shows source-backed interaction timeline.
 - [ ] AI summaries use guarded language.
 
-## Phase 5 - Insights and Reflection
+## Phase 5 - Insights and Reflection — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
 
 Goal: create source-backed insight beyond basic search.
 
-### Layer 1: Metadata Extraction
+### Layer 1: Metadata Extraction — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
 
 #### Joel
 
@@ -433,7 +433,7 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Store mood, arousal, emotion, topics, summary.
 - [ ] Add schema validation tests.
 
-### Layer 2: Weekly Digest
+### Layer 2: Weekly Digest — Estimate: Joel 10h / 1.7 days, Prithvi 18h / 6.0 days
 
 #### Joel
 
@@ -448,7 +448,7 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Add digest page/section.
 - [ ] Add tests with mocked AI.
 
-### Layer 3: Assumptions and Challenge Mode
+### Layer 3: Assumptions and Challenge Mode — Estimate: Joel 14h / 2.3 days, Prithvi 24h / 8.0 days
 
 #### Joel
 
@@ -465,7 +465,7 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Add "Challenge this" action.
 - [ ] Add tests for assumption storage.
 
-### Layer 4: Contradiction and Change Detection
+### Layer 4: Contradiction and Change Detection — Estimate: Joel 10h / 1.7 days, Prithvi 18h / 6.0 days
 
 #### Joel
 
@@ -487,11 +487,11 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Assumptions can be challenged.
 - [ ] No therapeutic claims are made.
 
-## Phase 6 - Google Systems Layer: Go Distributed Rate Limiter
+## Phase 6 - Google Systems Layer: Go Distributed Rate Limiter — Estimate: Joel 72h / 12.0 days, Prithvi 36h / 12.0 days
 
 Goal: create a standalone systems component that protects hosted AI endpoints.
 
-### Layer 1: API Contract
+### Layer 1: API Contract — Estimate: Joel 8h / 1.3 days, Prithvi 4h / 1.3 days
 
 #### Joel
 
@@ -505,7 +505,7 @@ Goal: create a standalone systems component that protects hosted AI endpoints.
 - [ ] Implement Next.js client wrapper for limiter calls after Joel finalizes contract.
 - [ ] Add mocked limiter tests in app.
 
-### Layer 2: Go Service
+### Layer 2: Go Service — Estimate: Joel 38h / 6.3 days, Prithvi 12h / 4.0 days
 
 #### Joel
 
@@ -522,7 +522,7 @@ Goal: create a standalone systems component that protects hosted AI endpoints.
 - [ ] Add Docker Compose support if needed.
 - [ ] Add integration test harness.
 
-### Layer 3: Metrics and Load Testing
+### Layer 3: Metrics and Load Testing — Estimate: Joel 26h / 4.3 days, Prithvi 20h / 6.7 days
 
 #### Joel
 
@@ -543,7 +543,7 @@ Goal: create a standalone systems component that protects hosted AI endpoints.
 - [ ] failure modes are documented.
 - [ ] protected endpoints call limiter in hosted profile.
 
-## Phase 7 - Hosted Consumer Profile
+## Phase 7 - Hosted Consumer Profile — Estimate: Joel 36h / 6.0 days, Prithvi 72h / 24.0 days
 
 Goal: make hosted InnerScript possible without weakening local-first trust.
 
