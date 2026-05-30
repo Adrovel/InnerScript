@@ -23,7 +23,7 @@
 InnerScript is a local-first AI-powered journaling app. Here is the full technical context.
 
 ### Stack
-- Next.js 15 (App Router) · React 19 · PostgreSQL + pgvector · Sequelize ORM · Vercel AI SDK · GPT-4o-mini · Tailwind CSS 4 · shadcn/ui · Docker
+- Next.js 16 (App Router) · React 19 · PostgreSQL + pgvector · Sequelize ORM · Vercel AI SDK · GPT-4o-mini · Tailwind CSS 4 · shadcn/ui · Docker
 
 ### Architecture (mental model)
 ```

@@ -6,7 +6,7 @@
 
 **Architecture:** Three sequential phases — fix bugs + wire editor gaps, add AI analysis pipeline (two sequential AI calls per save producing a single metadata panel), then build Recharts-based insights. All new AI calls use `generateObject`/`generateText` from Vercel AI SDK v5.
 
-**Tech Stack:** Next.js 15, React 19, Sequelize 6, PostgreSQL + pgvector, Vercel AI SDK v5 (`ai@5`), `@ai-sdk/openai@2`, Zod 4, Recharts, Tailwind 4, shadcn/ui
+**Tech Stack:** Next.js 16, React 19, Sequelize 6, PostgreSQL + pgvector, Vercel AI SDK v5 (`ai@5`), `@ai-sdk/openai@2`, Zod 4, Recharts, Tailwind 4, shadcn/ui
 
 **Project root:** `2026-Active-Projects/InnerScript/` (relative to workspace root)
 

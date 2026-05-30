@@ -8,7 +8,7 @@
 
 InnerScript is a **local-first, AI-powered journaling app**. Users write notes, the app automatically extracts mood, emotions, and topics using GPT-4o-mini, stores them in a PostgreSQL database with vector embeddings, and lets users ask questions about their notes via a RAG-powered chat.
 
-**Stack:** Next.js 15 (App Router) · React 19 · PostgreSQL + pgvector · Sequelize ORM · Vercel AI SDK · GPT-4o-mini · Tailwind CSS 4 · shadcn/ui · Docker
+**Stack:** Next.js 16 (App Router) · React 19 · PostgreSQL + pgvector · Sequelize ORM · Vercel AI SDK · GPT-4o-mini · Tailwind CSS 4 · shadcn/ui · Docker
 
 ---
 

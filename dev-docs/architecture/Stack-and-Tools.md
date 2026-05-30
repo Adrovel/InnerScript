@@ -6,7 +6,7 @@ Purpose: define the stack that best supports the product and the Google SWE L3 s
 
 | Layer | Tool | Why |
 |---|---|---|
-| App framework | Next.js 15 | full-stack React, fast iteration, API routes for MVP |
+| App framework | Next.js 16 | full-stack React, fast iteration, API routes for MVP |
 | UI | React 19 | component model and strong ecosystem |
 | Styling | Tailwind CSS 4 + shadcn/ui | minimal, accessible UI without heavy design overhead |
 | Primary DB | PostgreSQL | relational source of truth |
