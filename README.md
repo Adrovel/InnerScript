@@ -12,10 +12,13 @@ InnerScript is a local-first AI journaling and semantic memory system. The engin
 
 ## Getting Started
 
-Install dependencies and run the development server:
+Install dependencies, start local Postgres/pgvector, run migrations, and run the development server:
 
 ```bash
 npm install
+cp .env.example .env.local
+npm run db:up
+npm run db:migrate
 npm run dev
 ```
 
@@ -31,6 +34,13 @@ curl http://localhost:3000/api/health
 
 Copy `.env.example` to `.env.local` for local development and fill in only the values you need. AI keys are optional; core journaling must stay usable without AI.
 
+The default database setup expects Docker Compose:
+
+- dev database: `postgresql://postgres:postgres@localhost:5433/innerscript`
+- test database: `postgresql://postgres:postgres@localhost:5434/innerscript_test`
+
+The Docker image includes pgvector so Phase 2 semantic search can use the same local database setup.
+
 ## Project Direction
 
 Use normal APIs for core behavior:
@@ -44,18 +54,23 @@ Use normal APIs for core behavior:
 
 Server Actions can be used later for UI convenience only. They should not become the main backend boundary because the project needs testable, interview-defensible API contracts.
 
-## Next Phase 0 Work
+## Phase 0 Setup Artifacts
 
-- Add Docker-optional Postgres/pgvector setup.
-- Lock `entries` and `sources` schema before CRUD implementation.
-- Add setup and smoke-test checklist.
-- Implement API tests as soon as the first CRUD routes exist.
+- Docker-optional Postgres/pgvector setup: `docker-compose.yml`
+- Local smoke-test checklist: `SMOKE_TEST.md`
+- `entries` and `sources` schema: `db/schema.js`
+- API contract tests begin under `tests/`
 
 ## Commands
 
 ```bash
 npm run dev
+npm run db:up
+npm run db:migrate
+npm run db:down
 npm run lint
+npm test
+npm run test:integration
 npm run build
 ```
 
