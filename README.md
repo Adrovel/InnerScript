@@ -39,7 +39,7 @@ Use normal APIs for core behavior:
 - imports preview/confirm
 - export
 - semantic search
-- people CRUD
+- people CRUD, with person-entry linking deferred
 - analysis and digest endpoints
 
 Server Actions can be used later for UI convenience only. They should not become the main backend boundary because the project needs testable, interview-defensible API contracts.

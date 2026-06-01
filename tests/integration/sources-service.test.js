@@ -5,6 +5,30 @@ import { sources } from "../../db/schema.js";
 import { createSourceWithEntries } from "../../lib/sources.js";
 
 describe("source ingestion service", () => {
+  test("creates manual sources for user-authored entries", async () => {
+    const result = await createSourceWithEntries({
+      source: {
+        source_type: "manual",
+        display_name: "Manual journal entry",
+      },
+      entries: [
+        {
+          body: "A manually written journal entry.",
+          entry_type: "journal",
+        },
+      ],
+    });
+
+    expect(result.source).toMatchObject({
+      source_type: "manual",
+      display_name: "Manual journal entry",
+    });
+    expect(result.entries[0]).toMatchObject({
+      entry_type: "journal",
+      source_id: result.source.id,
+    });
+  });
+
   test("creates one source with multiple imported entries", async () => {
     const result = await createSourceWithEntries({
       source: {

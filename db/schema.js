@@ -10,7 +10,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const ENTRY_TYPES = ["journal", "note", "conversation"];
-export const SOURCE_TYPES = ["voice", "markdown", "text_file", "whatsapp_export"];
+export const SOURCE_TYPES = ["manual", "voice", "markdown", "text_file", "whatsapp_export"];
 
 export const entryTypeEnum = pgEnum("entry_type", ENTRY_TYPES);
 export const sourceTypeEnum = pgEnum("source_type", SOURCE_TYPES);

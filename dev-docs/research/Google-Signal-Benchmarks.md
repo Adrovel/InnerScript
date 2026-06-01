@@ -144,22 +144,21 @@ Why this matters:
 Minimum benchmark:
 
 - manual people CRUD
-- manual link/unlink interaction
-- source-backed person page
 - guarded wording
 
 Target:
 
 | Metric | Target |
 |---|---:|
-| person summaries without sources | 0 |
+| people CRUD API tests | yes |
 | auto-created people without confirmation | 0 |
-| link/unlink API tests | yes |
-| interaction timeline source links | 100% |
+| person page fields controlled by user | 100% |
 
 Why this matters:
 
 - Shows privacy-sensitive entity modeling.
+
+Future people mention and interaction-linking benchmarks are deferred to `dev-docs/planning/Future-Plan.md`.
 
 ### 6. Go/Redis Distributed Rate Limiter
 
@@ -251,7 +250,7 @@ Backend bullet:
 - [ ] Precision@5 reported
 - [ ] import parser tests
 - [ ] source-backed weekly digest
-- [ ] people route with interaction timeline
+- [ ] people CRUD route
 - [ ] Go rate limiter benchmark
 - [ ] local setup works from clean clone
 - [ ] architecture diagram
@@ -266,4 +265,3 @@ Backend bullet:
 - Personal Google prep: `Personal Repo/04-Career/Organised/Identity, Skills and Current Standing/Cracking-Google.md`
 - Production RAG plan: `Personal Repo/04-Career/Organised/Projects/01-Production-RAG-Backend.md`
 - Distributed Rate Limiter plan: `Personal Repo/04-Career/Organised/Projects/02-Distributed-Rate-Limiter.md`
-

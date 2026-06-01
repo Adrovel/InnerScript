@@ -63,11 +63,11 @@ Assumptions:
 | Phase 1 - Local Journal Core | 18 | 3.0 | 54 | 18.0 | 3-4 weeks |
 | Phase 2 - Semantic Core | 30 | 5.0 | 72 | 24.0 | 4-5 weeks |
 | Phase 3 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | 5-6 weeks |
-| Phase 4 - People and Interactions | 18 | 3.0 | 54 | 18.0 | 3-4 weeks |
+| Phase 4 - People Records | 10 | 1.7 | 26 | 8.7 | 1-2 weeks |
 | Phase 5 - Insights and Reflection | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
 | Phase 6 - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
 | Phase 7 - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
-| Total | 252 | 42.0 | 456 | 152.0 | ~28-37 weeks |
+| Total | 244 | 40.7 | 428 | 142.7 | ~26-34 weeks |
 
 Important:
 
@@ -92,9 +92,8 @@ Important:
 | 3 | Markdown/text imports | 4 | 16 | Early external data support |
 | 3 | WhatsApp export import | 6 | 24 | High Google impact; many parser edge cases |
 | 3 | Voice journaling | 6 | 20 | Audio/transcription/review flow |
-| 4 | People CRUD | 5 | 20 | Manual people first |
-| 4 | Interactions | 7 | 20 | Link entries to people |
-| 4 | People insights | 6 | 14 | Source-backed language is critical |
+| 4 | People CRUD | 5 | 20 | Manual people records only |
+| 4 | People page basics | 5 | 6 | Linking and summaries deferred |
 | 5 | Metadata extraction | 8 | 18 | Structured AI output |
 | 5 | Weekly digest | 10 | 18 | High product and Google signal |
 | 5 | Assumptions/challenge mode | 14 | 24 | AI behavior needs Joel ownership |
@@ -354,9 +353,9 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Voice transcript creates editable entries.
 - [ ] Imported content enters chunking/search pipeline.
 
-## Phase 4 - People and Interactions — Estimate: Joel 18h / 3.0 days, Prithvi 54h / 18.0 days
+## Phase 4 - People Records — Estimate: Joel 10h / 1.7 days, Prithvi 26h / 8.7 days
 
-Goal: make people a first-class semantic layer.
+Goal: add user-controlled people records without forcing person interactions into the entry model.
 
 ### Layer 1: People CRUD — Estimate: Joel 5h / 0.8 days, Prithvi 20h / 6.7 days
 
@@ -378,41 +377,29 @@ Goal: make people a first-class semantic layer.
 - [ ] Build `/people/[id]`.
 - [ ] Add people API tests.
 
-### Layer 2: Interactions — Estimate: Joel 7h / 1.2 days, Prithvi 20h / 6.7 days
+### Layer 2: People Page Basics — Estimate: Joel 5h / 0.8 days, Prithvi 6h / 2.0 days
 
 #### Joel
 
-- [ ] Define what counts as an interaction.
-- [ ] Define open-loop extraction behavior.
-- [ ] Define "do not overclaim about people" rules.
+- [ ] Define which profile fields are visible on the person page.
+- [ ] Define empty-state language.
 
 #### Prithvi
 
-- [ ] Add `interactions` table/model.
-- [ ] Link entries to people.
-- [ ] Add interaction timeline.
-- [ ] Add source-backed interaction summaries.
-- [ ] Add tests for link/unlink behavior.
+- [ ] Render person profile fields.
+- [ ] Add people page empty states.
 
-### Layer 3: People Insights — Estimate: Joel 6h / 1.0 day, Prithvi 14h / 4.7 days
+Sentence-level people mentions and interaction linking are deferred to `dev-docs/planning/Future-Plan.md`.
 
-#### Joel
+### Layer 3: Deferred People Insights
 
-- [ ] Write prompt for relationship summary from user notes only.
-- [ ] Define unsafe wording examples.
-
-#### Prithvi
-
-- [ ] Show common topics for person.
-- [ ] Show related entries.
-- [ ] Show open loops.
-- [ ] Add empty states.
+Generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
 
 ### Exit Criteria
 
-- [ ] People can be created and linked manually.
-- [ ] Person page shows source-backed interaction timeline.
-- [ ] AI summaries use guarded language.
+- [ ] People can be created, edited, listed, viewed, and deleted.
+- [ ] Person page shows only user-controlled profile data.
+- [ ] Entry schema does not include `person_interaction`.
 
 ## Phase 5 - Insights and Reflection — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
 

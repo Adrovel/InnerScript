@@ -56,15 +56,15 @@ describe("entry contracts", () => {
 });
 
 describe("source contracts", () => {
-  test("accepts only explicit ingestion batch source types", () => {
+  test("accepts canonical source types", () => {
+    expect(sourceTypeSchema.parse("manual")).toBe("manual");
     expect(sourceTypeSchema.parse("voice")).toBe("voice");
     expect(sourceTypeSchema.parse("markdown")).toBe("markdown");
     expect(sourceTypeSchema.parse("text_file")).toBe("text_file");
     expect(sourceTypeSchema.parse("whatsapp_export")).toBe("whatsapp_export");
   });
 
-  test("rejects editor input methods as source types", () => {
-    expect(() => sourceTypeSchema.parse("manual")).toThrow();
+  test("rejects unsupported editor input methods as source types", () => {
     expect(() => sourceTypeSchema.parse("clipboard")).toThrow();
   });
 

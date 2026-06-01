@@ -180,8 +180,9 @@ Required:
 
 - import file -> entries -> chunks -> search
 - voice transcript -> entry -> analysis
-- person link -> person page summary
 - hosted request -> rate limiter -> protected endpoint
+
+People mention and interaction-linking integration tests are deferred to `dev-docs/planning/Future-Plan.md`.
 
 ### Load Tests
 
