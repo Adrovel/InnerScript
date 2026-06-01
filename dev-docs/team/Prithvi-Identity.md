@@ -49,7 +49,7 @@ He is well-suited for scoped tasks with clear contracts:
 - Build import parser interfaces.
 - Implement Markdown/text/WhatsApp parsers.
 - Add parser tests and malformed-input tests.
-- Implement people CRUD and link/unlink APIs.
+- Implement people CRUD. Link/unlink APIs are deferred to `dev-docs/planning/Future-Plan.md`.
 - Build dashboard/UI components from defined contracts.
 - Help integrate the Go rate limiter client into the Next.js app.
 
@@ -58,4 +58,3 @@ He is well-suited for scoped tasks with clear contracts:
 Planning uses **3 focused hours/day** from Prithvi.
 
 Prithvi should get concrete task packets with expected hours, tests, and exit criteria.
-

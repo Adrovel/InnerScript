@@ -132,36 +132,32 @@ Google signal:
 
 ## Phase 4 - People Route
 
-Goal: make people a first-class semantic layer.
+Goal: add user-controlled people records without forcing person interactions into the entry model.
 
 Deliverables:
 
 - people schema
-- interactions schema
 - `/people`
 - `/people/[id]`
-- manual link entry to person
 - aliases
-- interaction timeline
-- source-backed person summary
+- relationship type and description fields
+
+Sentence-level people mentions, interaction timelines, and generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
 
 Joel:
 
 - define person-page language and safety rules
-- define interaction model
-- tune summaries and prompts
+- define profile field rules
 
 Prithvi:
 
 - implement people CRUD
-- implement link/unlink interactions
 - implement person pages
-- add tests for people/interactions APIs
+- add tests for people APIs
 
 Google signal:
 
 - entity modeling
-- graph-like data relationships
 - privacy and product judgment
 
 ## Phase 5 - Insight Layer

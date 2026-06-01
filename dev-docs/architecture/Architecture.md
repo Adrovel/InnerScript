@@ -68,9 +68,9 @@ The same core domain model should serve both profiles. Hosted mode adds account 
 │  ┌─────────┐ ┌─────────┐ ┌────────┐ ┌────────────────┐ ┌──────────────┐    │
 │  │ entries │ │ sources │ │ chunks │ │ entry_metadata │ │ assumptions  │    │
 │  └─────────┘ └─────────┘ └────────┘ └────────────────┘ └──────────────┘    │
-│  ┌────────┐ ┌──────────────┐ ┌─────────┐                                   │
-│  │ people │ │ interactions │ │ digests │                                   │
-│  └────────┘ └──────────────┘ └─────────┘                                   │
+│  ┌────────┐ ┌─────────┐                                                     │
+│  │ people │ │ digests │                                                     │
+│  └────────┘ └─────────┘                                                     │
 │                                                                              │
 │  Optional local file storage                                                 │
 │  - imported source files                                                     │
@@ -116,6 +116,8 @@ created_at
 updated_at
 ```
 
+Current `entry_type` values are defined in `db/schema.js`: `journal`, `note`, and `conversation`.
+
 ### `sources`
 
 Provenance for imported or generated text.
@@ -129,6 +131,8 @@ metadata jsonb
 imported_at
 created_at
 ```
+
+Current `source_type` values are defined in `db/schema.js`: `manual`, `voice`, `markdown`, `text_file`, and `whatsapp_export`.
 
 ### `chunks`
 
@@ -191,22 +195,7 @@ created_at
 updated_at
 ```
 
-### `interactions`
-
-Meaningful moments connected to people.
-
-```text
-id
-person_id
-entry_id
-source_id
-occurred_at
-summary
-sentiment_label
-topics jsonb
-open_loops jsonb
-created_at
-```
+Sentence-level people mentions and richer interaction linking are deferred to `dev-docs/planning/Future-Plan.md`. They should not affect the initial entry schema.
 
 ### `digests`
 
@@ -270,7 +259,7 @@ Query
   -> filter candidate chunks by scope
   -> pgvector similarity search
   -> optional lexical/hybrid rerank
-  -> group by entry/source/person
+  -> group by entry/source
   -> return source-backed results
 ```
 
@@ -281,12 +270,10 @@ Search must show why a result matched and where the original text came from.
 ```text
 Create person manually
   -> add aliases
-  -> link entries/interactions
-  -> extract interaction summaries
   -> render person page
 ```
 
-Automatic person extraction is post-MVP and must be confirmation-based.
+Entry/person linking, interaction summaries, and automatic person extraction are deferred. Future automatic person extraction must be confirmation-based.
 
 ### Hosted Rate-Limit Flow
 
@@ -310,7 +297,7 @@ Reason:
 
 - full journal entries contain multiple topics
 - paragraph-level chunks improve retrieval precision
-- people interactions often live inside longer entries
+- people mentions often live inside longer entries
 
 Tradeoff:
 

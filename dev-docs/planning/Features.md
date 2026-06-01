@@ -18,7 +18,7 @@ It converts private unstructured life text into searchable, source-backed insigh
 - voice transcripts
 - Markdown and text imports
 - WhatsApp exported chats
-- people interactions
+- people records
 - weekly and long-range reflection
 
 The project goal is not "AI chat over notes." The Google-facing goal is:
@@ -50,7 +50,7 @@ Use this table to decide what deserves engineering time first. "High" means it c
 | Semantic search over chunks | High | Demonstrates embeddings, pgvector, ranking, chunking tradeoffs, and retrieval evaluation |
 | Text import pipeline | High | Shows ingestion design, parsing, idempotency, provenance, and async processing |
 | Go distributed rate limiter | High | Direct distributed-systems signal: Redis, Lua atomicity, concurrency, quotas, failure modes |
-| People route and interactions model | High | Shows entity modeling, relationship graphs, privacy-sensitive UX, and source-backed summaries |
+| People route | High | Shows entity modeling and privacy-sensitive UX; mentions/interactions are deferred until after core journal/search/import foundations |
 | Voice-to-text pipeline | High | Shows file upload, transcription, async jobs, privacy decisions, and multimodal text ingestion |
 | Weekly digest with provenance | High | Shows RAG over filtered corpora, summarization, date windows, and grounded generation |
 | Assumption extraction | Medium-High | Strong AI product differentiator, but must be source-backed and carefully scoped |
@@ -58,8 +58,8 @@ Use this table to decide what deserves engineering time first. "High" means it c
 | Mood/topic dashboard | Medium | Useful product feature, but common unless tied to retrieval, provenance, and evaluation |
 | Minimal journal/editor | Medium | Necessary foundation, but weaker Google signal by itself |
 | Hosted auth/billing | Medium | Production signal, but should come after local core and systems story |
-| Full debate UI | Low | Distracts from journaling and weakens product focus |
-| Streaks/gamification | Low | Consumer feature, weak Google technical signal |
+
+Full debate UI and streaks/gamification are deferred to `dev-docs/planning/Future-Plan.md`.
 
 Highest-priority Google-signal path:
 
@@ -98,11 +98,10 @@ Every piece of text must have provenance.
 Entry types:
 
 - `journal`
-- `voice_transcript`
-- `markdown_import`
-- `text_import`
-- `whatsapp_import`
-- `person_interaction`
+- `note`
+- `conversation`
+
+These values must match `ENTRY_TYPES` in `db/schema.js`. Keep `entry_type` broad: it describes the shape of the user text, while `source_type` records where imported or captured text came from. Person interaction linking is deferred to `dev-docs/planning/Future-Plan.md`.
 
 Source types:
 
@@ -111,7 +110,8 @@ Source types:
 - `markdown`
 - `text_file`
 - `whatsapp_export`
-- `clipboard`
+
+These values must match `SOURCE_TYPES` in `db/schema.js`. Manually written entries should use `source_type=manual` when provenance is persisted through `sources`.
 
 Google signal:
 
@@ -184,11 +184,12 @@ Scopes:
 
 - all entries
 - date range
-- person
 - source type
 - topic
 - emotion
 - current folder/collection
+
+Person-scoped search is deferred until person-entry linking exists.
 
 Example queries:
 
@@ -222,12 +223,9 @@ Person page:
 - user-written description
 - aliases
 - relationship type
-- linked entries
-- interaction timeline
-- common topics
-- open loops
-- emotional association over time
-- source-backed summary
+- lightweight profile details
+
+Sentence-level people mentions, interaction timelines, and generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
 
 Language rule:
 
@@ -237,7 +235,7 @@ Google signal:
 
 - entity modeling
 - privacy-sensitive product design
-- graph-like relationships across text
+- future graph-like relationships across text
 
 ### 7. Insights Dashboard
 
@@ -334,9 +332,9 @@ Google signal:
 ## Explicit Non-Goals
 
 - no medical or therapy claims
-- no gamified streak-first app
 - no aggressive auto-created people graph
 - no social feed
-- no full debate UI in the MVP
 - no hosted auth/billing before local-first value works
 - no all-Go rewrite of the product UI
+
+Full debate UI and streaks/gamification are not active MVP features. They are tracked in `dev-docs/planning/Future-Plan.md`.

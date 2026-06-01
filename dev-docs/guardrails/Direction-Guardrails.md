@@ -105,7 +105,7 @@ Examples:
 - semantic search over chunks
 - import pipeline with provenance
 - Go/Redis distributed rate limiter
-- people/interactions model
+- people records, with mentions/interactions deferred
 - voice-to-text pipeline
 - source-backed weekly digest
 
