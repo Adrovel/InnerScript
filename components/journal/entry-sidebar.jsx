@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { getEntryLabel } from "@/lib/journal";
+import { formatEntryDate, getEntryLabel } from "@/lib/journal";
 import {
   PanelLeft,
   PanelLeftClose,
@@ -50,12 +50,12 @@ export function EntrySidebar({
       >
         <div className="mb-lg px-md">
           <div className="mb-md flex items-center gap-md">
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-outline-variant/30 bg-surface-container-high">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-container-high">
               <User className="size-5 text-on-surface-variant" aria-hidden="true" />
             </div>
             <div className="min-w-0 flex-1">
               <h2 className="truncate text-sm font-semibold text-on-surface">InnerScript</h2>
-              <p className="truncate text-xs text-primary-fixed">Alexandria</p>
+              <p className="truncate text-xs text-on-surface-variant/65">Journal</p>
             </div>
             <button
               type="button"
@@ -73,7 +73,7 @@ export function EntrySidebar({
               onNewNote();
               onMobileClose?.();
             }}
-            className="interactive-element flex w-full items-center justify-center gap-2 rounded bg-primary-container px-3 py-1.5 text-sm font-medium text-on-primary shadow-sm hover:opacity-90 active:scale-95"
+            className="interactive-element flex w-full items-center justify-center gap-2 rounded-md bg-primary-container px-3 py-2 text-sm font-medium text-on-primary shadow-sm hover:opacity-90 active:scale-95"
           >
             <Plus className="size-4 shrink-0" aria-hidden="true" />
             New Note
@@ -81,10 +81,17 @@ export function EntrySidebar({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-md">
-          <div className="ml-md mt-4 border-t border-outline-variant/20 pt-2">
-            <ul className="space-y-1">
+          <div className="border-t border-outline-variant/10 pt-md">
+            <div className="mb-sm">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-on-surface-variant/60">
+                Entries
+              </p>
+            </div>
+            <ul className="space-y-0.5">
               {entries.length === 0 ? (
-                <li className="px-xs py-1 text-[13px] text-on-surface-variant/70">No entries yet.</li>
+                <li className="py-sm text-[13px] leading-5 text-on-surface-variant/65">
+                  No entries yet. Start with one honest page.
+                </li>
               ) : null}
               {entries.map((entry) => (
                 <li key={entry.id}>
@@ -95,14 +102,17 @@ export function EntrySidebar({
                       onMobileClose?.();
                     }}
                     className={cn(
-                      "interactive-element flex w-full rounded px-xs py-1.5 text-left transition-colors",
+                      "interactive-element flex w-full flex-col rounded-md px-sm py-2 text-left transition-colors",
                       selectedEntryId === entry.id
-                        ? "bg-surface-container-high text-on-surface"
-                        : "text-on-surface-variant hover:bg-surface-container-high",
+                        ? "bg-surface-container text-on-surface"
+                        : "text-on-surface-variant hover:bg-surface-container/70",
                     )}
                   >
-                    <span className="min-w-0 truncate text-[13px]">
+                    <span className="w-full truncate text-[13px] font-medium leading-5">
                       {getEntryLabel(entry)}
+                    </span>
+                    <span className="text-[11px] leading-4 text-on-surface-variant/45">
+                      {formatEntryDate(entry.occurred_at ?? entry.created_at)}
                     </span>
                   </button>
                 </li>

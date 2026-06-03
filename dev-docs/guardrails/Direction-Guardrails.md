@@ -35,6 +35,21 @@ Required updates:
 | new hosted-only behavior | `architecture/Architecture.md`, `architecture/Stack-and-Tools.md`, `research/Google-Signal-Benchmarks.md` |
 | removed/deprioritized high-impact feature | `planning/Features.md`, `planning/Plan.md`, `research/Google-Signal-Benchmarks.md` |
 
+## Product Clarity Capture Rule
+
+InnerScript is still being clarified through local review and user input. When Joel clarifies product intent, first workflow, AI behavior, target users, data-loading order, visual direction, or long-term scope, update the relevant docs in the same terminal session.
+
+Use this routing:
+
+| Clarity type | Must update |
+|---|---|
+| product idea or emotional thesis | `design/idea.md`, `team/Design-Choices.md` |
+| feature scope or priority | `planning/Features.md`, `planning/Plan.md`, `planning/Atomic-Action-Plan.md` |
+| system/data/source model implication | `architecture/Architecture.md`, `architecture/Stack-and-Tools.md` if tooling changes |
+| deferred but visible product direction | `planning/Future-Plan.md`, plus active plan if it affects MVP sequencing |
+| guardrail or workflow rule | `guardrails/Direction-Guardrails.md` |
+| notable session outcome | `.wolf/update-log.md` |
+
 ## Terminal Notification Rule
 
 Before implementing any feature not already listed in `planning/Features.md`, the agent must print a short terminal-facing decision note in chat or task logs:
@@ -91,6 +106,29 @@ Reject or defer if:
 - it requires hosted auth/billing too early
 - it weakens local open-source usability
 - it cannot be tested or benchmarked
+
+## Development Simplicity Guardrail
+
+During development, especially Phase 1 and early Phase 2, the app should be simpler to build than the long-term product vision.
+
+Accept early work when it improves:
+
+- local writing
+- saving reliability
+- loading reliability
+- exportability
+- setup clarity
+- schema clarity
+- one grounded reflection question after writing
+
+Defer early work when it adds:
+
+- dashboards before enough data exists
+- AI people UI before source grounding exists
+- relationship analytics before freeform relationship notes exist
+- imports before manual entries are stable
+- hosted infrastructure before local journaling is reliable
+- distributed systems before the app has a core local user loop
 
 ## Google Impact Labels
 

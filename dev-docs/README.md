@@ -1,3 +1,4 @@
+
 # InnerScript Dev Docs
 
 Purpose: canonical implementation, planning, research, and guardrail docs for InnerScript.
@@ -8,22 +9,31 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 |---|---|
 | `planning/` | Features, phase plan, update log, atomic task list, estimates, and ownership |
 | `architecture/` | System architecture and stack/tooling decisions |
+| `design/` | Product idea, experience direction, and design choices before implementation |
 | `research/` | Semantic meaning research and Google-signal benchmarks |
 | `guardrails/` | Direction-change rules and external data integration rules |
-| `team/` | Joel and Prithvi identity/ownership notes for this project |
+| `team/` | Team communication, product decisions, open questions, and identity/ownership notes |
 | `context/` | Older LLM handoff and teaching context docs |
 | `superpowers/` | Older implementation plan/design-spec artifacts retained for reference |
 
 ## Canonical Docs
 
+- [Project Session Memory](../.wolf/memory.md)
+- [Local Buglog Index](../.wolf/buglog-index.md)
 - [Features](./planning/Features.md)
 - [Plan](./planning/Plan.md)
 - [Atomic Action Plan](./planning/Atomic-Action-Plan.md)
-- [Update Log](./planning/Update-Log.md)
+- [Update Log](../.wolf/update-log.md)
 - [Future Plan](./planning/Future-Plan.md)
+- [InnerScript Idea](./design/idea.md)
 - [Architecture](./architecture/Architecture.md)
 - [Stack and Tools](./architecture/Stack-and-Tools.md)
+- [Team Communication](./team/Team-Communication.md)
+- [Session Context](../.wolf/session-context.md)
+- [Product Decisions](./team/Product-Decisions.md)
+- [Open Questions](./team/Open-Questions.md)
 - [Design Choices](./team/Design-Choices.md)
+- [Competitor Analysis](./research/Competitor-Analysis.md)
 - [Semantic Meaning Research](./research/Semantic-Meaning-Research.md)
 - [Google Signal Benchmarks](./research/Google-Signal-Benchmarks.md)
 - [Direction Guardrails](./guardrails/Direction-Guardrails.md)

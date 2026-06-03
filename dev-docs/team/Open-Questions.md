@@ -1,0 +1,151 @@
+# Open Questions
+
+Purpose: hold ambiguous or unanswered questions for Joel, Prithvi, and agents. Move answered product decisions to `Product-Decisions.md`.
+
+## Product Experience
+
+### Q: Should the current Alexandria dark editorial style stay?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Joel needs to review the local UI before deciding.
+
+### Q: What exact words should the app use for the first reflection question?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- The first AI moment is decided: a reflection question after writing.
+- The exact tone still needs testing in the UI.
+
+### Q: Should mode switching be visible on the first screen or only after the user asks AI?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Modes are part of the product direction.
+- Showing modes too early may distract from writing.
+
+### Q: What should "dashboard of patterns" eventually include?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Dashboard is deferred behind write-first journaling.
+- Need later clarity on moods, loops, relationships, concepts, beliefs, and action patterns.
+
+## Context And Analysis
+
+### Q: What exact thresholds unlock each analysis tier?
+
+Asked by: Joel
+Date: 2026-06-03
+Status: open
+
+Context:
+- Joel raised that the app needs enough context before analysis.
+- Current answer is provisional: one entry -> reflection only; weeks/months/years -> stronger analysis.
+
+### Q: Should context sufficiency be visible as a trust indicator?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- A visible indicator could prevent AI overclaiming.
+- It could also make the app feel too analytical if overdone.
+
+### Q: How should citations be shown without making the app feel academic?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Joel asked what citation UI means.
+- In this product, citations mean showing the source journal entries or snippets behind an AI claim.
+
+## Relationships
+
+### Q: What should freeform people notes look like in Phase 1?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Relationship tracking starts as freeform notes.
+- Need to decide whether people notes are tags, entry sections, separate notes, or a lightweight people page.
+
+### Q: When is there enough relationship context to show warmth/tension/resentment patterns?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Relationship analysis is sensitive and should not infer too much from one note.
+
+## AI People / Thinker Modes
+
+### Q: Should thinker modes start with public-domain/source-pack figures first?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Joel did not understand the earlier question.
+- Meaning: should modes like Nietzsche or Jesus be built only from selected source material first, so the app does not produce low-quality imitation?
+
+### Q: How should simulated thinkers be labeled?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- The product should not pretend the AI is the real person.
+- Labels might be "Nietzsche lens", "Hormozi-style sales critique", or "Christian reflection lens."
+
+## Technical / Architecture
+
+### Q: Why Drizzle, and what utility does it serve in InnerScript?
+
+Asked by: Joel
+Asked to: Prithvi
+Date: 2026-06-03
+Status: open
+
+Context:
+- Drizzle was added in the entries/sources persistence work.
+- Joel wants Prithvi's rationale before locking the long-term database tooling story.
+
+### Q: Is Go only for the distributed rate limiter, or will more backend services move to Go?
+
+Asked by: Prithvi
+Date: 2026-05-29
+Status: open
+
+Context:
+- This affects the pending React-vs-Next question in `Design-Choices.md`.
+
+### Q: What is the first import path after manual entries?
+
+Asked by: Codex
+Date: 2026-06-03
+Status: open
+
+Context:
+- Current direction: physical-note OCR, Obsidian, Google Keep, other notes, docs, chats.
+- Need to choose the first import source when implementation starts.

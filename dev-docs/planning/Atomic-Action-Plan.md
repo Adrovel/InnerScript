@@ -4,7 +4,23 @@ Purpose: split InnerScript from zero to Google-signal completion into atomic tas
 
 Rule: every task must either produce a working artifact, a test, a benchmark, or a decision record. Avoid vague tasks like "improve AI" or "make UI better."
 
-Update tracking: task checkboxes live here; narrative updates live in `planning/Update-Log.md`. When closing a phase, major task group, or notable implementation change, add a short Update Log entry with the updater, summary, verification, and open questions.
+Update tracking: task checkboxes live here; compact updates live in `.wolf/update-log.md`.
+
+## Progress
+
+Overall checkbox progress: [----------] 0% - 1/237 tasks
+
+| Phase | Checkbox progress |
+|---|---|
+| Phase 0 - Direction Lock | [###-------] 25% - 1/4 tasks |
+| Phase 1 - Local Journal Core | [----------] 0% - 0/42 tasks |
+| Phase 1.5 - Product Clarity And Local UI Review | [----------] 0% - 0/11 tasks |
+| Phase 2 - Semantic Core | [----------] 0% - 0/3 tasks |
+| Phase 3 - External Data Integrations | [----------] 0% - 0/37 tasks |
+| Phase 4 - People Records | [----------] 0% - 0/19 tasks |
+| Phase 5 - Insights and Reflection | [----------] 0% - 0/34 tasks |
+| Phase 6 - Go Distributed Rate Limiter | [----------] 0% - 0/5 tasks |
+| Phase 7 - Hosted Consumer Profile | [----------] 0% - 0/4 tasks |
 
 ## Ownership Model
 
@@ -37,12 +53,16 @@ Prithvi owns:
 
 If a feature changes the app direction, data model, privacy model, or Google signal, it must update the relevant docs under `dev-docs/` before implementation.
 
+If product clarity changes during a terminal session or user feedback loop, update the relevant docs in the same session. Use `design/idea.md` for product intent, `team/Design-Choices.md` for decisions, `planning/Features.md` for feature scope, `architecture/Architecture.md` for system shape, `planning/Plan.md` for phases, this file for task checkboxes, `planning/Future-Plan.md` for deferred-but-visible ideas, and `.wolf/update-log.md` for compact tracking.
+
+Development simplicity rule: during Phase 1 and early Phase 2, choose the smaller path when it still protects the journal data and product thesis. Do not introduce imports, dashboards, AI people, relationship analytics, hosted infrastructure, or distributed systems until the manual journal loop is boringly reliable.
+
 Relevant docs:
 
 - `planning/Features.md`
 - `architecture/Architecture.md`
 - `planning/Plan.md`
-- `planning/Update-Log.md`
+- `.wolf/update-log.md`
 - `architecture/Stack-and-Tools.md`
 - `research/Google-Signal-Benchmarks.md`
 - `guardrails/Direction-Guardrails.md`
@@ -142,6 +162,11 @@ Goal: make the project coherent before code changes.
 
 Goal: make InnerScript useful as a plain local journal before AI.
 
+Build constraint:
+
+- Keep the development app simple: write, save, list, open, export.
+- Anything beyond that should be deferred unless it removes a blocker for local writing.
+
 ### Layer 1: Schema and API — Estimate: Joel 6h / 1.0 day, Prithvi 18h / 6.0 days
 
 #### Joel
@@ -169,6 +194,7 @@ Goal: make InnerScript useful as a plain local journal before AI.
 #### Joel
 
 - [ ] Define minimal editor UX.
+- [ ] Define therapy/reflection tone for the first writing experience.
 - [ ] Decide whether Markdown preview is MVP or deferred.
 - [ ] Define autosave behavior and failure state.
 
@@ -216,6 +242,31 @@ Goal: make InnerScript useful as a plain local journal before AI.
 - [ ] A user can export their text.
 - [ ] Tests cover CRUD and export.
 - [ ] No AI key is required for core journaling.
+- [ ] No dashboard, import flow, AI people UI, or relationship analytics is required for Phase 1 completion.
+
+## Phase 1.5 - Product Clarity And Local UI Review — Estimate: Joel 4h / 0.7 days, Prithvi 4h / 1.3 days
+
+Goal: use local review feedback to keep product direction aligned before deeper implementation.
+
+### Joel
+
+- [ ] Review current Alexandria UI locally.
+- [ ] Decide whether Alexandria stays, changes, or becomes a temporary style.
+- [ ] Confirm first-screen language should feel therapy/reflection-first.
+- [ ] Identify the first three local UX problems after using the app.
+
+### Prithvi / Agent
+
+- [ ] Run the local server.
+- [ ] Capture Joel's UI feedback.
+- [ ] Update `design/idea.md`, `team/Design-Choices.md`, `planning/Features.md`, `architecture/Architecture.md`, `planning/Plan.md`, and this file when feedback changes product direction.
+- [ ] Add a `.wolf/update-log.md` entry after the local review pass.
+
+### Exit Criteria
+
+- [ ] Local UI feedback is captured.
+- [ ] Relevant docs reflect the current product clarity.
+- [ ] Next implementation task is selected from updated docs.
 
 ## Phase 2 - Semantic Core — Estimate: Joel 30h / 5.0 days, Prithvi 72h / 24.0 days
 
