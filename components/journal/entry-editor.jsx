@@ -40,22 +40,6 @@ export function EntryEditor({
           </div>
         </div>
 
-        <div className="mb-4 flex items-center gap-sm text-xs text-on-surface-variant/70">
-          <span suppressHydrationWarning>
-            Created: {formatEntryCreated(createdIso)}
-          </span>
-          {!isDraft ? (
-            <>
-              <span className="opacity-30">•</span>
-              <span suppressHydrationWarning>
-                Edited {formatRelativeEditTime(editedIso)}
-              </span>
-            </>
-          ) : null}
-        </div>
-
-        <hr className="mb-xl border-surface-variant" />
-
         <textarea
           autoFocus={autoFocus}
           value={body}
@@ -64,8 +48,21 @@ export function EntryEditor({
           className="min-h-[512px] w-full flex-1 resize-none bg-transparent font-sans text-base leading-7 text-on-background outline-none placeholder:text-on-surface-variant/50 md:text-lg md:leading-8"
         />
 
-        <div className="mt-auto flex justify-end pt-6">
-          <div className="rounded-full border border-outline-variant/30 bg-surface-container-low/80 px-3 py-1 text-[11px] text-on-surface-variant shadow-sm backdrop-blur">
+        <div className="mt-auto flex flex-col gap-2 pt-6 text-[11px] text-on-surface-variant/55 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span suppressHydrationWarning>
+              Created {formatEntryCreated(createdIso)}
+            </span>
+            {!isDraft ? (
+              <>
+                <span className="opacity-30">•</span>
+                <span suppressHydrationWarning>
+                  Edited {formatRelativeEditTime(editedIso)}
+                </span>
+              </>
+            ) : null}
+          </div>
+          <div className="w-fit rounded-full bg-surface-container-low/80 px-3 py-1 text-[11px] text-on-surface-variant/70">
             {wordCount} {wordCount === 1 ? "word" : "words"}
           </div>
         </div>

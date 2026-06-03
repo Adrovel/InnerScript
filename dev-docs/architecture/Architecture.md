@@ -24,6 +24,9 @@ The same core domain model should serve both profiles. Hosted mode adds account 
 │  │ Journal    │ │ Voice input  │ │ Import review│ │ Search   │ │ People   │ │
 │  └────────────┘ └──────────────┘ └──────────────┘ └──────────┘ └──────────┘ │
 │                                      ┌─────────────────────┐                 │
+│                                      │ Reflection Modes    │                 │
+│                                      └─────────────────────┘                 │
+│                                      ┌─────────────────────┐                 │
 │                                      │ Insights / Digest   │                 │
 │                                      └─────────────────────┘                 │
 └───────────────────────────────────────┬──────────────────────────────────────┘
@@ -134,6 +137,8 @@ created_at
 
 Current `source_type` values are defined in `db/schema.js`: `manual`, `voice`, `markdown`, `text_file`, and `whatsapp_export`.
 
+Planned source expansion should include OCR-normalized physical notes and note-app exports such as Obsidian and Google Keep. These should be modeled as source metadata first, not as new entry types unless the shape of the text genuinely changes.
+
 ### `chunks`
 
 Searchable semantic units.
@@ -225,6 +230,29 @@ User writes
 ```
 
 The save path must remain independent from AI. A note is saved even if AI fails.
+
+Phase 1 starts with manual entries because the therapy/reflection loop needs reliable private writing before imports, search, or AI modes become central.
+
+### Reflection Mode Flow
+
+```text
+User selects mode
+  -> ask question or request reflection
+  -> retrieve source entries/chunks when needed
+  -> generate response with mode contract
+  -> show citations or uncertainty
+  -> allow user to mark insight wrong
+```
+
+Initial modes:
+
+- gentle coach
+- brutally honest analyst
+- therapist-like reflector
+- philosopher/debater
+- writing/thinking coach
+
+Thinker/personality modes should be treated as perspective lenses or simulations. They must not claim to be the real person, and they should separate external perspective from claims grounded in the user's own notes.
 
 ### Voice Flow
 

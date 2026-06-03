@@ -15,8 +15,11 @@ InnerScript is a local-first AI journaling and semantic memory system.
 It converts private unstructured life text into searchable, source-backed insight:
 
 - typed journal entries
+- manual therapy/reflection entries written directly in InnerScript
 - voice transcripts
 - Markdown and text imports
+- OCR text from physical notes
+- note-app imports from tools such as Obsidian and Google Keep
 - WhatsApp exported chats
 - people records
 - weekly and long-range reflection
@@ -38,6 +41,30 @@ InnerScript should visibly demonstrate:
 | AI application skill | speech-to-text, semantic search, RAG, structured extraction |
 | Product judgment | minimal UI, privacy-first defaults, source-backed insights |
 | Googleyness | ambiguity, ownership, user focus, responsible AI boundaries |
+
+## Development MVP
+
+The development MVP should be deliberately smaller than the long-term product.
+
+Build first:
+
+- write
+- save
+- list
+- open
+- edit
+- export
+- one current-entry reflection question
+
+Do not require these for the development MVP:
+
+- dashboards
+- imports
+- AI people
+- relationship analytics
+- Go/Redis
+- hosted auth/billing
+- broad analysis before enough context exists
 
 ## MVP Features
 
@@ -74,7 +101,7 @@ entries/sources/chunks
 
 ### 1. Minimal Journal
 
-The editor is the home screen.
+The editor is the home screen, and the first product loop is write-first therapy/reflection.
 
 Requirements:
 
@@ -85,6 +112,11 @@ Requirements:
 - keyboard-first interactions
 - AI-off mode
 - exportable raw text
+- reflective visual tone before search/dashboard complexity
+- no created/edited metadata between title and body
+- no dead top-bar controls
+- New Note creates a real note immediately
+- left sidebar stays simple and review-driven
 
 Google signal:
 
@@ -153,6 +185,8 @@ Supported first:
 
 - Markdown files
 - `.txt` files
+- OCR-normalized text from physical notes
+- note-app exports from Obsidian, Google Keep, and similar tools
 - WhatsApp exported `.txt` chats
 - clipboard paste
 
@@ -217,6 +251,58 @@ Routes:
 Purpose:
 
 Represent people as entities in the user's personal semantic memory.
+
+### 7. Reflection Modes
+
+Purpose:
+
+Let the user choose how the AI reflects back their own material.
+
+Development path: start with one reflection question after writing. Add mode switching only after the simple question works.
+
+Initial modes:
+
+- gentle coach
+- brutally honest analyst
+- therapist-like reflector
+- philosopher/debater
+- writing/thinking coach
+
+Rules:
+
+- all claims about the user should be source-backed
+- no diagnoses
+- direct feedback must cite entries or be clearly marked as interpretation
+- AI-off journaling must still work
+- one-entry context allows a reflection question, not broad pattern analysis
+
+Google signal:
+
+- responsible AI behavior design
+- prompt contracts
+- source-backed generation
+- user-controlled AI experience
+
+### 8. Thinker / AI People Perspective Modes
+
+Purpose:
+
+Make AI people visible in the MVP roadmap as clearly labeled perspective simulations.
+
+Examples:
+
+- Nietzsche questioning values
+- Alex Hormozi questioning sales mindset
+- Jesus Christ discussing Christianity
+- Machiavelli discussing power
+
+Rules:
+
+- do not pretend to be the real person
+- label as a perspective lens or simulation
+- separate external-perspective responses from personal-memory responses
+- cite or summarize source grounding where possible
+- do not let this replace the core journal/search/reflection loop
 
 Person page:
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { SaveStatus } from "@/components/journal/save-status";
-import { Menu, MoreVertical, RefreshCw, Share2 } from "lucide-react";
+import { Menu, RefreshCw } from "lucide-react";
 
 export function TopAppBar({
   saveStatus,
@@ -32,25 +32,12 @@ export function TopAppBar({
 
           <button
             type="button"
-            aria-label="Sync"
+            aria-label="Reload entries"
+            title="Reload entries"
             onClick={onRefresh}
             className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary active:scale-95"
           >
             <RefreshCw className="size-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            aria-label="Share"
-            className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary active:scale-95"
-          >
-            <Share2 className="size-5" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            aria-label="More options"
-            className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary active:scale-95"
-          >
-            <MoreVertical className="size-5" aria-hidden="true" />
           </button>
         </div>
       </div>

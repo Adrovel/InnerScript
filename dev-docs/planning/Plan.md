@@ -2,14 +2,97 @@
 
 Purpose: phase the work so Joel and Prithvi can build in parallel while keeping the project aligned with Google SWE L3 signal.
 
-Update tracking: use `planning/Update-Log.md` for narrative project updates, who made them, what was verified, and open follow-ups. Use this plan for phase roadmap and deliverables.
+Update tracking: use `.wolf/update-log.md` for compact project updates. Use this plan for phase roadmap and deliverables.
+
+## Progress
+
+Overall: [##--------] 20%
+
+| Phase | Progress | Notes |
+|---|---:|---|
+| Phase 0 - Direction Lock | [######----] 60% | thesis, docs, local direction mostly clear; a few architecture decisions remain |
+| Phase 1 - Local Journal Core | [#####-----] 50% | local app runs, entries API works, editor exists; export/today/delete polish remain |
+| Phase 1.5 - Product Clarity And Local UI Review | [######----] 60% | local server running and UI feedback captured; sidebar/editor still under review |
+| Phase 2 - Reflection Question | [#---------] 10% | direction chosen; implementation not started |
+| Phase 3 - Semantic Core | [----------] 0% | deferred until journal loop is reliable |
+| Phase 4 - Imports | [----------] 0% | deferred |
+| Phase 5 - Freeform People Notes | [----------] 0% | deferred |
+| Phase 6 - Source-Backed Insights | [----------] 0% | deferred |
+| Phase 7 - Systems/Hosted | [----------] 0% | deferred |
 
 ## Priority Order
 
-1. Build a Google-signal project.
-2. Build a useful AI journaling app.
-3. Learn agentic AI and AI systems.
-4. Prepare for eventual consumer monetization.
+1. Keep the development-phase app simple enough to build and run locally.
+2. Build a useful therapy/reflection-first journaling loop.
+3. Preserve the Google-signal project path without forcing every later system into the MVP.
+4. Learn agentic AI and AI systems.
+5. Prepare for eventual consumer monetization.
+
+## Development Simplicity Rule
+
+The long-term vision can stay ambitious, but the development app should stay small.
+
+Prefer:
+
+- manual entries before imports
+- one journal-first home screen before dashboards
+- one reflection question after writing before multi-mode AI
+- local Postgres before hosted infrastructure
+- export before advanced analytics
+- simple freeform people notes before people graphs
+
+Defer:
+
+- AI people conversation UI
+- relationship analytics
+- mood/pattern dashboards
+- OCR and note-app imports
+- Go/Redis rate limiter
+- hosted auth, billing, quotas, and consumer infrastructure
+
+## Development Phase Roadmap
+
+### Phase 1 - Simple Local Journal
+
+Goal: write, save, list, open, and edit entries without friction.
+
+### Phase 1.5 - Local UI Review And Friction Removal
+
+Goal: use Joel's local feedback to remove friction before adding intelligence.
+
+Current UI rules from review:
+
+- no dead Share or More buttons
+- Refresh means reload entries from the database
+- left notes sidebar should be simple and calm
+- New Note should create/select a real note immediately
+- created/edited metadata must not sit between title and body
+
+### Phase 2 - One Reflection Question
+
+Goal: after writing, ask one grounded reflection question from the current entry.
+
+Do not add broad analysis yet. One entry means entry-specific reflection only.
+
+### Phase 3 - Semantic Core
+
+Goal: chunk, embed, search, and cite entries after the journal loop is stable.
+
+### Phase 4 - Imports
+
+Goal: bring in Markdown/text/OCR/note-app/chats with provenance after manual entries are reliable.
+
+### Phase 5 - Freeform People Notes
+
+Goal: support freeform relationship notes before structured people analytics.
+
+### Phase 6 - Source-Backed Insights
+
+Goal: weekly digest, patterns, assumptions, and challenge mode with citations.
+
+### Phase 7 - Systems And Hosted Profile
+
+Goal: Go/Redis limiter and hosted consumer mode after the local product has value.
 
 ## Phase 0 - Reset and Contracts
 
@@ -31,7 +114,7 @@ Owner:
 
 ## Phase 1 - Local Journal Core
 
-Goal: a clean local journaling app without depending on AI.
+Goal: a clean local journaling app that feels like therapy/reflection software first and does not depend on AI.
 
 Deliverables:
 
@@ -44,10 +127,13 @@ Deliverables:
 - `.env.example`
 - local setup doc
 - AI-off mode
+- reflection-first UI language and empty states
+- no dashboard, import, or AI people work in Phase 1
 
 Joel:
 
 - define UX rules and data model
+- define therapy/reflection tone for the write-first loop
 - review schema and privacy behavior
 
 Prithvi:
@@ -63,7 +149,36 @@ Google signal:
 - clean data model
 - product judgment
 
-## Phase 2 - Semantic Core
+Simplicity rule:
+
+- If a Phase 1 task makes local setup, writing, saving, or export harder, defer it unless it is required for data safety.
+
+## Phase 2 - Reflection Question
+
+Goal: add the first AI moment without making the app feel heavy.
+
+Deliverables:
+
+- reflection-question button or subtle prompt after writing
+- current-entry-only prompt contract
+- no broad user analysis from one entry
+- hidden or disabled if AI is unavailable
+
+Joel:
+
+- define the first reflection-question tone
+- approve safe language
+
+Prithvi:
+
+- implement the smallest UI/API path after contract is clear
+
+Google signal:
+
+- responsible AI behavior
+- product restraint
+
+## Phase 3 - Semantic Core
 
 Goal: convert text into searchable semantic memory.
 
@@ -96,7 +211,7 @@ Google signal:
 - evaluation discipline
 - lexical vs semantic search tradeoffs
 
-## Phase 3 - Voice and Imports
+## Phase 4 - Voice and Imports
 
 Goal: support real personal data beyond typed journal entries.
 
@@ -107,6 +222,8 @@ Deliverables:
 - transcript review screen
 - Markdown importer
 - `.txt` importer
+- OCR-normalized physical note import path
+- Obsidian / Google Keep / note-app export import path
 - WhatsApp export parser
 - import preview and confirm flow
 - source provenance in UI
@@ -132,9 +249,9 @@ Google signal:
 - privacy-sensitive engineering
 - async processing
 
-## Phase 4 - People Route
+## Phase 5 - Freeform People Notes
 
-Goal: add user-controlled people records without forcing person interactions into the entry model.
+Goal: start relationship memory as freeform notes before structured people analytics.
 
 Deliverables:
 
@@ -162,7 +279,7 @@ Google signal:
 - entity modeling
 - privacy and product judgment
 
-## Phase 5 - Insight Layer
+## Phase 6 - Insight Layer
 
 Goal: turn stored text into source-backed patterns.
 
@@ -172,6 +289,8 @@ Deliverables:
 - weekly digest
 - assumption extraction
 - challenge-this flow
+- reflection mode switcher
+- thinker/personality perspective mode prototype
 - contradiction/change detector
 - insight dashboard
 
@@ -180,6 +299,8 @@ Joel:
 - own prompts and insight taxonomy
 - own assumption extraction contract
 - own challenge-mode behavior
+- own mode contracts for gentle coach, brutally honest analyst, therapist-like reflector, philosopher/debater, and writing/thinking coach
+- define safe labeling for thinker/personality perspective modes
 
 Prithvi:
 
@@ -194,7 +315,9 @@ Google signal:
 - RAG with provenance
 - responsible AI design
 
-## Phase 6 - Go Distributed Rate Limiter
+Thinker/personality perspective modes are visible in the MVP roadmap but should not replace journal, source, search, and provenance foundations. They must be labeled as simulations or lenses, not the real person.
+
+## Phase 7 - Go Distributed Rate Limiter
 
 Goal: build the explicit systems component that strengthens the Google signal.
 
@@ -241,7 +364,7 @@ Google signal:
 - distributed consistency tradeoffs
 - observability
 
-## Phase 7 - Hosted Consumer Mode
+## Phase 8 - Hosted Consumer Mode
 
 Goal: turn the local project into a possible product without corrupting local-first trust.
 
@@ -294,3 +417,26 @@ Google signal:
 The finished project should support a resume bullet like:
 
 > Built InnerScript, a local-first AI journaling and semantic memory system that ingests typed notes, voice transcripts, and WhatsApp exports, chunks and indexes text with pgvector for semantic search, generates source-backed personal insights with LLMs, and protects hosted AI endpoints with a Go/Redis distributed rate limiter.
+
+## Google Signal
+
+Source: `Personal Repo/04-Career/Organised/Projects/Google-Project-Googliness-Algorithm.md`
+
+| Dimension | Score |
+|---|---:|
+| Role Skill Alignment | 22/25 |
+| Engineering Depth | 18/20 |
+| Current Standing / Proof | 14/20 |
+| Technical + Business Prospect | 13/15 |
+| Googleyness Story | 7/10 |
+| Level Fit | 8/10 |
+| **Total** | **82/100** |
+
+Read: InnerScript is the strongest Google technical signal: AI/RAG, semantic search, local-first data ownership, pgvector, retrieval quality, and database-backed product design.
+
+Upgrade path:
+
+- Add a standalone RAG backend/service with measurable p95/p99 latency.
+- Add evaluation cases for retrieval quality.
+- Add import/export and source-backed answer citations.
+- Write one architecture doc covering chunking, embeddings, indexing, privacy, and failure modes.

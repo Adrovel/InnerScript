@@ -260,10 +260,24 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
 
   const handleNewNote = useCallback(async () => {
     await flushPendingSave();
-    setSelectedEntryId(null);
-    setDraft(createDraft({ entryType: "note" }));
-    setSaveStatus("idle");
-    setLastEditedAt(null);
+    setSaveStatus("saving");
+
+    try {
+      const note = await createEntry({
+        title: null,
+        body: "",
+        entry_type: "note",
+        occurred_at: new Date().toISOString(),
+      });
+
+      setEntries((current) => [note, ...current.filter((entry) => entry.id !== note.id)]);
+      setSelectedEntryId(note.id);
+      setDraft(createDraft());
+      setSaveStatus("saved");
+      setLastEditedAt(new Date());
+    } catch {
+      setSaveStatus("error");
+    }
   }, [flushPendingSave]);
 
   const showEmptyState =

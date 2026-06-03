@@ -106,6 +106,32 @@ Guardrails:
 - Keep any future debate UX separate from core journal writing.
 - Do not let debate features replace source-backed reflection.
 
+## Thinker And AI People Perspective Modes
+
+Status: visible in the MVP roadmap, but not a Phase 1 implementation item.
+
+Decision:
+
+- Keep this concept visible because it is part of Joel's core product imagination.
+- Implement only after manual journaling, source provenance, semantic search, and reflection mode contracts exist.
+- Start as user-selected perspective modes, not autonomous people or social agents.
+
+Examples:
+
+- Nietzsche questioning values.
+- Alex Hormozi questioning sales mindset.
+- Jesus Christ discussing Christianity.
+- Machiavelli discussing power.
+
+Guardrails:
+
+- Never pretend to be the real person.
+- Label each mode as a simulation, perspective, or lens.
+- Separate external thinker perspective from personal-memory claims.
+- Use source grounding where possible.
+- Do not let this become a generic debate product.
+- Do not make AI people converse with each other until single-user reflection modes are useful and safe.
+
 ## Streaks And Gamification
 
 Status: deferred from the active MVP plan.
