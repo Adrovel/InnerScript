@@ -6,7 +6,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 
 | Folder | Purpose |
 |---|---|
-| `planning/` | Features, phase plan, atomic task list, estimates, and ownership |
+| `planning/` | Features, phase plan, update log, atomic task list, estimates, and ownership |
 | `architecture/` | System architecture and stack/tooling decisions |
 | `research/` | Semantic meaning research and Google-signal benchmarks |
 | `guardrails/` | Direction-change rules and external data integration rules |
@@ -19,6 +19,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [Features](./planning/Features.md)
 - [Plan](./planning/Plan.md)
 - [Atomic Action Plan](./planning/Atomic-Action-Plan.md)
+- [Update Log](./planning/Update-Log.md)
 - [Future Plan](./planning/Future-Plan.md)
 - [Architecture](./architecture/Architecture.md)
 - [Stack and Tools](./architecture/Stack-and-Tools.md)

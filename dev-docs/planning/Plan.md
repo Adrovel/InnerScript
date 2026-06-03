@@ -2,6 +2,8 @@
 
 Purpose: phase the work so Joel and Prithvi can build in parallel while keeping the project aligned with Google SWE L3 signal.
 
+Update tracking: use `planning/Update-Log.md` for narrative project updates, who made them, what was verified, and open follow-ups. Use this plan for phase roadmap and deliverables.
+
 ## Priority Order
 
 1. Build a Google-signal project.
