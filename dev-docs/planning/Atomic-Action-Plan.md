@@ -4,6 +4,8 @@ Purpose: split InnerScript from zero to Google-signal completion into atomic tas
 
 Rule: every task must either produce a working artifact, a test, a benchmark, or a decision record. Avoid vague tasks like "improve AI" or "make UI better."
 
+Update tracking: task checkboxes live here; narrative updates live in `planning/Update-Log.md`. When closing a phase, major task group, or notable implementation change, add a short Update Log entry with the updater, summary, verification, and open questions.
+
 ## Ownership Model
 
 ### Joel
@@ -40,6 +42,7 @@ Relevant docs:
 - `planning/Features.md`
 - `architecture/Architecture.md`
 - `planning/Plan.md`
+- `planning/Update-Log.md`
 - `architecture/Stack-and-Tools.md`
 - `research/Google-Signal-Benchmarks.md`
 - `guardrails/Direction-Guardrails.md`
@@ -177,6 +180,7 @@ Goal: make InnerScript useful as a plain local journal before AI.
 - [ ] Add empty state.
 - [ ] Add retry behavior for failed save.
 - [ ] Add component test for autosave.
+- [ ] Do not ship floating AI insight panel in Phase 1; defer to `planning/Future-Plan.md` (Phase 5).
 
 ### Layer 3: Daily Entry — Estimate: Joel 3h / 0.5 days, Prithvi 8h / 2.7 days
 

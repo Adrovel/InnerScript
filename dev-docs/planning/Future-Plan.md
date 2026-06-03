@@ -128,3 +128,46 @@ Guardrails:
 - Do not make the home screen streak-first.
 - Do not create shame-based empty states or broken-streak pressure.
 - Do not prioritize gamification over exportability, search quality, or privacy.
+
+## Floating AI Insight Panel (Editor)
+
+Status: deferred from Phase 1 UI. Prototype existed in the journal editor and was removed to keep Phase 1 writing-only.
+
+Reason:
+
+- Phase 1 is local journal core without AI dependencies.
+- The panel looked like real AI insight but was rule-based copy from word count.
+- Re-adding it belongs with Phase 5 source-backed insights, not placeholder UI.
+
+Target phase: Phase 5 - Insights and Reflection (after search and provenance foundations).
+
+Layout spec (Alexandria / ZenNotes reference):
+
+- Breakpoint: show only at `xl` and above; hide on smaller viewports so the editor stays full width.
+- Container: editor uses a flex row — note column on the left, insight aside on the right.
+- Note column: responsive max-width (`680px` → `760px` md → `840px` lg); grows to fill remaining space inside the row.
+- Gap: `gap-16` (64px) at `xl`, `gap-24` (96px) at `2xl` between note column and insight panel.
+- Insight aside: fixed `w-72` (288px), `shrink-0`, `sticky top-8` while scrolling.
+- Card: `rounded-xl`, `border border-primary/20`, `bg-background`, `p-4`, `shadow-xl`.
+- Header row: Lucide `Brain` icon (18px) + label `AI INSIGHT` in uppercase, `text-[10px]`, `tracking-widest`, primary color.
+- Body: short italic suggestion, `text-xs`, `text-on-surface-variant`.
+
+Phase 1 placeholder behavior (do not ship in Phase 1):
+
+- Word-count tiers drove static copy (empty → early signal → pattern forming → deep context).
+- Entry type (`journal` vs `note`) could change the empty-state message.
+
+Phase 5+ behavior:
+
+- Replace placeholder copy with source-backed insight from the insights API.
+- Every suggestion must cite entry passages or chunks; no identity inference from journal text alone.
+- Gate behind a feature flag until insight quality and provenance UI are ready.
+
+Reimplementation checklist:
+
+- [ ] Restore flex row wrapper in `components/journal/entry-editor.jsx` (or extract `InsightPanel.jsx`).
+- [ ] Pass insight payload from API/hook, not inline word-count rules.
+- [ ] Keep panel out of Phase 1 exit criteria and AI-off mode.
+- [ ] Add component test only when insight data is real, not for placeholder tiers.
+
+Reference: Alexandria design tokens in `DESIGN.md`; original ZenNotes HTML used an absolutely positioned card at `left: calc(100% + 12px)` — prefer the flex + gap layout for maintainable spacing on wide screens.
