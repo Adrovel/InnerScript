@@ -120,6 +120,23 @@ Context:
 
 ## Technical / Architecture
 
+### Q: What final file structure and conventions should InnerScript use?
+
+Asked by: Joel
+Asked to: Prithvi
+Date: 2026-06-04
+Status: open
+
+Context:
+- Joel wants to decide app file structure and conventions before the project grows further.
+- This includes source folders, tests, product knowledge, priority-change logs, `.wolf`, buglog, session context, memory, and session logs.
+- Current plan is documented in `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`.
+
+Needed for:
+- final source-folder conventions
+- `.wolf` role or rename/mirror decision
+- future implementation without context drift
+
 ### Q: What is an autosave race in an editor, and how can InnerScript avoid it?
 
 Asked by: Joel

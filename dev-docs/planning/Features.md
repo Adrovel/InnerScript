@@ -56,6 +56,13 @@ Build first:
 - export
 - one current-entry reflection question
 
+Maintain while building:
+
+- product knowledge routing
+- priority-change log
+- current `idea.md`, `Plan.md`, and `Atomic-Action-Plan.md` before implementation
+- file-structure and convention decisions before source folders drift
+
 Do not require these for the development MVP:
 
 - dashboards
@@ -85,6 +92,7 @@ Use this table to decide what deserves engineering time first. "High" means it c
 | Mood/topic dashboard | Medium | Useful product feature, but common unless tied to retrieval, provenance, and evaluation |
 | Minimal journal/editor | Medium | Necessary foundation, but weaker Google signal by itself |
 | Hosted auth/billing | Medium | Production signal, but should come after local core and systems story |
+| Product knowledge and conventions | Medium | Not a user-facing feature, but protects product clarity, team workflow, and implementation consistency |
 
 Full debate UI and streaks/gamification are deferred to `dev-docs/planning/Future-Plan.md`.
 
@@ -122,6 +130,23 @@ Google signal:
 
 - strong UX/product judgment without overbuilding
 - clean client/server boundaries
+
+### 1.5. Product Knowledge And Conventions
+
+This is not a user-facing feature, but it is part of the development MVP workflow.
+
+Requirements:
+
+- `dev-docs/product-knowledge/` stores durable product knowledge learned while building
+- priority changes are logged with rationale in `Priority-Change-Log.md`
+- file-structure and `.wolf` conventions are decided with Prithvi before more implementation
+- product behavior changes update `idea.md`, `Plan.md`, and `Atomic-Action-Plan.md` before implementation
+
+Google signal:
+
+- strong ownership and ambiguity management
+- clear engineering process
+- lower risk of context drift in a multi-person project
 
 ### 2. Entry and Source Model
 

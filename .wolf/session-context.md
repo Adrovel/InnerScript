@@ -59,6 +59,8 @@ Expected file changes:
   - `dev-docs/architecture/Architecture.md`
   - `dev-docs/planning/Future-Plan.md`
   - `dev-docs/guardrails/Direction-Guardrails.md`
+  - `dev-docs/product-knowledge/Priority-Change-Log.md` if priority changes
+  - `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md` if file structure or context conventions change
 - `.wolf/update-log.md` for a notable compact update
 - `.wolf/memory.md` at session end or half-context checkpoint
 
@@ -134,11 +136,13 @@ People and agents should load these first:
 10. User review notes: `.wolf/user-review.md`
 11. Project session memory: `.wolf/memory.md`
 12. Git workflow standard: `dev-docs/engineering-standards/Git-Workflow-Standard.md`
+13. Product knowledge index: `dev-docs/product-knowledge/README.md`
 
 Load task-specific docs only when needed:
 
 - Runtime/setup: `README.md`, `dev-docs/architecture/Stack-and-Tools.md`, `dev-docs/architecture/Architecture.md`
 - Git work: `dev-docs/engineering-standards/Git-Workflow-Standard.md`
+- Product knowledge / priority / structure conventions: `dev-docs/product-knowledge/README.md`, `dev-docs/product-knowledge/Priority-Change-Log.md`, `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`
 - Product/UI direction: `dev-docs/design/idea.md`, `dev-docs/team/Product-Decisions.md`, `dev-docs/team/Open-Questions.md`
 - User-review/UI polish: `.wolf/user-review.md`, `.wolf/update-log.md`, `.wolf/buglog-index.md`
 - Feature/API/schema: `dev-docs/planning/Features.md`, `dev-docs/planning/Plan.md`, `dev-docs/planning/Atomic-Action-Plan.md`

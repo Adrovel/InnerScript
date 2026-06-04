@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [##--------] 22% - 29/132 visible tasks
+Overall checkbox progress: [##--------] 17% - 46/274 visible tasks
 
 Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
 
@@ -16,15 +16,17 @@ Notification rule: when overall checkbox progress reaches or crosses 40%, tell J
 
 | Phase | Checkbox progress |
 |---|---|
-| Phase 0 - Direction Lock | [#####-----] 50% - 4/8 visible tasks |
-| Phase 1 - Local Journal Core | [####------] 43% - 18/42 tasks |
-| Phase 1.5 - Product Clarity And Local UI Review | [########--] 82% - 9/11 tasks |
-| Phase 2 - One Reflection Question | [----------] 0% - 0/8 tasks |
-| Phase 3 - Semantic Core | [----------] 0% - 0/3 tasks |
-| Phase 4 - External Data Integrations | [----------] 0% - 0/37 tasks |
+| Phase 0 - Direction Lock | [####------] 35% - 6/17 visible tasks |
+| Phase 0.5 - Product Knowledge And Project Conventions | [####------] 42% - 10/24 tasks |
+| Phase 1 - Local Journal Core | [#####-----] 48% - 20/42 tasks |
+| Phase 1.5 - Product Clarity And Local UI Review | [#########-] 91% - 10/11 tasks |
+| Phase 2 - One Reflection Question | [----------] 0% - 0/11 tasks |
+| Phase 3 - Semantic Core | [----------] 0% - 0/31 tasks |
+| Phase 4 - External Data Integrations | [----------] 0% - 0/39 tasks |
 | Phase 5 - Freeform People Notes | [----------] 0% - 0/19 tasks |
 | Phase 6 - Source-Backed Insights | [----------] 0% - 0/34 tasks |
-| Phase 7 - Systems And Hosted Profile | [----------] 0% - 0/9 tasks |
+| Phase 7A - Google Systems Layer | [----------] 0% - 0/25 tasks |
+| Phase 7B - Hosted Consumer Profile | [----------] 0% - 0/21 tasks |
 
 ## Ownership Model
 
@@ -57,6 +59,8 @@ Prithvi owns:
 
 If a feature changes the app direction, data model, privacy model, or Google signal, it must update the relevant docs under `dev-docs/` before implementation.
 
+No app behavior change should be implemented while `dev-docs/design/idea.md`, `dev-docs/planning/Plan.md`, or this file are stale for that change. If the change affects priority, update `dev-docs/product-knowledge/Priority-Change-Log.md`. If the change affects file structure, conventions, `.wolf`, buglog, memory, session context, or session logs, update `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`.
+
 If product clarity changes during a terminal session or user feedback loop, update the relevant docs in the same session. Use `design/idea.md` for product intent, `team/Design-Choices.md` for decisions, `planning/Features.md` for feature scope, `architecture/Architecture.md` for system shape, `planning/Plan.md` for phases, this file for task checkboxes, `planning/Future-Plan.md` for deferred-but-visible ideas, and `.wolf/update-log.md` for compact tracking.
 
 Development simplicity rule: during Phase 1 and early Phase 2, choose the smaller path when it still protects the journal data and product thesis. Do not introduce imports, dashboards, AI people, relationship analytics, hosted infrastructure, or distributed systems until the manual journal loop is boringly reliable.
@@ -71,6 +75,10 @@ Relevant docs:
 - `research/Google-Signal-Benchmarks.md`
 - `guardrails/Direction-Guardrails.md`
 - `guardrails/External-Data-Integrations.md`
+- `design/idea.md`
+- `product-knowledge/README.md`
+- `product-knowledge/Priority-Change-Log.md`
+- `product-knowledge/Structure-and-Conventions-Plan.md`
 
 ## Estimation Model
 
@@ -87,14 +95,17 @@ Assumptions:
 | Phase | Joel hours | Joel days | Prithvi hours | Prithvi days | Calendar estimate with parallel work |
 |---|---:|---:|---:|---:|---|
 | Phase 0 - Direction Lock | 12 | 2.0 | 6 | 2.0 | 2 days |
+| Phase 0.5 - Product Knowledge And Project Conventions | 6 | 1.0 | 4 | 1.3 | 1-2 days |
 | Phase 1 - Local Journal Core | 18 | 3.0 | 54 | 18.0 | 3-4 weeks |
-| Phase 2 - Semantic Core | 30 | 5.0 | 72 | 24.0 | 4-5 weeks |
-| Phase 3 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | 5-6 weeks |
-| Phase 4 - People Records | 10 | 1.7 | 26 | 8.7 | 1-2 weeks |
-| Phase 5 - Insights and Reflection | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
-| Phase 6 - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
-| Phase 7 - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
-| Total | 244 | 40.7 | 428 | 142.7 | ~26-34 weeks |
+| Phase 1.5 - Product Clarity And Local UI Review | 4 | 0.7 | 4 | 1.3 | 1-2 days |
+| Phase 2 - One Reflection Question | 6 | 1.0 | 10 | 3.3 | 1 week |
+| Phase 3 - Semantic Core | 30 | 5.0 | 72 | 24.0 | 4-5 weeks |
+| Phase 4 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | 5-6 weeks |
+| Phase 5 - Freeform People Notes | 10 | 1.7 | 26 | 8.7 | 1-2 weeks |
+| Phase 6 - Source-Backed Insights | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
+| Phase 7A - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
+| Phase 7B - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
+| Total | 260 | 43.4 | 446 | 148.7 | ~27-35 weeks |
 
 Important:
 
@@ -108,10 +119,12 @@ Important:
 |---|---|---:|---:|---|
 | 0 | Direction confirmation | 8 | 3 | Joel validates product/Google thesis; Prithvi lists implementation questions |
 | 0 | Local setup verification | 4 | 3 | Prithvi checks run path; Joel resolves direction blockers |
+| 0.5 | Product knowledge and conventions | 6 | 4 | decide product knowledge, priority-change log, `.wolf`, source folders, and test conventions |
 | 1 | Schema and API | 6 | 18 | Highest dependency layer for Phase 1 |
 | 1 | Editor | 4 | 14 | Keep UI minimal |
 | 1 | Daily entry | 3 | 8 | Small but important UX loop |
 | 1 | Export | 5 | 14 | Open-source trust feature |
+| 1.5 | Local UI review | 4 | 4 | capture user review, remove friction, and update product context |
 | 2 | Reflection question | 6 | 10 | Current-entry-only first AI moment; no broad analysis |
 | 3 | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
 | 3 | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
@@ -161,6 +174,46 @@ Goal: make the project coherent before code changes.
 - [X] High-impact feature ranking is visible in `planning/Features.md`.
 - [X] Next phase tasks have clear owners.
 - [ ] No implementation starts without a stable schema direction.
+
+## Phase 0.5 - Product Knowledge And Project Conventions — Estimate: Joel 6h / 1.0 day, Prithvi 4h / 1.3 days
+
+Goal: decide where product knowledge, priority changes, operational logs, session context, memory, `.wolf`, source folders, and tests belong before further implementation adds drift.
+
+### Joel Tasks
+
+- [X] Decide that product knowledge and priority changes need durable project-local docs.
+- [X] Require `idea.md`, `Plan.md`, and `Atomic-Action-Plan.md` to be current before implementation.
+- [ ] Discuss `.wolf`, buglog, session context, memory, session logs, and naming with Prithvi.
+- [ ] Decide whether `.wolf/` stays, gets documented, gets mirrored, or later gets renamed.
+- [ ] Approve the product knowledge folder responsibilities.
+- [ ] Approve the priority-change log format.
+- [ ] Approve app source-folder conventions after Prithvi review.
+
+### Prithvi Tasks
+
+- [ ] Review `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`.
+- [ ] Give rationale for keeping, renaming, or documenting `.wolf`.
+- [ ] Propose source folder conventions for journal, imports, search, AI, people, shared utilities, and tests.
+- [ ] Identify which conventions affect current implementation and which can wait.
+
+### Agent Tasks
+
+- [X] Create `dev-docs/product-knowledge/README.md`.
+- [X] Create `dev-docs/product-knowledge/Priority-Change-Log.md`.
+- [X] Create `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`.
+- [X] Update `dev-docs/design/idea.md` with product-knowledge context.
+- [X] Update `dev-docs/planning/Plan.md` with Phase 0.5 and planning sync rule.
+- [X] Update this atomic checklist with Phase 0.5 tasks and current completed work.
+- [X] Update `Product-Decisions.md` and `Open-Questions.md`.
+- [X] Update `Direction-Guardrails.md`, `dev-docs/README.md`, `.wolf/session-context.md`, `.wolf/update-log.md`, and workspace anatomy.
+
+### Exit Criteria
+
+- [ ] Prithvi has reviewed and answered structure/conventions questions.
+- [ ] `.wolf` role is accepted or a migration path is written.
+- [ ] Source-folder and test conventions are documented.
+- [ ] Product knowledge update rules are accepted.
+- [ ] Future implementation can proceed without guessing where context belongs.
 
 ## Phase 1 - Local Journal Core — Estimate: Joel 18h / 3.0 days, Prithvi 54h / 18.0 days
 

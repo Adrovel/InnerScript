@@ -13,6 +13,7 @@ Notification rule: when overall roadmap progress reaches or crosses 40%, tell Jo
 | Phase | Progress | Notes |
 |---|---:|---|
 | Phase 0 - Direction Lock | [#######---] 70% | thesis, docs, feature ranking, and schema direction are mostly clear; Drizzle rationale and a few architecture choices remain |
+| Phase 0.5 - Product Knowledge And Project Conventions | [####------] 42% | product knowledge folder, priority-change log, and structure plan exist; `.wolf`, file structure, and source conventions still need discussion with Prithvi |
 | Phase 1 - Local Journal Core | [######----] 65% | entries/sources schema, CRUD APIs, editor, autosave, visible save state, and focused autosave tests exist; export/today/delete polish remain |
 | Phase 1.5 - Product Clarity And Local UI Review | [########--] 85% | local server review captured, UI feedback stored in `.wolf/user-review.md`, sidebar/editor polish mostly confirmed; autosave browser stress remains |
 | Phase 2 - Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
@@ -25,10 +26,29 @@ Notification rule: when overall roadmap progress reaches or crosses 40%, tell Jo
 ## Priority Order
 
 1. Keep the development-phase app simple enough to build and run locally.
-2. Build a useful therapy/reflection-first journaling loop.
-3. Preserve the Google-signal project path without forcing every later system into the MVP.
-4. Learn agentic AI and AI systems.
-5. Prepare for eventual consumer monetization.
+2. Keep product knowledge, priority changes, and implementation plans synchronized before more app changes.
+3. Build a useful therapy/reflection-first journaling loop.
+4. Preserve the Google-signal project path without forcing every later system into the MVP.
+5. Learn agentic AI and AI systems.
+6. Prepare for eventual consumer monetization.
+
+## Planning Sync Rule
+
+No app behavior change should be implemented unless these docs are updated or explicitly confirmed current in the same session:
+
+- `dev-docs/design/idea.md`
+- `dev-docs/planning/Plan.md`
+- `dev-docs/planning/Atomic-Action-Plan.md`
+
+If the change affects priority, also update:
+
+- `dev-docs/product-knowledge/Priority-Change-Log.md`
+
+If the change affects folder structure, file ownership, conventions, `.wolf`, session context, memory, buglog, or session logging, update:
+
+- `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`
+- `.wolf/session-context.md`
+- `dev-docs/README.md`
 
 ## Development Simplicity Rule
 
@@ -57,6 +77,34 @@ Defer:
 ### Phase 1 - Simple Local Journal
 
 Goal: write, save, list, open, and edit entries without friction.
+
+### Phase 0.5 - Product Knowledge And Project Conventions
+
+Goal: decide how InnerScript stores product knowledge, priority changes, operational context, and file/folder conventions before more implementation adds drift.
+
+Deliverables:
+
+- `dev-docs/product-knowledge/README.md`
+- `dev-docs/product-knowledge/Priority-Change-Log.md`
+- `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`
+- final decision with Prithvi on `.wolf` naming/role
+- final decision with Prithvi on app source folder conventions
+- final decision with Prithvi on tests, product knowledge, and operational logs
+- updated `Product-Decisions.md` and `Open-Questions.md`
+- updated `Plan.md` and `Atomic-Action-Plan.md` after the decision
+
+Owner:
+
+- Joel owns the final product/context workflow decision.
+- Prithvi reviews implementation and source-folder practicality.
+- Agents keep docs synchronized before implementation.
+
+Exit criteria:
+
+- contributors know where product knowledge belongs
+- priority changes have a log and rationale
+- `.wolf` files and session logs have an accepted role or migration path
+- source-folder and test conventions are decided enough for the next implementation phase
 
 ### Phase 1.5 - Local UI Review And Friction Removal
 

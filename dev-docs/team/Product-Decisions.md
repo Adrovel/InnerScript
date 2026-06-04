@@ -83,3 +83,13 @@ When Joel or a teammate clarifies product intent, first workflow, AI behavior, v
 
 Answer:
 During development, InnerScript should be simpler to build than the full long-term vision. Phase 1 and early Phase 2 should prioritize a small local journaling loop, clear schema, easy setup, visible save behavior, export, and one reflection-question path before adding imports, dashboards, AI people, relationship analytics, or distributed systems.
+
+### Q: What docs must stay updated before implementation?
+
+Answer:
+Before implementing app behavior, keep `dev-docs/design/idea.md`, `dev-docs/planning/Plan.md`, and `dev-docs/planning/Atomic-Action-Plan.md` current for that change. If priority changes, also update `dev-docs/product-knowledge/Priority-Change-Log.md`.
+
+### Q: Where should product knowledge live?
+
+Answer:
+Durable product knowledge learned while building InnerScript should live under `dev-docs/product-knowledge/`. The folder starts with a priority-change log and a structure/conventions plan. It does not replace the roadmap, atomic tasks, team decisions, open questions, or `.wolf` operational logs.

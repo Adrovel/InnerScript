@@ -31,3 +31,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-04 | loaded: autosave bug path | changed: extracted autosave reconciliation helper and stale-save unit tests | running: next 3000 | open: browser stress review
 2026-06-04 | loaded: remote status, phase docs | changed: fetched origin, updated phase progress, reframed imports as external tools agent | running: next 3000 | open: commit/push decision, browser stress review
 2026-06-03 | loaded: Open Questions | changed: autosave race reminder added | running: unknown | open: explain editor save races
+2026-06-04 | loaded: idea, plan, atomic, standards | changed: product knowledge folder and planning sync rule | running: none | open: Prithvi structure conventions discussion

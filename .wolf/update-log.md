@@ -40,3 +40,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-04 | Joel+Codex | planning | WhatsApp-only import wording reframed as external tools export/import agent, with WhatsApp as one example parser | open: decide first external-tool parser target
 2026-06-03 | Joel+Codex | question | autosave race learning reminder added to Open Questions | open: explain editor save races
 2026-06-04 | Joel+Codex | engineering standards | git workflow standard added and branch renamed to fix/journal-autosave-feedback | open: push/PR after review
+2026-06-04 | Joel+Codex | product knowledge | product knowledge folder, priority-change log, and structure/conventions plan added | open: discuss `.wolf`, source folders, tests, and conventions with Prithvi

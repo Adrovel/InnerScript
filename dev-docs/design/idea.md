@@ -151,6 +151,30 @@ InnerScript should avoid becoming:
 - a social app
 - a place where imported personal data becomes hard to export or delete
 
+## Product Knowledge While Building
+
+InnerScript should accumulate product knowledge as it is built.
+
+The product is personal, reflective, and data-heavy, so context cannot live only in chat. When the team learns something that changes how the app should feel, what should be prioritized, how source-backed reflection should work, or how project files should be organized, that knowledge should be recorded in the project.
+
+Product knowledge should live in `dev-docs/product-knowledge/` when it explains why priorities or conventions changed. It should not replace:
+
+- `planning/Plan.md` for roadmap sequencing
+- `planning/Atomic-Action-Plan.md` for task checklists
+- `team/Product-Decisions.md` for final answered decisions
+- `team/Open-Questions.md` for unresolved questions
+- `.wolf/buglog.jsonl` for structured bug records
+
+Current product-knowledge priorities:
+
+- keep writing trust ahead of new AI features
+- keep product and implementation context synchronized
+- decide file structure and conventions with Prithvi before the app grows further
+- track priority changes and their reasons in `product-knowledge/Priority-Change-Log.md`
+- keep operational files such as `.wolf/buglog.jsonl`, `.wolf/session-context.md`, `.wolf/memory.md`, `.wolf/update-log.md`, and the workspace session log understandable to future contributors
+
+No product implementation should move ahead while `idea.md`, `planning/Plan.md`, and `planning/Atomic-Action-Plan.md` are stale for that change.
+
 ## Google Signal
 
 InnerScript should also remain a viable Google-signal project.

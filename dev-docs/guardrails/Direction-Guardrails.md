@@ -34,6 +34,8 @@ Required updates:
 | new AI behavior | `planning/Features.md`, `architecture/Architecture.md`, prompt contract in `planning/Plan.md` |
 | new hosted-only behavior | `architecture/Architecture.md`, `architecture/Stack-and-Tools.md`, `research/Google-Signal-Benchmarks.md` |
 | removed/deprioritized high-impact feature | `planning/Features.md`, `planning/Plan.md`, `research/Google-Signal-Benchmarks.md` |
+| priority change | `planning/Plan.md`, `planning/Atomic-Action-Plan.md`, `product-knowledge/Priority-Change-Log.md` |
+| file/folder convention change | `product-knowledge/Structure-and-Conventions-Plan.md`, `dev-docs/README.md`, `.wolf/session-context.md` |
 
 ## Product Clarity Capture Rule
 
@@ -47,8 +49,22 @@ Use this routing:
 | feature scope or priority | `planning/Features.md`, `planning/Plan.md`, `planning/Atomic-Action-Plan.md` |
 | system/data/source model implication | `architecture/Architecture.md`, `architecture/Stack-and-Tools.md` if tooling changes |
 | deferred but visible product direction | `planning/Future-Plan.md`, plus active plan if it affects MVP sequencing |
+| product knowledge or priority rationale | `product-knowledge/README.md`, `product-knowledge/Priority-Change-Log.md` |
+| file structure, conventions, `.wolf`, buglog, memory, or session logging | `product-knowledge/Structure-and-Conventions-Plan.md`, `.wolf/session-context.md` |
 | guardrail or workflow rule | `guardrails/Direction-Guardrails.md` |
 | notable session outcome | `.wolf/update-log.md` |
+
+## Plan Before Implementation Rule
+
+No app behavior should be implemented while the core planning docs are stale for that change.
+
+Before implementation, update or explicitly confirm current:
+
+- `design/idea.md`
+- `planning/Plan.md`
+- `planning/Atomic-Action-Plan.md`
+
+If those docs disagree, stop and resolve the docs before changing app behavior.
 
 ## Terminal Notification Rule
 
