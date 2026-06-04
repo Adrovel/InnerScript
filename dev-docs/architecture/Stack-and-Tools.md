@@ -91,7 +91,7 @@ Initial parsers:
 
 - Markdown
 - plain text
-- WhatsApp exported `.txt`
+- external-tool exports such as WhatsApp `.txt`, Telegram export, Docs/Notion export, email export, or SMS export
 - clipboard paste
 
 Parser rules:
@@ -195,7 +195,7 @@ People mention and interaction-linking integration tests are deferred to `dev-do
 Target measurable outputs:
 
 - semantic search p95 latency on N chunks
-- import throughput for WhatsApp export of N messages
+- import throughput for an external-tool export of N records/messages
 - transcription processing time per minute of audio
 - rate limiter QPS and p99 latency
 - Redis Lua correctness under concurrent requests

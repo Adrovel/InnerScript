@@ -9,6 +9,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Do not edit files under `dev-docs/` unless the user specifically asks for documentation changes.
 - On session start, check `dev-docs/team/Team-Communication.md`, `dev-docs/team/Product-Decisions.md`, and `dev-docs/team/Open-Questions.md`. People working on InnerScript can communicate through these docs; do not rely only on chat history.
 - On session start, check `.wolf/session-context.md` and `.wolf/memory.md` so everyone knows what gets loaded and what changed recently.
+- On every InnerScript context load, check `dev-docs/engineering-standards/Git-Workflow-Standard.md` before any branch, commit, push, pull, fetch, issue, PR, or merge work.
 - At session end, or when more than half the context window is used, add a compact line to `.wolf/memory.md` if relevant InnerScript changes happened. No more than 4 memory lines per session. Use simple words.
 - Put simple answered product decisions in `dev-docs/team/Product-Decisions.md`. Put ambiguous or unanswered questions in `dev-docs/team/Open-Questions.md`.
 - For InnerScript-specific bugs, failed commands, runtime errors, broken UI states, failed tests, or local setup issues, log them in local `.wolf/buglog.jsonl` and update `.wolf/buglog-index.md`. Use workspace `.wolf/buglog.jsonl` only for cross-workspace/OpenWolf issues.

@@ -219,7 +219,7 @@ Before final response:
 
 ### Good Direction Change
 
-Feature: WhatsApp export import.
+Feature: External tools export/import agent.
 
 Decision: Proceed.
 

@@ -1,6 +1,6 @@
 # External Data Integrations
 
-Purpose: clarify that "WhatsApp integration" means importing journal or journal-related data from other apps, not live scraping or unofficial API access.
+Purpose: clarify that external-tool integration means importing journal or journal-related data from other apps, not live scraping or unofficial API access. WhatsApp is one example, not the whole feature.
 
 ## Integration Definition
 
@@ -78,25 +78,28 @@ Parser behavior:
 
 Google impact: Medium-High.
 
-### 3. WhatsApp Export Import
+### 3. External Tools Export/Import Agent
 
 Use case:
 
-- user exports a chat from WhatsApp and imports the `.txt` file into InnerScript.
+- user exports personal data from another tool and imports the file into InnerScript.
+- examples: WhatsApp `.txt`, Telegram export, Google Docs export, Notion export, email export, SMS export, copied text, or other user-owned files.
 
 Important:
 
-- This is not live WhatsApp API integration.
+- This is not live app/API integration unless the platform officially supports the use case.
 - This is not scraping.
 - This is user-driven file import.
+- WhatsApp is only the first likely chat-export parser, not a separate one-off product direction.
 
 Parser behavior:
 
+- detect source/tool type
 - parse timestamps
-- parse sender names
+- parse sender/contact names where present
 - group messages into interaction windows
-- let user map senders to people
-- let user exclude messages before saving
+- let user map senders/contacts/authors to people
+- let user exclude content before saving
 - preserve source metadata
 
 Suggested interaction grouping:
@@ -110,7 +113,7 @@ Google impact: High.
 Reason:
 
 - real ingestion pipeline
-- entity extraction/mapping
+- parser abstraction plus entity extraction/mapping
 - privacy-sensitive parser
 - source-backed people route
 
@@ -154,7 +157,7 @@ Google impact: Medium.
 
 ### Telegram Export
 
-Telegram supports user exports. Treat similarly to WhatsApp.
+Telegram supports user exports. Treat similarly to the exported-chat path under the external-tools import agent.
 
 Google impact: Medium-High.
 
@@ -203,7 +206,7 @@ For each parser:
 - unsupported encoding if relevant
 - source metadata preservation
 
-WhatsApp-specific tests:
+Exported-chat parser tests:
 
 - 12-hour timestamp format
 - 24-hour timestamp format

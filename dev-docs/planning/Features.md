@@ -20,7 +20,7 @@ It converts private unstructured life text into searchable, source-backed insigh
 - Markdown and text imports
 - OCR text from physical notes
 - note-app imports from tools such as Obsidian and Google Keep
-- WhatsApp exported chats
+- external-tool exports, including exported chats
 - people records
 - weekly and long-range reflection
 
@@ -143,7 +143,7 @@ Source types:
 - `text_file`
 - `whatsapp_export`
 
-These values must match `SOURCE_TYPES` in `db/schema.js`. Manually written entries should use `source_type=manual` when provenance is persisted through `sources`.
+These values must match `SOURCE_TYPES` in `db/schema.js`. Manually written entries should use `source_type=manual` when provenance is persisted through `sources`. `whatsapp_export` is currently the concrete exported-chat source type; the broader Phase 4 direction is an external-tools import agent, not a WhatsApp-only feature.
 
 Google signal:
 
@@ -187,7 +187,7 @@ Supported first:
 - `.txt` files
 - OCR-normalized text from physical notes
 - note-app exports from Obsidian, Google Keep, and similar tools
-- WhatsApp exported `.txt` chats
+- external-tool exports such as WhatsApp `.txt`, Telegram exports, Docs/Notion exports, email exports, and SMS exports
 - clipboard paste
 
 Flow:
@@ -201,7 +201,7 @@ upload/import
   -> enqueue embeddings and analysis
 ```
 
-Do not attempt live WhatsApp API integration. Start with exported files.
+Do not attempt live app/API integration for external tools unless officially supported. Start with user-owned exported files.
 
 Google signal:
 

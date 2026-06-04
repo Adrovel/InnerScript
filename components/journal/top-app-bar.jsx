@@ -5,6 +5,7 @@ import { Menu, RefreshCw } from "lucide-react";
 
 export function TopAppBar({
   saveStatus,
+  saveActivityId,
   lastEditedAt,
   onRetrySave,
   onMenuClick,
@@ -28,7 +29,12 @@ export function TopAppBar({
         </div>
 
         <div className="flex items-center gap-sm md:gap-md">
-          <SaveStatus status={saveStatus} lastEditedAt={lastEditedAt} onRetry={onRetrySave} />
+          <SaveStatus
+            status={saveStatus}
+            activityId={saveActivityId}
+            lastEditedAt={lastEditedAt}
+            onRetry={onRetrySave}
+          />
 
           <button
             type="button"

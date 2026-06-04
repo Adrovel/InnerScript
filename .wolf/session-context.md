@@ -62,6 +62,21 @@ Expected file changes:
 - `.wolf/update-log.md` for a notable compact update
 - `.wolf/memory.md` at session end or half-context checkpoint
 
+## If Joel Gives UI/Product Review While Using The App
+
+Expected file changes:
+
+- `.wolf/user-review.md`
+- `.wolf/update-log.md`
+- `.wolf/buglog.jsonl` and `.wolf/buglog-index.md` if the review reports broken, lost, confusing, or unreliable behavior
+- `.wolf/memory.md` at session end or half-context checkpoint if the review changes what future sessions should know
+
+Reason:
+
+- Hands-on user-review feedback is product evidence for future sessions.
+- UI review should survive across sessions instead of staying only in chat.
+- Broken writing trust, lost text, slow New Note behavior, or confusing save state should be treated as bugs.
+
 ## If A Bug Happens
 
 Expected file changes:
@@ -116,12 +131,16 @@ People and agents should load these first:
 7. Product decisions: `dev-docs/team/Product-Decisions.md`
 8. Open questions: `dev-docs/team/Open-Questions.md`
 9. Local bug index: `.wolf/buglog-index.md`
-10. Project session memory: `.wolf/memory.md`
+10. User review notes: `.wolf/user-review.md`
+11. Project session memory: `.wolf/memory.md`
+12. Git workflow standard: `dev-docs/engineering-standards/Git-Workflow-Standard.md`
 
 Load task-specific docs only when needed:
 
 - Runtime/setup: `README.md`, `dev-docs/architecture/Stack-and-Tools.md`, `dev-docs/architecture/Architecture.md`
+- Git work: `dev-docs/engineering-standards/Git-Workflow-Standard.md`
 - Product/UI direction: `dev-docs/design/idea.md`, `dev-docs/team/Product-Decisions.md`, `dev-docs/team/Open-Questions.md`
+- User-review/UI polish: `.wolf/user-review.md`, `.wolf/update-log.md`, `.wolf/buglog-index.md`
 - Feature/API/schema: `dev-docs/planning/Features.md`, `dev-docs/planning/Plan.md`, `dev-docs/planning/Atomic-Action-Plan.md`
 - AI/search/insights: `dev-docs/research/Semantic-Meaning-Research.md`, `dev-docs/guardrails/Direction-Guardrails.md`
 - Competitors/references: `dev-docs/research/Competitor-Analysis.md`
@@ -187,6 +206,7 @@ Each line should capture:
 - `dev-docs/planning/Plan.md`
 - `dev-docs/planning/Atomic-Action-Plan.md`
 - `.wolf/update-log.md`
+- `.wolf/user-review.md`
 - `dev-docs/architecture/Architecture.md`
 - `dev-docs/guardrails/Direction-Guardrails.md`
 - `.wolf/buglog-index.md`
