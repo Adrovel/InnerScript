@@ -47,7 +47,7 @@ He is well-suited for scoped tasks with clear contracts:
 
 - Implement `entries` and `sources` CRUD after schema approval.
 - Build import parser interfaces.
-- Implement Markdown/text/WhatsApp parsers.
+- Implement Markdown/text/external-tool export parsers.
 - Add parser tests and malformed-input tests.
 - Implement people CRUD. Link/unlink APIs are deferred to `dev-docs/planning/Future-Plan.md`.
 - Build dashboard/UI components from defined contracts.

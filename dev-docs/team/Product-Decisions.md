@@ -34,6 +34,11 @@ Open today's journal and write. Pattern dashboards, search, and deep analysis co
 Answer:
 A reflection question grounded in the current entry. Not a broad analysis report.
 
+### Q: Should the reflection question be generic or based on what was written?
+
+Answer:
+The reflection question should depend on what is written in the current entry. It should not be a fixed generic question unless there is not enough entry content to generate anything grounded.
+
 ### Q: How much context is needed before analysis?
 
 Answer:

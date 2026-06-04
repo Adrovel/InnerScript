@@ -25,3 +25,9 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-03 | loaded: top bar, sidebar | changed: removed dead share more, cleaned entries list | running: db, next 3000 | open: ui review
 2026-06-03 | loaded: journal app, contracts, sidebar | changed: fixed new note, simpler sidebar | running: db, next 3000 | open: browser confirm
 2026-06-03 | loaded: editor | changed: metadata moved to footer | running: db, next 3000 | open: editor feel
+2026-06-03 | loaded: progress docs | changed: 40% notification rule added | running: unknown | open: reconcile roadmap percent with checkbox count
+2026-06-03 | loaded: journal UI feedback | changed: title Enter focus, compact file-tree sidebar, body prompt, word/character count | running: next 3000 | open: browser confirm
+2026-06-03 | loaded: user review | changed: .wolf/user-review.md and session-context now preserve app review across sessions; autosave race patched | running: next 3000 | open: confirm no text disappears
+2026-06-04 | loaded: autosave bug path | changed: extracted autosave reconciliation helper and stale-save unit tests | running: next 3000 | open: browser stress review
+2026-06-04 | loaded: remote status, phase docs | changed: fetched origin, updated phase progress, reframed imports as external tools agent | running: next 3000 | open: commit/push decision, browser stress review
+2026-06-03 | loaded: Open Questions | changed: autosave race reminder added | running: unknown | open: explain editor save races

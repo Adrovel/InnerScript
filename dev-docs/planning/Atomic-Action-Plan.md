@@ -8,19 +8,23 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [----------] 0% - 1/237 tasks
+Overall checkbox progress: [##--------] 22% - 29/132 visible tasks
+
+Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
+
+Notification rule: when overall checkbox progress reaches or crosses 40%, tell Joel explicitly in the same session before moving on.
 
 | Phase | Checkbox progress |
 |---|---|
-| Phase 0 - Direction Lock | [###-------] 25% - 1/4 tasks |
-| Phase 1 - Local Journal Core | [----------] 0% - 0/42 tasks |
-| Phase 1.5 - Product Clarity And Local UI Review | [----------] 0% - 0/11 tasks |
-| Phase 2 - Semantic Core | [----------] 0% - 0/3 tasks |
-| Phase 3 - External Data Integrations | [----------] 0% - 0/37 tasks |
-| Phase 4 - People Records | [----------] 0% - 0/19 tasks |
-| Phase 5 - Insights and Reflection | [----------] 0% - 0/34 tasks |
-| Phase 6 - Go Distributed Rate Limiter | [----------] 0% - 0/5 tasks |
-| Phase 7 - Hosted Consumer Profile | [----------] 0% - 0/4 tasks |
+| Phase 0 - Direction Lock | [#####-----] 50% - 4/8 visible tasks |
+| Phase 1 - Local Journal Core | [####------] 43% - 18/42 tasks |
+| Phase 1.5 - Product Clarity And Local UI Review | [########--] 82% - 9/11 tasks |
+| Phase 2 - One Reflection Question | [----------] 0% - 0/8 tasks |
+| Phase 3 - Semantic Core | [----------] 0% - 0/3 tasks |
+| Phase 4 - External Data Integrations | [----------] 0% - 0/37 tasks |
+| Phase 5 - Freeform People Notes | [----------] 0% - 0/19 tasks |
+| Phase 6 - Source-Backed Insights | [----------] 0% - 0/34 tasks |
+| Phase 7 - Systems And Hosted Profile | [----------] 0% - 0/9 tasks |
 
 ## Ownership Model
 
@@ -108,25 +112,25 @@ Important:
 | 1 | Editor | 4 | 14 | Keep UI minimal |
 | 1 | Daily entry | 3 | 8 | Small but important UX loop |
 | 1 | Export | 5 | 14 | Open-source trust feature |
-| 2 | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
-| 2 | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
-| 2 | Search | 14 | 32 | Includes evaluation queries and UI |
-| 3 | Import framework | 8 | 24 | Parser interface, preview, idempotency |
-| 3 | Markdown/text imports | 4 | 16 | Early external data support |
-| 3 | WhatsApp export import | 6 | 24 | High Google impact; many parser edge cases |
-| 3 | Voice journaling | 6 | 20 | Audio/transcription/review flow |
-| 4 | People CRUD | 5 | 20 | Manual people records only |
-| 4 | People page basics | 5 | 6 | Linking and summaries deferred |
-| 5 | Metadata extraction | 8 | 18 | Structured AI output |
-| 5 | Weekly digest | 10 | 18 | High product and Google signal |
-| 5 | Assumptions/challenge mode | 14 | 24 | AI behavior needs Joel ownership |
-| 5 | Contradiction/change detection | 10 | 18 | Defer if search quality is weak |
-| 6 | API contract | 8 | 4 | Joel owns design |
-| 6 | Go service | 38 | 12 | Core systems component |
-| 6 | Metrics/load testing | 26 | 20 | Benchmark output is the point |
+| 2 | Reflection question | 6 | 10 | Current-entry-only first AI moment; no broad analysis |
+| 3 | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
+| 3 | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
+| 3 | Search | 14 | 32 | Includes evaluation queries and UI |
+| 4 | Import framework | 8 | 24 | Parser interface, preview, idempotency |
+| 4 | Markdown/text imports | 4 | 16 | Early external data support |
+| 4 | External tools export/import agent | 6 | 24 | High Google impact; many parser edge cases across user-owned exports |
+| 4 | Voice journaling | 6 | 20 | Audio/transcription/review flow |
+| 5 | People CRUD | 5 | 20 | Manual people records only |
+| 5 | People page basics | 5 | 6 | Linking and summaries deferred |
+| 6 | Metadata extraction | 8 | 18 | Structured AI output |
+| 6 | Weekly digest | 10 | 18 | High product and Google signal |
+| 6 | Assumptions/challenge mode | 14 | 24 | AI behavior needs Joel ownership |
+| 6 | Contradiction/change detection | 10 | 18 | Defer if search quality is weak |
+| 7 | Go rate limiter API contract | 8 | 4 | Joel owns design |
+| 7 | Go rate limiter service | 38 | 12 | Core systems component |
+| 7 | Metrics/load testing | 26 | 20 | Benchmark output is the point |
 | 7 | Hosted architecture decisions | 12 | 6 | Can defer |
-| 7 | User ownership/auth/billing | 12 | 38 | Hosted-only |
-| 7 | Account export/delete/quotas | 12 | 28 | Hosted trust requirements |
+| 7 | User ownership/auth/billing/export/delete | 24 | 66 | Hosted-only trust requirements |
 
 ## Phase 0 - Direction Lock — Estimate: Joel 12h / 2.0 days, Prithvi 6h / 2.0 days
 
@@ -135,8 +139,8 @@ Goal: make the project coherent before code changes.
 ### Joel Tasks
 
 - [X] Read `Cracking-Google.md`, `01-Production-RAG-Backend.md`, and `02-Distributed-Rate-Limiter.md`.
-- [ ] Confirm the one-line product thesis in `planning/Features.md`.
-- [ ] Confirm the top 6 high-Google-impact features.
+- [X] Confirm the one-line product thesis in `planning/Features.md`.
+- [X] Confirm the top 6 high-Google-impact features.
 - [ ] Decide whether the MVP prioritizes local-first open source or hosted demo first.
 - [ ] Write a short ADR if that priority changes.
 - [ ] Approve the core domain entities: `entries`, `sources`, `chunks`, `people`, `interactions`, `insights`.
@@ -153,9 +157,9 @@ Goal: make the project coherent before code changes.
 
 ### Exit Criteria
 
-- [ ] All canonical docs exist.
-- [ ] High-impact feature ranking is visible in `planning/Features.md`.
-- [ ] Next phase tasks have clear owners.
+- [X] All canonical docs exist.
+- [X] High-impact feature ranking is visible in `planning/Features.md`.
+- [X] Next phase tasks have clear owners.
 - [ ] No implementation starts without a stable schema direction.
 
 ## Phase 1 - Local Journal Core — Estimate: Joel 18h / 3.0 days, Prithvi 54h / 18.0 days
@@ -171,41 +175,41 @@ Build constraint:
 
 #### Joel
 
-- [ ] Approve `entries` schema.
-- [ ] Approve `sources` schema.
-- [ ] Decide date semantics: `occurred_at` vs `created_at`.
+- [X] Approve `entries` schema.
+- [X] Approve `sources` schema.
+- [X] Decide date semantics: `occurred_at` vs `created_at`.
 - [ ] Decide whether existing `notes` table is migrated or replaced.
 - [ ] Write migration notes if replacing current note model.
 
 #### Prithvi
 
-- [ ] Implement `entries` table/model.
-- [ ] Implement `sources` table/model.
-- [ ] Add `GET /api/entries`.
-- [ ] Add `POST /api/entries`.
-- [ ] Add `GET /api/entries/[id]`.
-- [ ] Add `PUT /api/entries/[id]`.
-- [ ] Add `DELETE /api/entries/[id]`.
-- [ ] Add tests for entry CRUD.
-- [ ] Add tests for source creation.
+- [X] Implement `entries` table/model.
+- [X] Implement `sources` table/model.
+- [X] Add `GET /api/entries`.
+- [X] Add `POST /api/entries`.
+- [X] Add `GET /api/entries/[id]`.
+- [X] Add `PUT /api/entries/[id]`.
+- [X] Add `DELETE /api/entries/[id]`.
+- [X] Add tests for entry CRUD.
+- [X] Add tests for source creation.
 
 ### Layer 2: Editor — Estimate: Joel 4h / 0.7 days, Prithvi 14h / 4.7 days
 
 #### Joel
 
-- [ ] Define minimal editor UX.
-- [ ] Define therapy/reflection tone for the first writing experience.
+- [X] Define minimal editor UX.
+- [X] Define therapy/reflection tone for the first writing experience.
 - [ ] Decide whether Markdown preview is MVP or deferred.
 - [ ] Define autosave behavior and failure state.
 
 #### Prithvi
 
-- [ ] Wire editor to `entries` API.
-- [ ] Implement autosave.
-- [ ] Add visible save state.
-- [ ] Add empty state.
-- [ ] Add retry behavior for failed save.
-- [ ] Add component test for autosave.
+- [X] Wire editor to `entries` API.
+- [X] Implement autosave.
+- [X] Add visible save state.
+- [X] Add empty state.
+- [X] Add retry behavior for failed save.
+- [X] Add focused autosave unit tests for stale-save text-loss protection.
 - [ ] Do not ship floating AI insight panel in Phase 1; defer to `planning/Future-Plan.md` (Phase 5).
 
 ### Layer 3: Daily Entry — Estimate: Joel 3h / 0.5 days, Prithvi 8h / 2.7 days
@@ -250,25 +254,56 @@ Goal: use local review feedback to keep product direction aligned before deeper 
 
 ### Joel
 
-- [ ] Review current Alexandria UI locally.
+- [X] Review current Alexandria UI locally.
 - [ ] Decide whether Alexandria stays, changes, or becomes a temporary style.
-- [ ] Confirm first-screen language should feel therapy/reflection-first.
-- [ ] Identify the first three local UX problems after using the app.
+- [X] Confirm first-screen language should feel therapy/reflection-first.
+- [X] Identify the first three local UX problems after using the app.
 
 ### Prithvi / Agent
 
-- [ ] Run the local server.
-- [ ] Capture Joel's UI feedback.
-- [ ] Update `design/idea.md`, `team/Design-Choices.md`, `planning/Features.md`, `architecture/Architecture.md`, `planning/Plan.md`, and this file when feedback changes product direction.
-- [ ] Add a `.wolf/update-log.md` entry after the local review pass.
+- [X] Run the local server.
+- [X] Capture Joel's UI feedback.
+- [X] Update `.wolf/user-review.md`, `team/Product-Decisions.md`, `planning/Plan.md`, and this file when feedback changes product direction.
+- [X] Add a `.wolf/update-log.md` entry after the local review pass.
 
 ### Exit Criteria
 
-- [ ] Local UI feedback is captured.
-- [ ] Relevant docs reflect the current product clarity.
-- [ ] Next implementation task is selected from updated docs.
+- [X] Local UI feedback is captured.
+- [X] Relevant docs reflect the current product clarity.
+- [X] Next implementation task is selected from updated docs.
 
-## Phase 2 - Semantic Core — Estimate: Joel 30h / 5.0 days, Prithvi 72h / 24.0 days
+## Phase 2 - One Reflection Question — Estimate: Joel 6h / 1.0 day, Prithvi 10h / 3.3 days
+
+Goal: add the first AI moment after writing without turning the app into broad analysis.
+
+Build constraint:
+
+- Use only the current entry.
+- Ask one grounded reflection question.
+- Do not summarize the user's life, diagnose, or infer long-term patterns from one entry.
+- Hide or disable the flow when AI is unavailable.
+
+### Joel
+
+- [ ] Write the first reflection-question tone.
+- [ ] Approve safe language around reflection and therapy.
+- [ ] Define the current-entry-only prompt contract.
+- [ ] Define AI unavailable behavior.
+
+### Prithvi / Agent
+
+- [ ] Add the smallest API path for a current-entry reflection question.
+- [ ] Add a subtle UI trigger after writing.
+- [ ] Add tests for current-entry-only prompt input.
+- [ ] Add tests for AI unavailable state.
+
+### Exit Criteria
+
+- [ ] A user can write an entry and receive one grounded reflection question.
+- [ ] The AI does not claim broader analysis from one entry.
+- [ ] The core journal still works without an AI key.
+
+## Phase 3 - Semantic Core — Estimate: Joel 30h / 5.0 days, Prithvi 72h / 24.0 days
 
 Goal: turn entries into searchable semantic memory.
 
@@ -330,7 +365,7 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Manual evaluation exists.
 - [ ] Search quality is measured, not guessed.
 
-## Phase 3 - External Data Integrations — Estimate: Joel 24h / 4.0 days, Prithvi 84h / 28.0 days
+## Phase 4 - External Data Integrations — Estimate: Joel 24h / 4.0 days, Prithvi 84h / 28.0 days
 
 Goal: ingest journal-related text from other apps without brittle private APIs.
 
@@ -367,21 +402,23 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Show preview before confirm.
 - [ ] Add parser tests.
 
-### Layer 3: WhatsApp Export Import — Estimate: Joel 6h / 1.0 day, Prithvi 24h / 8.0 days
+### Layer 3: External Tools Export/Import Agent — Estimate: Joel 6h / 1.0 day, Prithvi 24h / 8.0 days
 
 #### Joel
 
-- [ ] Define supported WhatsApp export format.
-- [ ] Define privacy warning copy.
-- [ ] Define participant mapping to people.
+- [ ] Define first supported external-tool export formats.
+- [ ] Define privacy warning copy for external-tool imports.
+- [ ] Define participant/contact mapping to people.
+- [ ] Decide whether WhatsApp is first example or only one parser under the broader agent.
 
 #### Prithvi
 
-- [ ] Implement WhatsApp `.txt` parser.
-- [ ] Group messages by date and participant.
+- [ ] Implement external-tool parser interface.
+- [ ] Implement first exported-chat `.txt` parser.
+- [ ] Group messages by date and participant/contact.
 - [ ] Preserve timestamps.
-- [ ] Map participant names to people only after user confirmation.
-- [ ] Add tests for common WhatsApp export lines.
+- [ ] Map participant/contact names to people only after user confirmation.
+- [ ] Add tests for common exported-chat lines.
 - [ ] Add tests for malformed lines.
 
 ### Layer 4: Voice Journaling — Estimate: Joel 6h / 1.0 day, Prithvi 20h / 6.7 days
@@ -404,13 +441,13 @@ See `guardrails/External-Data-Integrations.md`.
 ### Exit Criteria
 
 - [ ] Text imports preserve provenance.
-- [ ] WhatsApp export import works from file upload.
+- [ ] External-tool export import works from file upload.
 - [ ] Voice transcript creates editable entries.
 - [ ] Imported content enters chunking/search pipeline.
 
-## Phase 4 - People Records — Estimate: Joel 10h / 1.7 days, Prithvi 26h / 8.7 days
+## Phase 5 - Freeform People Notes — Estimate: Joel 10h / 1.7 days, Prithvi 26h / 8.7 days
 
-Goal: add user-controlled people records without forcing person interactions into the entry model.
+Goal: add user-controlled freeform people notes without forcing person interactions into the entry model.
 
 ### Layer 1: People CRUD — Estimate: Joel 5h / 0.8 days, Prithvi 20h / 6.7 days
 
@@ -456,7 +493,7 @@ Generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
 - [ ] Person page shows only user-controlled profile data.
 - [ ] Entry schema does not include `person_interaction`.
 
-## Phase 5 - Insights and Reflection — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
+## Phase 6 - Source-Backed Insights — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
 
 Goal: create source-backed insight beyond basic search.
 
@@ -529,7 +566,7 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Assumptions can be challenged.
 - [ ] No therapeutic claims are made.
 
-## Phase 6 - Google Systems Layer: Go Distributed Rate Limiter — Estimate: Joel 72h / 12.0 days, Prithvi 36h / 12.0 days
+## Phase 7A - Google Systems Layer: Go Distributed Rate Limiter — Estimate: Joel 72h / 12.0 days, Prithvi 36h / 12.0 days
 
 Goal: create a standalone systems component that protects hosted AI endpoints.
 
@@ -585,7 +622,7 @@ Goal: create a standalone systems component that protects hosted AI endpoints.
 - [ ] failure modes are documented.
 - [ ] protected endpoints call limiter in hosted profile.
 
-## Phase 7 - Hosted Consumer Profile — Estimate: Joel 36h / 6.0 days, Prithvi 72h / 24.0 days
+## Phase 7B - Hosted Consumer Profile — Estimate: Joel 36h / 6.0 days, Prithvi 72h / 24.0 days
 
 Goal: make hosted InnerScript possible without weakening local-first trust.
 

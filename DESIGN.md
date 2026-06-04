@@ -86,6 +86,29 @@ A scholarly, premium reading experience. Dense information made effortless throu
 - **No-Line Rule:** Never use 1px borders. Define boundaries through background color shifts.
 - Use glassmorphism for floating menus (80% opacity + 20px backdrop-blur). Gradient CTAs from `primary` → `primary_container`.
 
+## Secondary Palette Candidate — Not Applied Yet
+
+Purpose: improve note/sidebar highlighting without changing the current UI immediately.
+
+Color direction: muted therapeutic green-teal, distinct from the blue primary and gold tertiary.
+
+| Component | Token / Color | Usage note |
+|---|---|---|
+| Secondary base | `#8bcfc0` | Main secondary accent for selected note/focus details. |
+| Secondary strong | `#4fb49f` | Small active indicators, not large backgrounds. |
+| Secondary dim | `#28443e` | Selected note row background in dark mode. |
+| Secondary low | `#1f302d` | Hover background for note rows. |
+| On secondary | `#06211c` | Text on bright secondary chips/buttons if needed. |
+| On secondary container | `#d7f4ed` | Text on dim secondary surfaces. |
+| Sidebar selected note row | bg `#28443e`, text `#d7f4ed`, icon `#8bcfc0` | Should make the selected note clearer than current surface-only highlight. |
+| Sidebar note hover | bg `#1f302d`, text `#e3e2e3`, icon `#8bcfc0` at 70% | Quiet hover affordance, still Obsidian-like. |
+| Sidebar folder row | text `#c3c6d5`, folder icon `#8bcfc0` at 65% | Keep folders subdued; notes should remain the focus. |
+| New Note button secondary version | bg `#28443e`, text `#d7f4ed`, icon `#8bcfc0` | Optional calmer alternative to the current primary button. |
+| Focus ring | `#8bcfc0` at 45% | Use for note/sidebar focus only if primary focus feels too loud. |
+| Count/meta chip | bg `#1f302d`, text `#9fdccd` | Optional for word/character count if footer needs more personality. |
+
+Do not apply this palette until Joel explicitly asks for the secondary pass.
+
 ## Typography
 - **Headlines:** Noto Serif — large, authoritative, generous leading.
 - **Body:** Inter — modern clarity for dense text.

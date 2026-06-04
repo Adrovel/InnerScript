@@ -120,6 +120,16 @@ Context:
 
 ## Technical / Architecture
 
+### Q: What is an autosave race in an editor, and how can InnerScript avoid it?
+
+Asked by: Joel
+Date: 2026-06-03
+Status: open
+
+Context:
+- Joel asked to be reminded to understand autosave races in the InnerScript editor.
+- The follow-up should explain what happens when overlapping saves finish out of order, and how editor state, save queues, aborts, timestamps, or version checks can prevent stale content from overwriting newer content.
+
 ### Q: Why Drizzle, and what utility does it serve in InnerScript?
 
 Asked by: Joel

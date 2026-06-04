@@ -78,7 +78,7 @@ Minimum benchmark:
 
 - Markdown parser tests
 - plain text parser tests
-- WhatsApp export parser tests
+- external-tool export parser tests, with WhatsApp `.txt` as one possible exported-chat fixture
 - duplicate import/idempotency test
 - malformed input test
 
@@ -233,7 +233,7 @@ Weak bullet:
 
 Strong bullet:
 
-> Built InnerScript, a local-first AI journaling and semantic memory system that ingests typed notes, voice transcripts, and WhatsApp exports, chunks and indexes text with pgvector, and returns source-backed semantic search results with measured Precision@5.
+> Built InnerScript, a local-first AI journaling and semantic memory system that ingests typed notes, voice transcripts, and external-tool exports, chunks and indexes text with pgvector, and returns source-backed semantic search results with measured Precision@5.
 
 Systems bullet:
 
@@ -241,7 +241,7 @@ Systems bullet:
 
 Backend bullet:
 
-> Designed an ingestion pipeline for Markdown, text, and WhatsApp exports with source provenance, idempotent imports, chunk-level embeddings, and tests covering malformed input and duplicate uploads.
+> Designed an ingestion pipeline for Markdown, text, and external-tool exports with source provenance, idempotent imports, chunk-level embeddings, and tests covering malformed input and duplicate uploads.
 
 ## Minimum Bar Before Calling It Google-Ready
 

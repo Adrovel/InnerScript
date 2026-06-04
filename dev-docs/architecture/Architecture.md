@@ -137,7 +137,7 @@ created_at
 
 Current `source_type` values are defined in `db/schema.js`: `manual`, `voice`, `markdown`, `text_file`, and `whatsapp_export`.
 
-Planned source expansion should include OCR-normalized physical notes and note-app exports such as Obsidian and Google Keep. These should be modeled as source metadata first, not as new entry types unless the shape of the text genuinely changes.
+Planned source expansion should include OCR-normalized physical notes and external-tool exports such as Obsidian, Google Keep, Docs, Notion, Telegram, email, SMS, and WhatsApp. These should be modeled as source metadata first, not as new entry types unless the shape of the text genuinely changes. The current `whatsapp_export` value is a concrete first exported-chat source, not a sign that Phase 4 is WhatsApp-only.
 
 ### `chunks`
 
@@ -277,7 +277,7 @@ Upload file
   -> enqueue semantic processing
 ```
 
-WhatsApp exports should be parsed locally from exported `.txt` files. Do not use unofficial scraping.
+External-tool exports should be parsed locally from user-owned exported files. WhatsApp `.txt` is one likely first parser; do not use unofficial scraping.
 
 ### Semantic Search Flow
 

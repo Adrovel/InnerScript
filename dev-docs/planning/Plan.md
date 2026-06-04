@@ -6,14 +6,16 @@ Update tracking: use `.wolf/update-log.md` for compact project updates. Use this
 
 ## Progress
 
-Overall: [##--------] 20%
+Overall: [###-------] 26%
+
+Notification rule: when overall roadmap progress reaches or crosses 40%, tell Joel explicitly in the same session before moving on.
 
 | Phase | Progress | Notes |
 |---|---:|---|
-| Phase 0 - Direction Lock | [######----] 60% | thesis, docs, local direction mostly clear; a few architecture decisions remain |
-| Phase 1 - Local Journal Core | [#####-----] 50% | local app runs, entries API works, editor exists; export/today/delete polish remain |
-| Phase 1.5 - Product Clarity And Local UI Review | [######----] 60% | local server running and UI feedback captured; sidebar/editor still under review |
-| Phase 2 - Reflection Question | [#---------] 10% | direction chosen; implementation not started |
+| Phase 0 - Direction Lock | [#######---] 70% | thesis, docs, feature ranking, and schema direction are mostly clear; Drizzle rationale and a few architecture choices remain |
+| Phase 1 - Local Journal Core | [######----] 65% | entries/sources schema, CRUD APIs, editor, autosave, visible save state, and focused autosave tests exist; export/today/delete polish remain |
+| Phase 1.5 - Product Clarity And Local UI Review | [########--] 85% | local server review captured, UI feedback stored in `.wolf/user-review.md`, sidebar/editor polish mostly confirmed; autosave browser stress remains |
+| Phase 2 - Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
 | Phase 3 - Semantic Core | [----------] 0% | deferred until journal loop is reliable |
 | Phase 4 - Imports | [----------] 0% | deferred |
 | Phase 5 - Freeform People Notes | [----------] 0% | deferred |
@@ -80,7 +82,7 @@ Goal: chunk, embed, search, and cite entries after the journal loop is stable.
 
 ### Phase 4 - Imports
 
-Goal: bring in Markdown/text/OCR/note-app/chats with provenance after manual entries are reliable.
+Goal: bring in Markdown/text/OCR/external-tool exports/chats with provenance after manual entries are reliable.
 
 ### Phase 5 - Freeform People Notes
 
@@ -224,7 +226,7 @@ Deliverables:
 - `.txt` importer
 - OCR-normalized physical note import path
 - Obsidian / Google Keep / note-app export import path
-- WhatsApp export parser
+- external tools export/import agent for user-owned exports from tools such as WhatsApp, Telegram, Docs, Notion, email, and SMS
 - import preview and confirm flow
 - source provenance in UI
 
@@ -232,11 +234,11 @@ Joel:
 
 - define privacy rules for audio and imported chats
 - define import UX
-- review WhatsApp parser assumptions
+- define first external-tool export targets and parser assumptions
 
 Prithvi:
 
-- implement import parsers
+- implement import parsers through the external-tools import agent shape
 - implement import preview
 - implement voice capture UI
 - wire transcription endpoint
@@ -416,7 +418,7 @@ Google signal:
 
 The finished project should support a resume bullet like:
 
-> Built InnerScript, a local-first AI journaling and semantic memory system that ingests typed notes, voice transcripts, and WhatsApp exports, chunks and indexes text with pgvector for semantic search, generates source-backed personal insights with LLMs, and protects hosted AI endpoints with a Go/Redis distributed rate limiter.
+> Built InnerScript, a local-first AI journaling and semantic memory system that ingests typed notes, voice transcripts, and external-tool exports, chunks and indexes text with pgvector for semantic search, generates source-backed personal insights with LLMs, and protects hosted AI endpoints with a Go/Redis distributed rate limiter.
 
 ## Google Signal
 
