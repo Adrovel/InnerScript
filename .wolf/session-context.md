@@ -133,10 +133,12 @@ People and agents should load these first:
 9. Local bug index: `.wolf/buglog-index.md`
 10. User review notes: `.wolf/user-review.md`
 11. Project session memory: `.wolf/memory.md`
+12. Git workflow standard: `dev-docs/engineering-standards/Git-Workflow-Standard.md`
 
 Load task-specific docs only when needed:
 
 - Runtime/setup: `README.md`, `dev-docs/architecture/Stack-and-Tools.md`, `dev-docs/architecture/Architecture.md`
+- Git work: `dev-docs/engineering-standards/Git-Workflow-Standard.md`
 - Product/UI direction: `dev-docs/design/idea.md`, `dev-docs/team/Product-Decisions.md`, `dev-docs/team/Open-Questions.md`
 - User-review/UI polish: `.wolf/user-review.md`, `.wolf/update-log.md`, `.wolf/buglog-index.md`
 - Feature/API/schema: `dev-docs/planning/Features.md`, `dev-docs/planning/Plan.md`, `dev-docs/planning/Atomic-Action-Plan.md`

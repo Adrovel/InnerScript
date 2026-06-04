@@ -12,6 +12,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 | `design/` | Product idea, experience direction, and design choices before implementation |
 | `research/` | Semantic meaning research and Google-signal benchmarks |
 | `guardrails/` | Direction-change rules and external data integration rules |
+| `engineering-standards/` | InnerScript-local engineering rules for git workflow, branches, commits, PRs, and merges |
 | `team/` | Team communication, product decisions, open questions, and identity/ownership notes |
 | `context/` | Older LLM handoff and teaching context docs |
 | `superpowers/` | Older implementation plan/design-spec artifacts retained for reference |
@@ -38,6 +39,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [Google Signal Benchmarks](./research/Google-Signal-Benchmarks.md)
 - [Direction Guardrails](./guardrails/Direction-Guardrails.md)
 - [External Data Integrations](./guardrails/External-Data-Integrations.md)
+- [Git Workflow Standard](./engineering-standards/Git-Workflow-Standard.md)
 - [Joel Identity](./team/Joel-Identity.md)
 - [Prithvi Identity](./team/Prithvi-Identity.md)
 - [LLM Context](./context/InnerScript-LLM-Context.md)
