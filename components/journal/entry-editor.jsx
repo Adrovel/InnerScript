@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import {
   countWords,
   formatEntryCreated,
@@ -19,32 +20,39 @@ export function EntryEditor({
   const createdIso = occurredAt ?? new Date().toISOString();
   const editedIso = updatedAt ?? createdIso;
   const wordCount = countWords(body);
+  const characterCount = body.length;
+  const bodyRef = useRef(null);
+
+  function handleTitleKeyDown(event) {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+    bodyRef.current?.focus();
+  }
 
   return (
     <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto scroll-smooth bg-surface">
       <div className="mx-auto flex min-h-full w-full max-w-[680px] flex-1 flex-col px-6 pb-6 pt-2xl md:max-w-[760px] md:px-10 lg:max-w-[840px] xl:max-w-[920px] xl:px-12 2xl:max-w-[1040px]">
         <div className="mb-xl">
-          <div className="flex items-baseline gap-2">
-            <span
-              aria-hidden="true"
-              className="shrink-0 font-mono text-xl font-normal text-on-surface-variant/50 md:text-2xl"
-            >
-              #
-            </span>
+          <div className="flex items-baseline">
             <input
               value={title}
               onChange={(event) => onTitleChange(event.target.value)}
-              placeholder="Untitled entry"
+              onKeyDown={handleTitleKeyDown}
+              placeholder="Untitled"
               className="w-full min-w-0 bg-transparent font-heading text-[1.75rem] font-semibold leading-tight tracking-tight text-on-background outline-none placeholder:font-heading placeholder:font-normal placeholder:text-on-surface-variant/45 md:text-[2rem]"
             />
           </div>
         </div>
 
         <textarea
+          ref={bodyRef}
           autoFocus={autoFocus}
           value={body}
           onChange={(event) => onBodyChange(event.target.value)}
-          placeholder="Start writing…"
+          placeholder="How was your day?"
           className="min-h-[512px] w-full flex-1 resize-none bg-transparent font-sans text-base leading-7 text-on-background outline-none placeholder:text-on-surface-variant/50 md:text-lg md:leading-8"
         />
 
@@ -63,7 +71,8 @@ export function EntryEditor({
             ) : null}
           </div>
           <div className="w-fit rounded-full bg-surface-container-low/80 px-3 py-1 text-[11px] text-on-surface-variant/70">
-            {wordCount} {wordCount === 1 ? "word" : "words"}
+            {wordCount} {wordCount === 1 ? "word" : "words"} · {characterCount}{" "}
+            {characterCount === 1 ? "character" : "characters"}
           </div>
         </div>
       </div>

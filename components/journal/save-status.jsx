@@ -1,36 +1,91 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Cloud, CloudOff, LoaderCircle } from "lucide-react";
 
-export function SaveStatus({ status, lastEditedAt, onRetry }) {
+const SAVING_VISIBILITY_DELAY_MS = 150;
+const SAVED_READ_TIME_MS = 1600;
+
+export function SaveStatus({ status, activityId = 0, lastEditedAt, onRetry }) {
+  const [displayStatus, setDisplayStatus] = useState(status);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+
+    function clearTimer() {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    }
+
+    if (status === "dirty") {
+      timerRef.current = setTimeout(() => {
+        setDisplayStatus("dirty");
+      }, 0);
+      return clearTimer;
+    }
+
+    if (status === "saving") {
+      timerRef.current = setTimeout(() => {
+        setDisplayStatus("saving");
+      }, SAVING_VISIBILITY_DELAY_MS);
+      return clearTimer;
+    }
+
+    if (status === "saved") {
+      timerRef.current = setTimeout(() => {
+        setDisplayStatus("saved");
+        timerRef.current = setTimeout(() => {
+          setDisplayStatus("idle");
+        }, SAVED_READ_TIME_MS);
+      }, 0);
+      return clearTimer;
+    }
+
+    timerRef.current = setTimeout(() => {
+      setDisplayStatus(status);
+    }, 0);
+    return clearTimer;
+  }, [status, activityId]);
+
   const label =
-    status === "saving" ? "Saving…" : status === "error" ? "Save failed" : "Saved";
+    displayStatus === "dirty"
+      ? "Unsaved changes"
+      : displayStatus === "saving"
+      ? "Saving…"
+      : displayStatus === "error"
+        ? "Save failed"
+        : "Saved";
 
   const Icon =
-    status === "saving" ? LoaderCircle : status === "error" ? CloudOff : Cloud;
+    displayStatus === "saving" ? LoaderCircle : displayStatus === "error" ? CloudOff : Cloud;
 
   return (
     <div className="flex items-center gap-sm">
       <div
         className={cn(
           "hidden items-center gap-2 rounded-full bg-surface-container-low px-3 py-1.5 text-xs text-on-surface-variant md:flex",
-          status === "error" && "text-error",
+          displayStatus === "error" && "text-error",
         )}
       >
         <Icon
-          className={cn("size-3.5 shrink-0", status === "saving" && "animate-spin")}
+          className={cn("size-3.5 shrink-0", displayStatus === "saving" && "animate-spin")}
           aria-hidden="true"
         />
         <span>{label}</span>
-        {lastEditedAt && status !== "saving" ? (
+        {lastEditedAt && displayStatus !== "saving" ? (
           <>
             <span className="opacity-30">•</span>
             <span suppressHydrationWarning>Edited {lastEditedAt}</span>
           </>
         ) : null}
       </div>
-      {status === "error" && onRetry ? (
+      {displayStatus === "error" && onRetry ? (
         <button
           type="button"
           onClick={onRetry}

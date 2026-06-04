@@ -6,6 +6,7 @@ import { EntrySidebar } from "@/components/journal/entry-sidebar";
 import { TopAppBar } from "@/components/journal/top-app-bar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getAutosaveTitle, resolveSavedEntryState } from "@/lib/autosave";
 import { cn } from "@/lib/utils";
 import {
   createEntry,
@@ -34,14 +35,18 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
   const [draft, setDraft] = useState(() => createDraft());
   const [selectedEntryId, setSelectedEntryId] = useState(initialTodayEntry?.id ?? null);
   const [saveStatus, setSaveStatus] = useState("idle");
+  const [saveActivityId, setSaveActivityId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(initialError);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [lastEditedAt, setLastEditedAt] = useState(null);
+  const [creatingNote, setCreatingNote] = useState(false);
 
   const saveTimerRef = useRef(null);
   const pendingSaveRef = useRef(null);
+  const activeSaveRef = useRef(false);
+  const runSaveRef = useRef(null);
 
   const selectedEntry = useMemo(
     () => entries.find((entry) => entry.id === selectedEntryId) ?? null,
@@ -101,7 +106,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       }
 
       return createEntry({
-        title: title.trim() ? title.trim() : null,
+        title: getAutosaveTitle(title),
         body,
         entry_type: entryType,
         occurred_at: occurredAt,
@@ -109,7 +114,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
     }
 
     const payload = {
-      title: title.trim() ? title.trim() : null,
+      title: getAutosaveTitle(title),
     };
 
     if (trimmedBody.length > 0) {
@@ -120,26 +125,41 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
   }, []);
 
   const runSave = useCallback(async () => {
+    if (activeSaveRef.current) {
+      return false;
+    }
+
     const pending = pendingSaveRef.current;
 
     if (!pending) {
       return true;
     }
 
+    activeSaveRef.current = true;
     setSaveStatus("saving");
 
     try {
       const savedEntry = await persistEntry(pending);
 
       if (!savedEntry) {
-        setSaveStatus("idle");
-        pendingSaveRef.current = null;
+        if (pendingSaveRef.current === pending) {
+          setSaveStatus("idle");
+          pendingSaveRef.current = null;
+        }
         return true;
       }
 
+      const { entryForList, nextPending, hasNewerPending } = resolveSavedEntryState({
+        pending,
+        latestPending: pendingSaveRef.current,
+        savedEntry,
+      });
+
+      pendingSaveRef.current = nextPending;
+
       setEntries((current) => {
-        const withoutSaved = current.filter((entry) => entry.id !== savedEntry.id);
-        return [savedEntry, ...withoutSaved].sort((left, right) => {
+        const withoutSaved = current.filter((entry) => entry.id !== entryForList.id);
+        return [entryForList, ...withoutSaved].sort((left, right) => {
           const leftDate = new Date(left.occurred_at ?? left.created_at).getTime();
           const rightDate = new Date(right.occurred_at ?? right.created_at).getTime();
           return rightDate - leftDate;
@@ -148,15 +168,36 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
 
       setSelectedEntryId(savedEntry.id);
       setDraft(createDraft());
-      setSaveStatus("saved");
       setLastEditedAt(new Date());
-      pendingSaveRef.current = null;
+
+      if (!hasNewerPending) {
+        setSaveStatus("saved");
+      } else {
+        setSaveStatus("saving");
+      }
+
       return true;
     } catch {
       setSaveStatus("error");
       return false;
+    } finally {
+      activeSaveRef.current = false;
+
+      if (pendingSaveRef.current && pendingSaveRef.current !== pending) {
+        if (saveTimerRef.current) {
+          clearTimeout(saveTimerRef.current);
+        }
+
+        saveTimerRef.current = setTimeout(() => {
+          runSaveRef.current?.();
+        }, AUTOSAVE_DELAY_MS);
+      }
     }
   }, [persistEntry]);
+
+  useEffect(() => {
+    runSaveRef.current = runSave;
+  }, [runSave]);
 
   const flushPendingSave = useCallback(async () => {
     if (saveTimerRef.current) {
@@ -188,12 +229,10 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       }, AUTOSAVE_DELAY_MS);
 
       setLastEditedAt(new Date());
-
-      if (saveStatus === "saved" || saveStatus === "error") {
-        setSaveStatus("idle");
-      }
+      setSaveActivityId((current) => current + 1);
+      setSaveStatus("dirty");
     },
-    [runSave, saveStatus],
+    [runSave],
   );
 
   useEffect(() => {
@@ -259,6 +298,11 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
   );
 
   const handleNewNote = useCallback(async () => {
+    if (creatingNote) {
+      return;
+    }
+
+    setCreatingNote(true);
     await flushPendingSave();
     setSaveStatus("saving");
 
@@ -277,8 +321,10 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       setLastEditedAt(new Date());
     } catch {
       setSaveStatus("error");
+    } finally {
+      setCreatingNote(false);
     }
-  }, [flushPendingSave]);
+  }, [creatingNote, flushPendingSave]);
 
   const showEmptyState =
     !loading && !loadError && entries.length === 0 && isDraft && draft.body.trim().length === 0;
@@ -294,6 +340,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
         onToggleCollapse={() => setSidebarCollapsed((current) => !current)}
         mobileOpen={mobileSidebarOpen}
         onMobileClose={() => setMobileSidebarOpen(false)}
+        creatingNote={creatingNote}
       />
 
       <div
@@ -304,6 +351,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       >
         <TopAppBar
           saveStatus={saveStatus}
+          saveActivityId={saveActivityId}
           lastEditedAt={headerEditedLabel}
           onRetrySave={runSave}
           onMenuClick={() => setMobileSidebarOpen(true)}
@@ -312,11 +360,20 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
 
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
           {loading ? (
-            <div className="flex flex-col gap-4 px-12 py-10">
-              <Skeleton className="h-8 w-48 bg-surface-container-high" />
-              <Skeleton className="h-6 w-full bg-surface-container-high" />
-              <Skeleton className="h-6 w-5/6 bg-surface-container-high" />
-              <Skeleton className="h-6 w-2/3 bg-surface-container-high" />
+            <div className="mx-auto flex min-h-0 w-full max-w-[840px] flex-1 flex-col px-6 py-12 md:px-10">
+              <div className="mb-10 flex items-center gap-3">
+                <Skeleton className="h-8 w-4 rounded-sm bg-surface-container-high/70" />
+                <Skeleton className="h-9 w-56 rounded bg-surface-container-high/70" />
+              </div>
+              <div className="flex flex-col gap-3">
+                <Skeleton className="h-5 w-full rounded bg-surface-container-high/55" />
+                <Skeleton className="h-5 w-11/12 rounded bg-surface-container-high/50" />
+                <Skeleton className="h-5 w-4/5 rounded bg-surface-container-high/45" />
+              </div>
+              <div className="mt-auto flex justify-between pt-10">
+                <Skeleton className="h-4 w-44 rounded bg-surface-container-high/40" />
+                <Skeleton className="h-6 w-32 rounded-full bg-surface-container-high/45" />
+              </div>
             </div>
           ) : null}
 
