@@ -347,10 +347,13 @@ Joel:
 
 - define the first reflection-question tone
 - approve safe language
+- own the current-entry-only prompt contract and minimal API behavior
+- write/verify AI unavailable and one-entry-only tests
 
 Prithvi:
 
-- implement the smallest UI/API path after contract is clear
+- implement the subtle UI trigger after Joel's contract is clear
+- cover loading, unavailable, retry, and empty-entry UI states
 
 Google signal:
 
@@ -374,14 +377,17 @@ Joel:
 
 - define chunking rules
 - define search evaluation queries
-- review retrieval behavior
+- implement chunking utility and chunk persistence
+- implement embedding adapter and retry-safe embedding job behavior
+- implement retrieval API and source-snippet response contract
+- measure retrieval quality and explain failure modes
 
 Prithvi:
 
-- implement chunking
-- implement embedding jobs
-- implement search API/UI
-- add tests for chunking and retrieval
+- implement search UI after Joel finalizes the API response contract
+- add UI states for search unavailable, empty results, loading, and errors
+- verify chunking/embedding failures do not break write/save/export
+- add frontend tests or Storybook states for semantic UI
 
 Google signal:
 
@@ -393,6 +399,8 @@ Google signal:
 ## Phase 4 - Voice and Imports
 
 Goal: support real personal data beyond typed journal entries.
+
+Status: deferred until the local journal MVP and retrieval foundations are stable.
 
 Deliverables:
 
@@ -412,13 +420,14 @@ Joel:
 - define privacy rules for audio and imported chats
 - define import UX
 - define first external-tool export targets and parser assumptions
+- define provenance, idempotency, parser fixtures, and background-job expectations
 
 Prithvi:
 
-- implement import parsers through the external-tools import agent shape
-- implement import preview
-- implement voice capture UI
-- wire transcription endpoint
+- implement import parsers only after Joel locks parser contracts and fixtures
+- implement import preview and confirm UI
+- implement voice capture UI after audio retention and transcript review rules are approved
+- wire transcription endpoint after provider and failure behavior are specified
 - test parser edge cases
 
 Google signal:
@@ -431,6 +440,8 @@ Google signal:
 ## Phase 5 - Freeform People Notes
 
 Goal: start relationship memory as freeform notes before structured people analytics.
+
+Status: deferred behind the local journal MVP, export, and early retrieval foundations.
 
 Deliverables:
 
@@ -446,6 +457,7 @@ Joel:
 
 - define person-page language and safety rules
 - define profile field rules
+- define what the app must not infer about people without enough source context
 
 Prithvi:
 
@@ -462,16 +474,18 @@ Google signal:
 
 Goal: turn stored text into source-backed patterns.
 
+Status: deferred until journal CRUD/export, reflection question, chunking, embeddings, retrieval, and citations are stable.
+
 Deliverables:
 
 - mood/topic metadata extraction
 - weekly digest
 - assumption extraction
 - challenge-this flow
-- reflection mode switcher
-- thinker/personality perspective mode prototype
 - contradiction/change detector
-- insight dashboard
+- reflection mode switcher after prompt contracts are safe
+- thinker/personality perspective mode prototype only after provenance foundations are stable
+- insight dashboard later, not before source-backed insight quality exists
 
 Joel:
 
@@ -480,13 +494,14 @@ Joel:
 - own challenge-mode behavior
 - own mode contracts for gentle coach, brutally honest analyst, therapist-like reflector, philosopher/debater, and writing/thinking coach
 - define safe labeling for thinker/personality perspective modes
+- implement or directly own metadata extraction, digest generation, assumption extraction, contradiction detection, retrieval selection, source-link checks, and API-contract tests
 
 Prithvi:
 
-- implement metadata storage
-- implement dashboard components
-- implement digest persistence
-- write tests for API contracts and empty states
+- implement insight UI components only after Joel finalizes response contracts
+- add empty, insufficient-context, loading, unavailable, and error states
+- verify language does not imply diagnosis, certainty, or therapy replacement
+- write frontend tests and Storybook states for visible insight surfaces
 
 Google signal:
 

@@ -35,3 +35,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-04 | loaded: Product Design brief, idea, DESIGN | changed: innerscript.in landing handover | running: none | open: Joel review, designer visual pass
 2026-06-05 | loaded: Storybook setup, Next docs | changed: MSW preview and colocated stories | running: none | open: none
 2026-06-05 | loaded: Storybook runtime | changed: logged stale empty Storybook and set initial story path | running: storybook 6006 | open: none
+2026-06-05 | loaded: ownership decisions, plan, atomic | changed: unchecked owner split corrected in Plan and Atomic Plan | running: none | open: create future issues from corrected split

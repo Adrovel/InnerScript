@@ -45,3 +45,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-05 | Joel+Codex | strategy | shifted plan toward highest interview-signal layers before feature completeness | open: build MVP then retrieval/Graph RAG foundations
 2026-06-05 | Joel+Codex | Storybook | AI setup completed with MSW preview and colocated journal/UI stories | open: none
 2026-06-05 | Joel+Codex | Storybook | fixed empty Storybook state by restarting stale server and setting initial story path | open: none
+2026-06-05 | Joel+Codex | planning | corrected unchecked atomic ownership so Joel owns AI/retrieval/backend/system work and Prithvi owns frontend delivery/verification | open: create future issues from corrected owner split

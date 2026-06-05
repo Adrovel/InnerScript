@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [##--------] 17% - 56/331 visible tasks
+Overall checkbox progress: [#---------] 15% - 56/380 visible tasks
 
 Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
 
@@ -21,12 +21,12 @@ Notification rule: when overall checkbox progress reaches or crosses 40%, tell J
 | Phase 0.6 - Landing Page Handover | [#####-----] 45% - 10/22 tasks |
 | Phase 1 - Local Journal Core | [#####-----] 48% - 20/42 tasks |
 | Phase 1.5 - Product Clarity And Local UI Review | [#########-] 91% - 10/11 tasks |
-| Phase 2 - One Reflection Question | [----------] 0% - 0/11 tasks |
-| Phase 3 - Semantic Core | [----------] 0% - 0/39 tasks |
-| Phase 3.5 - Graph RAG Design Layer | [----------] 0% - 0/23 tasks |
-| Phase 4 - External Data Integrations | [----------] 0% - 0/39 tasks |
-| Phase 5 - Freeform People Notes | [----------] 0% - 0/19 tasks |
-| Phase 6 - Source-Backed Insights | [----------] 0% - 0/34 tasks |
+| Phase 2 - One Reflection Question | [----------] 0% - 0/15 tasks |
+| Phase 3 - Semantic Core | [----------] 0% - 0/56 tasks |
+| Phase 3.5 - Graph RAG Design Layer | [----------] 0% - 0/29 tasks |
+| Phase 4 - External Data Integrations | [----------] 0% - 0/45 tasks |
+| Phase 5 - Freeform People Notes | [----------] 0% - 0/22 tasks |
+| Phase 6 - Source-Backed Insights | [----------] 0% - 0/47 tasks |
 | Phase 7A - Google Systems Layer | [----------] 0% - 0/25 tasks |
 | Phase 7B - Hosted Consumer Profile | [----------] 0% - 0/21 tasks |
 
@@ -84,6 +84,12 @@ Development simplicity rule: during Phase 1 and early Phase 2, choose the smalle
 
 Hiring-pipeline strategy: do not wait to finish every future feature before applying. Build the minimum usable journal first, then prioritize the highest interview-signal technical layers Joel can explain deeply: local-first architecture, chunking, embeddings, retrieval, hybrid search, Graph RAG design, knowledge graphs, entity extraction, prompt contracts, rate limiting, caching, background jobs, privacy-first AI systems, source grounding, and reliability.
 
+Task-level ownership correction:
+
+- Joel owns the AI/retrieval/backend/system tasks even when those tasks require implementation. This includes chunking utilities, chunk persistence, embedding adapters, embedding jobs, retrieval APIs, scoring/evaluation, Graph RAG design, entity extraction contracts, metadata extraction, insight generation, rate limiting, caching, background jobs, and AI safety contracts.
+- Prithvi owns frontend delivery, Storybook/component quality, journal flows, save/export UX, UI states, frontend tests, accessibility, verification, acceptance criteria, and implementation support after Joel has defined the data/AI/system contract.
+- If a task is mainly about learning an unfamiliar AI/backend/system concept, assign it to Joel first. If a task is mainly about making the user-facing experience polished and verifiable, assign it to Prithvi.
+
 Resume rule: do not claim a complete Graph RAG semantic memory platform until it exists. Every resume claim must survive a deep technical discussion.
 
 Relevant docs:
@@ -120,15 +126,15 @@ Assumptions:
 | Phase 0.6 - Landing Page Handover | 4 | 0.7 | 0 | 0 | 1 day |
 | Phase 1 - Local Journal Core | 18 | 3.0 | 54 | 18.0 | 3-4 weeks |
 | Phase 1.5 - Product Clarity And Local UI Review | 4 | 0.7 | 4 | 1.3 | 1-2 days |
-| Phase 2 - One Reflection Question | 6 | 1.0 | 10 | 3.3 | 1 week |
-| Phase 3 - Semantic Core | 30 | 5.0 | 72 | 24.0 | 4-5 weeks |
-| Phase 3.5 - Graph RAG Design Layer | 24 | 4.0 | 18 | 6.0 | 1-2 weeks |
+| Phase 2 - One Reflection Question | 12 | 2.0 | 8 | 2.7 | 1 week |
+| Phase 3 - Semantic Core | 70 | 11.7 | 32 | 10.7 | 3-4 weeks |
+| Phase 3.5 - Graph RAG Design Layer | 32 | 5.3 | 12 | 4.0 | 1-2 weeks |
 | Phase 4 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | 5-6 weeks |
 | Phase 5 - Freeform People Notes | 10 | 1.7 | 26 | 8.7 | 1-2 weeks |
-| Phase 6 - Source-Backed Insights | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
+| Phase 6 - Source-Backed Insights | 60 | 10.0 | 36 | 12.0 | 3-4 weeks |
 | Phase 7A - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
 | Phase 7B - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
-| Total | 288 | 48.1 | 464 | 154.7 | ~28-37 weeks |
+| Total | 360 | 60.1 | 342 | 114.0 | ~24-32 weeks |
 
 Important:
 
@@ -149,23 +155,23 @@ Important:
 | 1 | Daily entry | 3 | 8 | Small but important UX loop |
 | 1 | Export | 5 | 14 | Open-source trust feature |
 | 1.5 | Local UI review | 4 | 4 | capture user review, remove friction, and update product context |
-| 2 | Reflection question | 6 | 10 | Current-entry-only first AI moment; no broad analysis |
-| 3 | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
-| 3 | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
-| 3 | Search | 14 | 32 | Includes evaluation queries and UI |
-| 3.5 | Entity extraction | 8 | 6 | define safe entity boundaries before graph work |
-| 3.5 | Knowledge graph design | 8 | 4 | schema, source links, and graph update rules |
-| 3.5 | Graph RAG retrieval design | 8 | 8 | compare vector, hybrid, and graph retrieval before implementation claims |
+| 2 | Reflection question | 12 | 8 | Joel owns prompt/API contract; Prithvi owns subtle UI and unavailable state |
+| 3 | Chunking | 18 | 8 | Joel implements and explains chunking; Prithvi verifies UX/source-display implications |
+| 3 | Embeddings | 20 | 8 | Joel owns provider adapter, jobs, failure modes, and tests; Prithvi owns UI state |
+| 3 | Search | 32 | 16 | Joel owns retrieval API/evaluation; Prithvi owns search interface and accessibility |
+| 3.5 | Entity extraction | 12 | 4 | Joel defines safe entity boundaries before graph work |
+| 3.5 | Knowledge graph design | 10 | 3 | Joel owns schema, source links, and graph update rules |
+| 3.5 | Graph RAG retrieval design | 10 | 5 | Joel compares vector, hybrid, and graph retrieval before implementation claims |
 | 4 | Import framework | 8 | 24 | Parser interface, preview, idempotency |
 | 4 | Markdown/text imports | 4 | 16 | Early external data support |
 | 4 | External tools export/import agent | 6 | 24 | High Google impact; many parser edge cases across user-owned exports |
 | 4 | Voice journaling | 6 | 20 | Audio/transcription/review flow |
 | 5 | People CRUD | 5 | 20 | Manual people records only |
 | 5 | People page basics | 5 | 6 | Linking and summaries deferred |
-| 6 | Metadata extraction | 8 | 18 | Structured AI output |
-| 6 | Weekly digest | 10 | 18 | High product and Google signal |
-| 6 | Assumptions/challenge mode | 14 | 24 | AI behavior needs Joel ownership |
-| 6 | Contradiction/change detection | 10 | 18 | Defer if search quality is weak |
+| 6 | Metadata extraction | 16 | 8 | Joel owns structured AI output contract and extraction path |
+| 6 | Weekly digest | 14 | 10 | Joel owns grounded digest generation; Prithvi owns display states |
+| 6 | Assumptions/challenge mode | 18 | 12 | AI behavior and safety need Joel ownership |
+| 6 | Contradiction/change detection | 12 | 6 | Joel owns retrieval logic; defer if search quality is weak |
 | 7 | Go rate limiter API contract | 8 | 4 | Joel owns design |
 | 7 | Go rate limiter service | 38 | 12 | Core systems component |
 | 7 | Metrics/load testing | 26 | 20 | Benchmark output is the point |
@@ -394,7 +400,7 @@ Goal: use local review feedback to keep product direction aligned before deeper 
 - [X] Relevant docs reflect the current product clarity.
 - [X] Next implementation task is selected from updated docs.
 
-## Phase 2 - One Reflection Question — Estimate: Joel 6h / 1.0 day, Prithvi 10h / 3.3 days
+## Phase 2 - One Reflection Question — Estimate: Joel 12h / 2.0 days, Prithvi 8h / 2.7 days
 
 Goal: add the first AI moment after writing without turning the app into broad analysis.
 
@@ -411,13 +417,17 @@ Build constraint:
 - [ ] Approve safe language around reflection and therapy.
 - [ ] Define the current-entry-only prompt contract.
 - [ ] Define AI unavailable behavior.
+- [ ] Implement the smallest current-entry reflection API path after the prompt contract is written.
+- [ ] Add server-side tests proving the prompt receives only the selected/current entry.
+- [ ] Add server-side tests for AI key missing, provider failure, and empty-entry fallback.
+- [ ] Document why this is a reflection question, not diagnosis, life analysis, or therapy replacement.
 
-### Prithvi / Agent
+### Prithvi
 
-- [ ] Add the smallest API path for a current-entry reflection question.
-- [ ] Add a subtle UI trigger after writing.
-- [ ] Add tests for current-entry-only prompt input.
-- [ ] Add tests for AI unavailable state.
+- [ ] Add a subtle UI trigger after writing once Joel's API contract is stable.
+- [ ] Show loading, success, unavailable, and retry states without blocking journal save.
+- [ ] Add frontend tests for AI unavailable and empty-entry states.
+- [ ] Add Storybook story or isolated component state for reflection-question UI if Storybook is active for this surface.
 
 ### Exit Criteria
 
@@ -425,13 +435,13 @@ Build constraint:
 - [ ] The AI does not claim broader analysis from one entry.
 - [ ] The core journal still works without an AI key.
 
-## Phase 3 - Semantic Core — Estimate: Joel 30h / 5.0 days, Prithvi 72h / 24.0 days
+## Phase 3 - Semantic Core — Estimate: Joel 70h / 11.7 days, Prithvi 32h / 10.7 days
 
 Goal: turn entries into searchable semantic memory.
 
 Interview-signal goal: Joel must be able to explain chunking decisions, embedding tradeoffs, retrieval failure modes, source grounding, citation behavior, and why the chosen retrieval path fits personal writing.
 
-### Layer 1: Chunking — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
+### Layer 1: Chunking — Estimate: Joel 18h / 3.0 days, Prithvi 8h / 2.7 days
 
 #### Joel
 
@@ -442,17 +452,23 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 - [ ] Define minimum chunk size.
 - [ ] Define how source references are displayed.
 - [ ] Define chunking failure modes and expected mitigations.
-
-#### Prithvi
-
 - [ ] Implement chunking utility.
-- [ ] Add `chunks` table/model.
+- [ ] Add `chunks` table/model or migration path.
 - [ ] Create chunks after entry save.
 - [ ] Rebuild chunks when entry body changes.
 - [ ] Add tests for paragraph chunking.
 - [ ] Add tests for max token fallback.
+- [ ] Add tests for empty, tiny, long, and heading-heavy entries.
+- [ ] Write an implementation note explaining why this chunking strategy can be defended in an interview.
 
-### Layer 2: Embeddings — Estimate: Joel 8h / 1.3 days, Prithvi 22h / 7.3 days
+#### Prithvi
+
+- [ ] Review source-reference display needs for future UI citations.
+- [ ] Verify chunk rebuild behavior does not break editor save UX.
+- [ ] Add frontend/dev acceptance notes for inspecting chunk-backed source snippets later.
+- [ ] Reconcile checklist status after Joel lands chunking implementation.
+
+### Layer 2: Embeddings — Estimate: Joel 20h / 3.3 days, Prithvi 8h / 2.7 days
 
 #### Joel
 
@@ -461,16 +477,20 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 - [ ] Define error behavior if embeddings fail.
 - [ ] Compare embedding provider tradeoffs.
 - [ ] Define what gets embedded and what should never be embedded.
-
-#### Prithvi
-
 - [ ] Implement embedding adapter.
 - [ ] Store embeddings on chunks.
 - [ ] Add retry-safe embedding job function.
 - [ ] Add mocked embedding tests.
-- [ ] Add "embedding unavailable" state.
+- [ ] Add tests for provider failure, duplicate jobs, and AI-off local mode.
+- [ ] Document embedding privacy boundaries and failure modes.
 
-### Layer 3: Search — Estimate: Joel 14h / 2.3 days, Prithvi 32h / 10.7 days
+#### Prithvi
+
+- [ ] Add "embedding unavailable" UI state where search/reflection depends on embeddings.
+- [ ] Verify journal write/save/export still works when embeddings are unavailable.
+- [ ] Add frontend acceptance criteria for disabled or degraded semantic features.
+
+### Layer 3: Search — Estimate: Joel 32h / 5.3 days, Prithvi 16h / 5.3 days
 
 #### Joel
 
@@ -479,14 +499,21 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 - [ ] Define Precision@5 target for MVP.
 - [ ] Compare vector search, lexical search, and hybrid search for journal text.
 - [ ] Define citation/source-grounding requirements for retrieval answers.
+- [ ] Add `POST /api/search`.
+- [ ] Implement date/source scope filters.
+- [ ] Return source snippets with similarity scores.
+- [ ] Add API tests for search.
+- [ ] Add evaluation script or manual score sheet for Precision@5.
+- [ ] Document retrieval failure modes: vague query, too-few notes, wrong chunk size, embedding outage, and stale chunks.
+- [ ] Decide whether hybrid search is implemented now or written as the next-stage design.
 
 #### Prithvi
 
-- [ ] Add `POST /api/search`.
-- [ ] Add scope filters: all, date range, source, person later.
-- [ ] Return source snippets with similarity scores.
-- [ ] Build search UI.
-- [ ] Add API tests for search.
+- [ ] Build search UI after Joel finalizes the search API response contract.
+- [ ] Add UI controls for all/date/source scopes that match implemented backend filters.
+- [ ] Show source snippets and scores in a readable, non-academic style.
+- [ ] Add empty, loading, error, and AI-off/search-unavailable states.
+- [ ] Add frontend tests or Storybook states for search results and empty search.
 
 ### Exit Criteria
 
@@ -497,7 +524,7 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 - [ ] Search quality is measured, not guessed.
 - [ ] Joel can explain retrieval tradeoffs and failure modes.
 
-## Phase 3.5 - Graph RAG Design Layer — Estimate: Joel 24h / 4.0 days, Prithvi 18h / 6.0 days
+## Phase 3.5 - Graph RAG Design Layer — Estimate: Joel 32h / 5.3 days, Prithvi 12h / 4.0 days
 
 Goal: design the Graph RAG and knowledge graph layer before claiming it is built.
 
@@ -506,7 +533,7 @@ Build constraint:
 - Do not claim production Graph RAG until there is working graph storage, extraction, graph retrieval, and source-backed evaluation.
 - Design and document the architecture first.
 
-### Layer 1: Entity Extraction — Estimate: Joel 8h / 1.3 days, Prithvi 6h / 2.0 days
+### Layer 1: Entity Extraction — Estimate: Joel 12h / 2.0 days, Prithvi 4h / 1.3 days
 
 #### Joel
 
@@ -514,13 +541,15 @@ Build constraint:
 - [ ] Define safety boundaries for extracting sensitive entities from personal writing.
 - [ ] Define source-link requirements for every extracted entity.
 - [ ] Define false-positive handling and user correction behavior.
+- [ ] Write the first entity extraction prompt contract.
+- [ ] Define evaluation examples for correct, missing, and false-positive entities.
 
 #### Prithvi
 
 - [ ] Review entity model for UI/data practicality.
-- [ ] Prototype a small entity review UI only after behavior is specified.
+- [ ] Write frontend acceptance criteria for entity review and correction UI.
 
-### Layer 2: Knowledge Graph Design — Estimate: Joel 8h / 1.3 days, Prithvi 4h / 1.3 days
+### Layer 2: Knowledge Graph Design — Estimate: Joel 10h / 1.7 days, Prithvi 3h / 1.0 days
 
 #### Joel
 
@@ -528,13 +557,15 @@ Build constraint:
 - [ ] Define how graph records link back to entries/chunks.
 - [ ] Define graph update rules when entries change.
 - [ ] Define when graph data should be deleted or corrected.
+- [ ] Define why graph storage is needed beyond vector search.
+- [ ] Define graph failure modes: overconnected nodes, stale edges, sensitive inference, and duplicate entities.
 
 #### Prithvi
 
 - [ ] Review graph schema for implementation risk.
-- [ ] Identify frontend states needed for graph-backed source review.
+- [ ] Identify frontend states needed for graph-backed source review after Joel finalizes the schema.
 
-### Layer 3: Graph RAG Retrieval Design — Estimate: Joel 8h / 1.3 days, Prithvi 8h / 2.7 days
+### Layer 3: Graph RAG Retrieval Design — Estimate: Joel 10h / 1.7 days, Prithvi 5h / 1.7 days
 
 #### Joel
 
@@ -542,11 +573,13 @@ Build constraint:
 - [ ] Write the first Graph RAG retrieval flow.
 - [ ] Define failure modes: stale graph, wrong entity extraction, overconnected nodes, privacy-sensitive inferences.
 - [ ] Define evaluation questions for graph retrieval.
+- [ ] Define what must exist before implementation can be claimed: graph storage, extraction, graph retrieval, source-backed evaluation.
+- [ ] Write resume/project wording that says "designed" until implementation exists.
 
 #### Prithvi
 
 - [ ] Review how graph retrieval results should be displayed with citations.
-- [ ] Add frontend acceptance criteria for graph-backed answers.
+- [ ] Add frontend acceptance criteria for graph-backed answers after Joel defines graph result shape.
 
 ### Exit Criteria
 
@@ -562,6 +595,11 @@ Goal: ingest journal-related text from other apps without brittle private APIs.
 
 See `guardrails/External-Data-Integrations.md`.
 
+Defer rule:
+
+- Do not start Phase 4 until Stage 1 journal MVP and Stage 2 retrieval foundations are working.
+- Imports are useful later, but they are lower priority than write/save/autosave/open/edit/delete/export/reflection and chunking/embeddings/retrieval/citations.
+
 ### Layer 1: Import Framework — Estimate: Joel 8h / 1.3 days, Prithvi 24h / 8.0 days
 
 #### Joel
@@ -569,15 +607,18 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Define source provenance requirements.
 - [ ] Define import preview UX.
 - [ ] Define duplicate handling.
+- [ ] Define how imported content enters chunking, embeddings, retrieval, and citations.
+- [ ] Decide whether import jobs are synchronous, queued, or explicitly deferred until background jobs exist.
 
 #### Prithvi
 
-- [ ] Add `POST /api/import/preview`.
-- [ ] Add `POST /api/import/confirm`.
-- [ ] Add idempotency key support.
-- [ ] Store one `sources` record per import.
-- [ ] Add parser interface.
+- [ ] Add `POST /api/import/preview` after Joel finalizes provenance and preview contract.
+- [ ] Add `POST /api/import/confirm` after idempotency behavior is decided.
+- [ ] Add idempotency key support according to Joel's import contract.
+- [ ] Store one `sources` record per import using the approved source schema.
+- [ ] Add parser interface after supported formats are chosen.
 - [ ] Add tests for duplicate import protection.
+- [ ] Build preview/confirm UI with clear user-owned-data language.
 
 ### Layer 2: Markdown and Text Imports — Estimate: Joel 4h / 0.7 days, Prithvi 16h / 5.3 days
 
@@ -585,6 +626,7 @@ See `guardrails/External-Data-Integrations.md`.
 
 - [ ] Define Markdown metadata behavior.
 - [ ] Decide whether headings become entries or chunks.
+- [ ] Define import edge cases: frontmatter, duplicate titles, empty files, malformed dates, and very large files.
 
 #### Prithvi
 
@@ -601,11 +643,12 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Define privacy warning copy for external-tool imports.
 - [ ] Define participant/contact mapping to people.
 - [ ] Decide whether WhatsApp is first example or only one parser under the broader agent.
+- [ ] Define parser evaluation fixtures and malformed-line handling expectations.
 
 #### Prithvi
 
-- [ ] Implement external-tool parser interface.
-- [ ] Implement first exported-chat `.txt` parser.
+- [ ] Implement external-tool parser interface after Joel locks the format contract.
+- [ ] Implement first exported-chat `.txt` parser after sample fixtures are approved.
 - [ ] Group messages by date and participant/contact.
 - [ ] Preserve timestamps.
 - [ ] Map participant/contact names to people only after user confirmation.
@@ -619,12 +662,13 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Define audio retention policy.
 - [ ] Define transcript review UX.
 - [ ] Define transcription failure behavior.
+- [ ] Decide whether voice journaling waits until background jobs/offline behavior are designed.
 
 #### Prithvi
 
 - [ ] Build browser record button.
-- [ ] Add upload endpoint.
-- [ ] Add transcription adapter.
+- [ ] Add upload endpoint after audio retention and transcript review policy are approved.
+- [ ] Add transcription adapter after Joel defines provider and failure behavior.
 - [ ] Show editable transcript.
 - [ ] Save transcript as entry.
 - [ ] Add tests with mocked transcription.
@@ -640,6 +684,11 @@ See `guardrails/External-Data-Integrations.md`.
 
 Goal: add user-controlled freeform people notes without forcing person interactions into the entry model.
 
+Defer rule:
+
+- Do not start relationship analytics or generated people insights in this phase.
+- Freeform people notes can start only after the local journal loop is stable and export is working.
+
 ### Layer 1: People CRUD — Estimate: Joel 5h / 0.8 days, Prithvi 20h / 6.7 days
 
 #### Joel
@@ -647,10 +696,11 @@ Goal: add user-controlled freeform people notes without forcing person interacti
 - [ ] Define person page language rules.
 - [ ] Define relationship type list.
 - [ ] Define alias merge behavior.
+- [ ] Define privacy and safety boundaries for people notes.
 
 #### Prithvi
 
-- [ ] Add `people` table/model.
+- [ ] Add `people` table/model after Joel approves fields and language rules.
 - [ ] Add `GET /api/people`.
 - [ ] Add `POST /api/people`.
 - [ ] Add `GET /api/people/[id]`.
@@ -659,6 +709,7 @@ Goal: add user-controlled freeform people notes without forcing person interacti
 - [ ] Build `/people`.
 - [ ] Build `/people/[id]`.
 - [ ] Add people API tests.
+- [ ] Add accessibility and empty-state checks for people pages.
 
 ### Layer 2: People Page Basics — Estimate: Joel 5h / 0.8 days, Prithvi 6h / 2.0 days
 
@@ -666,6 +717,7 @@ Goal: add user-controlled freeform people notes without forcing person interacti
 
 - [ ] Define which profile fields are visible on the person page.
 - [ ] Define empty-state language.
+- [ ] Define what the app must not infer about a person without enough source context.
 
 #### Prithvi
 
@@ -684,41 +736,53 @@ Generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
 - [ ] Person page shows only user-controlled profile data.
 - [ ] Entry schema does not include `person_interaction`.
 
-## Phase 6 - Source-Backed Insights — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
+## Phase 6 - Source-Backed Insights — Estimate: Joel 60h / 10.0 days, Prithvi 36h / 12.0 days
 
 Goal: create source-backed insight beyond basic search.
 
-### Layer 1: Metadata Extraction — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
+Defer rule:
+
+- Do not start Phase 6 until journal CRUD/export, reflection question, chunking, embeddings, retrieval, and citations are stable enough to ground claims.
+- No broad life analysis, dashboards, relationship analytics, or unsupported therapeutic claims in this phase.
+
+### Layer 1: Metadata Extraction — Estimate: Joel 16h / 2.7 days, Prithvi 8h / 2.7 days
 
 #### Joel
 
 - [ ] Define metadata schema.
 - [ ] Write extraction prompt.
 - [ ] Define AI-off behavior.
+- [ ] Add `entry_metadata` table/model or migration path.
+- [ ] Add analysis endpoint behind a narrow contract.
+- [ ] Store mood, arousal, emotion, topics, and summary only when source-backed and schema-valid.
+- [ ] Add schema validation tests.
+- [ ] Add tests for AI-off, malformed AI output, and unsupported inference.
 
 #### Prithvi
 
-- [ ] Add `entry_metadata` table/model.
-- [ ] Add analysis endpoint.
-- [ ] Store mood, arousal, emotion, topics, summary.
-- [ ] Add schema validation tests.
+- [ ] Add UI states for metadata pending, unavailable, and source-backed output.
+- [ ] Verify metadata does not appear as diagnosis or therapy claim.
+- [ ] Add frontend acceptance checks for hidden/disabled metadata when AI is unavailable.
 
-### Layer 2: Weekly Digest — Estimate: Joel 10h / 1.7 days, Prithvi 18h / 6.0 days
+### Layer 2: Weekly Digest — Estimate: Joel 14h / 2.3 days, Prithvi 10h / 3.3 days
 
 #### Joel
 
 - [ ] Write weekly digest prompt.
 - [ ] Define digest sections.
 - [ ] Define source citation format.
+- [ ] Add `digests` table/model or storage decision.
+- [ ] Add digest generation endpoint with date-range input.
+- [ ] Add tests with mocked AI and required citations.
+- [ ] Define digest failure modes: too few entries, missing embeddings, citation mismatch, and provider failure.
 
 #### Prithvi
 
-- [ ] Add `digests` table/model.
-- [ ] Add digest generation endpoint.
-- [ ] Add digest page/section.
-- [ ] Add tests with mocked AI.
+- [ ] Add digest page/section after Joel finalizes digest response shape.
+- [ ] Show citation/source snippets without making the UI feel academic.
+- [ ] Add loading, empty-week, insufficient-context, and error states.
 
-### Layer 3: Assumptions and Challenge Mode — Estimate: Joel 14h / 2.3 days, Prithvi 24h / 8.0 days
+### Layer 3: Assumptions and Challenge Mode — Estimate: Joel 18h / 3.0 days, Prithvi 12h / 4.0 days
 
 #### Joel
 
@@ -726,29 +790,35 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Define assumption types.
 - [ ] Define challenge tone.
 - [ ] Define escalation/safety rules.
+- [ ] Add `assumptions` table/model or storage decision.
+- [ ] Add assumption extraction endpoint behind safety rules.
+- [ ] Add tests for assumption storage and source links.
+- [ ] Add tests that unsafe or unsupported challenges are refused or softened.
 
 #### Prithvi
 
-- [ ] Add `assumptions` table/model.
-- [ ] Add assumption extraction endpoint.
 - [ ] Show assumptions in insights/person/journal contexts.
 - [ ] Add "Challenge this" action.
-- [ ] Add tests for assumption storage.
+- [ ] Add frontend tests for challenge action disabled/error states.
+- [ ] Add acceptance checks that challenge mode never appears as therapy or diagnosis.
 
-### Layer 4: Contradiction and Change Detection — Estimate: Joel 10h / 1.7 days, Prithvi 18h / 6.0 days
+### Layer 4: Contradiction and Change Detection — Estimate: Joel 12h / 2.0 days, Prithvi 6h / 2.0 days
 
 #### Joel
 
 - [ ] Define what counts as contradiction vs growth.
 - [ ] Write detection prompt.
 - [ ] Define source-link requirements.
+- [ ] Implement retrieval for candidate old/new entries.
+- [ ] Add detection endpoint behind a feature flag.
+- [ ] Add tests for source-backed output and citation mismatch.
+- [ ] Define when this feature must stay hidden because retrieval quality is weak.
 
 #### Prithvi
 
-- [ ] Implement retrieval for candidate old/new entries.
-- [ ] Add detection endpoint.
-- [ ] Add UI section behind a feature flag.
-- [ ] Add tests for source-backed output.
+- [ ] Add UI section behind a feature flag after Joel defines response shape.
+- [ ] Add empty, insufficient-context, and "not enough evidence" states.
+- [ ] Verify language frames changes as possible patterns, not certain truths.
 
 ### Exit Criteria
 
