@@ -105,6 +105,42 @@ Canonical file:
 
 - `dev-docs/engineering-standards/Git-Workflow-Standard.md`
 
+### 6. Collaborator Catch-Up Format
+
+Question:
+What prompt, session format, or output format should help a new collaborator quickly understand what others have done?
+
+Non-blocking need:
+Create a short reusable handoff format that answers:
+
+- what changed
+- why it changed
+- which files matter
+- what decisions were made
+- what remains open
+- what the next person should read first
+- what they should not touch yet
+
+Current recommendation:
+Add a collaborator catch-up prompt or template after the structure discussion with Prithvi. It should be short enough to use every session, but structured enough that a contributor can get productive without reading every doc.
+
+### 7. Joel / Prithvi Work Boundary
+
+Question:
+Where is the line between Joel's work and Prithvi's work?
+
+Non-blocking need:
+Clarify ownership so the project can move in parallel without either person waiting unnecessarily.
+
+Current provisional split:
+
+- Joel: product thesis, priorities, Google signal, AI behavior, privacy boundaries, architecture approval, evaluation criteria, landing voice.
+- Prithvi: scoped implementation, API wiring, database/migration work, parser implementation, tests, local setup, UI implementation after behavior is specified.
+- Shared: file-structure conventions, product decisions that affect implementation, and final review of risky product behavior.
+
+Open point:
+Prithvi should review and refine this split before it becomes a locked team convention.
+
 ## Proposed Decision Session With Prithvi
 
 Agenda:
@@ -114,7 +150,9 @@ Agenda:
 3. Decide product knowledge folder responsibilities.
 4. Decide app source folder conventions for journal, imports, search, AI, people, and shared utilities.
 5. Decide test folder conventions.
-6. Update `Product-Decisions.md`, `Open-Questions.md`, `Plan.md`, and `Atomic-Action-Plan.md` after decisions.
+6. Decide the collaborator catch-up prompt/session/output format.
+7. Clarify Joel/Prithvi work boundaries.
+8. Update `Product-Decisions.md`, `Open-Questions.md`, `Plan.md`, and `Atomic-Action-Plan.md` after decisions.
 
 Exit criteria:
 

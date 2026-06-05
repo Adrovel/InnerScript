@@ -28,6 +28,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [Update Log](../.wolf/update-log.md)
 - [Future Plan](./planning/Future-Plan.md)
 - [InnerScript Idea](./design/idea.md)
+- [InnerScript.in Landing Page Handover](./design/InnerScript.in-Landing-Page-Handover.md)
 - [Architecture](./architecture/Architecture.md)
 - [Stack and Tools](./architecture/Stack-and-Tools.md)
 - [Team Communication](./team/Team-Communication.md)

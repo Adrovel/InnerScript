@@ -14,6 +14,7 @@ Notification rule: when overall roadmap progress reaches or crosses 40%, tell Jo
 |---|---:|---|
 | Phase 0 - Direction Lock | [#######---] 70% | thesis, docs, feature ranking, and schema direction are mostly clear; Drizzle rationale and a few architecture choices remain |
 | Phase 0.5 - Product Knowledge And Project Conventions | [####------] 42% | product knowledge folder, priority-change log, and structure plan exist; `.wolf`, file structure, and source conventions still need discussion with Prithvi |
+| Phase 0.6 - Landing Page Handover | [#####-----] 45% | `innerscript.in` designer handover exists; final landing copy/design and implementation remain |
 | Phase 1 - Local Journal Core | [######----] 65% | entries/sources schema, CRUD APIs, editor, autosave, visible save state, and focused autosave tests exist; export/today/delete polish remain |
 | Phase 1.5 - Product Clarity And Local UI Review | [########--] 85% | local server review captured, UI feedback stored in `.wolf/user-review.md`, sidebar/editor polish mostly confirmed; autosave browser stress remains |
 | Phase 2 - Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
@@ -105,6 +106,31 @@ Exit criteria:
 - priority changes have a log and rationale
 - `.wolf` files and session logs have an accepted role or migration path
 - source-folder and test conventions are decided enough for the next implementation phase
+
+### Phase 0.6 - InnerScript.in Landing Page Handover
+
+Goal: give a designer enough context to create a verbal-first landing page for `innerscript.in`.
+
+Deliverables:
+
+- `dev-docs/design/InnerScript.in-Landing-Page-Handover.md`
+- clear audience definition: collaborators/builders/investors, employers, lay users
+- color palette and visual feel from Alexandria
+- product thesis, problem, solution, roadmap, technical credibility, and copy seeds
+- final landing copy and implementation later
+
+Owner:
+
+- Joel owns the product intent and final landing voice.
+- Designer owns visual exploration and landing composition.
+- Agents keep the handover aligned with `idea.md`, `Plan.md`, and `Atomic-Action-Plan.md`.
+
+Exit criteria:
+
+- a designer can understand what InnerScript is and why it matters
+- the page direction is clearly verbal-first
+- visual palette, tone, audiences, and content hierarchy are defined
+- landing implementation is not started until the handover is accepted
 
 ### Phase 1.5 - Local UI Review And Friction Removal
 

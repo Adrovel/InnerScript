@@ -93,3 +93,8 @@ Before implementing app behavior, keep `dev-docs/design/idea.md`, `dev-docs/plan
 
 Answer:
 Durable product knowledge learned while building InnerScript should live under `dev-docs/product-knowledge/`. The folder starts with a priority-change log and a structure/conventions plan. It does not replace the roadmap, atomic tasks, team decisions, open questions, or `.wolf` operational logs.
+
+### Q: What should the `innerscript.in` landing page do?
+
+Answer:
+The first `innerscript.in` landing page should be verbal-first and explain the product clearly. It should pitch the idea to potential collaborators, cofounders, technical builders, investors, and employers while remaining understandable to lay users and journalers. It should make serious builders feel there is meaningful product and technical work here, not present InnerScript as a generic AI notes app.

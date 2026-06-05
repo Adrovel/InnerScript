@@ -137,6 +137,39 @@ Needed for:
 - `.wolf` role or rename/mirror decision
 - future implementation without context drift
 
+### Q: What catch-up format should collaborators use?
+
+Asked by: Joel
+Asked to: anyone
+Date: 2026-06-04
+Status: open
+
+Context:
+- Joel wants a prompt, session format, or output format that helps collaborators quickly understand what others have done.
+- The format should explain changed files, decisions, rationale, open work, and what to read first.
+- This is non-blocking but should be designed before more people work in parallel.
+
+Needed for:
+- collaborator onboarding
+- handoffs between Joel, Prithvi, Codex, Claude, and designers
+- reducing repeated context loading
+
+### Q: What is the clear line of work between Joel and Prithvi?
+
+Asked by: Joel
+Asked to: Prithvi
+Date: 2026-06-04
+Status: open
+
+Context:
+- Joel wants a clear non-blocking work split so he and Prithvi can work in parallel.
+- Current provisional split is documented in `dev-docs/product-knowledge/Structure-and-Conventions-Plan.md`.
+
+Needed for:
+- ownership model
+- implementation tickets
+- avoiding blockers and duplicated effort
+
 ### Q: What is an autosave race in an editor, and how can InnerScript avoid it?
 
 Asked by: Joel

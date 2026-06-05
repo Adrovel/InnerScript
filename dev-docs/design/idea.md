@@ -175,6 +175,22 @@ Current product-knowledge priorities:
 
 No product implementation should move ahead while `idea.md`, `planning/Plan.md`, and `planning/Atomic-Action-Plan.md` are stale for that change.
 
+## Public Landing Page Intent
+
+The first public site for `innerscript.in` should be a verbal-first landing page, not a visual-heavy marketing page.
+
+The landing page has three audiences:
+
+1. potential collaborators, cofounders, technical builders, and investors who should feel the project is worth working on
+2. potential employers who should understand the engineering signal behind the project
+3. lay users and journalers who should understand the human problem without needing technical context
+
+The page should explain the problem, the emotional/product thesis, the source-backed AI principle, the roadmap, and the current build status. It should feel serious, private, technically credible, and emotionally precise.
+
+Canonical handover:
+
+- `dev-docs/design/InnerScript.in-Landing-Page-Handover.md`
+
 ## Google Signal
 
 InnerScript should also remain a viable Google-signal project.

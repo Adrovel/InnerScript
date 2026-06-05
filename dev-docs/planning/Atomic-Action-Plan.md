@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [##--------] 17% - 46/274 visible tasks
+Overall checkbox progress: [##--------] 19% - 56/300 visible tasks
 
 Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
 
@@ -17,7 +17,8 @@ Notification rule: when overall checkbox progress reaches or crosses 40%, tell J
 | Phase | Checkbox progress |
 |---|---|
 | Phase 0 - Direction Lock | [####------] 35% - 6/17 visible tasks |
-| Phase 0.5 - Product Knowledge And Project Conventions | [####------] 42% - 10/24 tasks |
+| Phase 0.5 - Product Knowledge And Project Conventions | [####------] 36% - 10/28 tasks |
+| Phase 0.6 - Landing Page Handover | [#####-----] 45% - 10/22 tasks |
 | Phase 1 - Local Journal Core | [#####-----] 48% - 20/42 tasks |
 | Phase 1.5 - Product Clarity And Local UI Review | [#########-] 91% - 10/11 tasks |
 | Phase 2 - One Reflection Question | [----------] 0% - 0/11 tasks |
@@ -96,6 +97,7 @@ Assumptions:
 |---|---:|---:|---:|---:|---|
 | Phase 0 - Direction Lock | 12 | 2.0 | 6 | 2.0 | 2 days |
 | Phase 0.5 - Product Knowledge And Project Conventions | 6 | 1.0 | 4 | 1.3 | 1-2 days |
+| Phase 0.6 - Landing Page Handover | 4 | 0.7 | 0 | 0 | 1 day |
 | Phase 1 - Local Journal Core | 18 | 3.0 | 54 | 18.0 | 3-4 weeks |
 | Phase 1.5 - Product Clarity And Local UI Review | 4 | 0.7 | 4 | 1.3 | 1-2 days |
 | Phase 2 - One Reflection Question | 6 | 1.0 | 10 | 3.3 | 1 week |
@@ -105,7 +107,7 @@ Assumptions:
 | Phase 6 - Source-Backed Insights | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
 | Phase 7A - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
 | Phase 7B - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
-| Total | 260 | 43.4 | 446 | 148.7 | ~27-35 weeks |
+| Total | 264 | 44.1 | 446 | 148.7 | ~27-35 weeks |
 
 Important:
 
@@ -120,6 +122,7 @@ Important:
 | 0 | Direction confirmation | 8 | 3 | Joel validates product/Google thesis; Prithvi lists implementation questions |
 | 0 | Local setup verification | 4 | 3 | Prithvi checks run path; Joel resolves direction blockers |
 | 0.5 | Product knowledge and conventions | 6 | 4 | decide product knowledge, priority-change log, `.wolf`, source folders, and test conventions |
+| 0.6 | Landing page handover | 4 | 0 | designer handover for `innerscript.in`; no implementation yet |
 | 1 | Schema and API | 6 | 18 | Highest dependency layer for Phase 1 |
 | 1 | Editor | 4 | 14 | Keep UI minimal |
 | 1 | Daily entry | 3 | 8 | Small but important UX loop |
@@ -188,6 +191,8 @@ Goal: decide where product knowledge, priority changes, operational logs, sessio
 - [ ] Approve the product knowledge folder responsibilities.
 - [ ] Approve the priority-change log format.
 - [ ] Approve app source-folder conventions after Prithvi review.
+- [ ] Define a non-blocking collaborator catch-up prompt/session/output format so new collaborators can quickly understand what others changed, why, and what remains open.
+- [ ] Clarify the line of work between Joel and Prithvi so both can make progress without blocking each other.
 
 ### Prithvi Tasks
 
@@ -195,6 +200,8 @@ Goal: decide where product knowledge, priority changes, operational logs, sessio
 - [ ] Give rationale for keeping, renaming, or documenting `.wolf`.
 - [ ] Propose source folder conventions for journal, imports, search, AI, people, shared utilities, and tests.
 - [ ] Identify which conventions affect current implementation and which can wait.
+- [ ] Review the proposed Joel/Prithvi work-boundary split and identify any overlap or blockers.
+- [ ] Review the collaborator catch-up format for whether it gives enough implementation context.
 
 ### Agent Tasks
 
@@ -214,6 +221,44 @@ Goal: decide where product knowledge, priority changes, operational logs, sessio
 - [ ] Source-folder and test conventions are documented.
 - [ ] Product knowledge update rules are accepted.
 - [ ] Future implementation can proceed without guessing where context belongs.
+
+## Phase 0.6 - Landing Page Handover — Estimate: Joel 4h / 0.7 days, Prithvi 0h
+
+Goal: prepare a designer-facing markdown handover for the `innerscript.in` landing page before visual design or implementation starts.
+
+### Joel Tasks
+
+- [X] Define landing page audiences: collaborators/builders/investors, employers, and lay users.
+- [X] Define that the landing page should be more verbal than visual.
+- [X] Define that collaborators and technical people should feel the project is worth working on.
+- [X] Define that the page should explain the problem and product intent clearly.
+- [ ] Review and approve the handover doc.
+- [ ] Decide final primary CTA.
+- [ ] Decide whether the first landing page should ask for collaborators, signups, or project review.
+
+### Designer Tasks
+
+- [ ] Read `dev-docs/design/InnerScript.in-Landing-Page-Handover.md`.
+- [ ] Propose first visual direction using the Alexandria palette.
+- [ ] Draft landing page structure and copy hierarchy.
+- [ ] Decide where technical/employer context appears without overwhelming lay users.
+- [ ] Produce a first landing design for review.
+
+### Agent Tasks
+
+- [X] Create `dev-docs/design/InnerScript.in-Landing-Page-Handover.md`.
+- [X] Include color palette, feel, audience, product, technical, and user context.
+- [X] Update `dev-docs/design/idea.md`.
+- [X] Update `dev-docs/planning/Plan.md`.
+- [X] Update this atomic checklist.
+- [X] Update `dev-docs/README.md`.
+
+### Exit Criteria
+
+- [ ] Joel approves the designer handover.
+- [ ] Designer has enough context to build the landing page.
+- [ ] Final copy direction is chosen.
+- [ ] Landing design is ready to implement.
 
 ## Phase 1 - Local Journal Core — Estimate: Joel 18h / 3.0 days, Prithvi 54h / 18.0 days
 
