@@ -42,3 +42,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-04 | Joel+Codex | engineering standards | git workflow standard added and branch renamed to fix/journal-autosave-feedback | open: push/PR after review
 2026-06-04 | Joel+Codex | product knowledge | product knowledge folder, priority-change log, and structure/conventions plan added | open: discuss `.wolf`, source folders, tests, and conventions with Prithvi
 2026-06-04 | Joel+Codex | landing | innerscript.in landing page designer handover added | open: Joel review, visual design, final CTA
+2026-06-05 | Joel+Codex | strategy | shifted plan toward highest interview-signal layers before feature completeness | open: build MVP then retrieval/Graph RAG foundations

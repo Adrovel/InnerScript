@@ -98,3 +98,23 @@ Durable product knowledge learned while building InnerScript should live under `
 
 Answer:
 The first `innerscript.in` landing page should be verbal-first and explain the product clearly. It should pitch the idea to potential collaborators, cofounders, technical builders, investors, and employers while remaining understandable to lay users and journalers. It should make serious builders feel there is meaningful product and technical work here, not present InnerScript as a generic AI notes app.
+
+### Q: What is the current hiring-pipeline strategy for InnerScript?
+
+Answer:
+Do not wait to finish every future feature before applying. Build the minimum usable product first, then prioritize high interview-signal technical layers that Joel can explain deeply: local-first architecture, chunking, embeddings, retrieval, hybrid search, Graph RAG design, knowledge graphs, entity extraction, prompt contracts, rate limiting, caching, background jobs, privacy-first AI, source grounding, and reliability.
+
+### Q: What should Joel own now?
+
+Answer:
+Joel should spend most InnerScript time on learning and architecture for AI/retrieval/backend concepts he has not deeply implemented before. He must be able to explain why Graph RAG, why the chosen chunking strategy, why the retrieval approach, failure modes, tradeoffs, scaling path, and source-grounding decisions.
+
+### Q: What should Prithvi own now?
+
+Answer:
+Prithvi should focus on frontend engineering depth and delivery: Storybook, component architecture, design system, reusable UI primitives, journal editor UX, autosave UI, save indicators, entry list, open/edit/delete/export flows, frontend tests, accessibility, error states, empty states, offline behavior, bug fixing, verification, checklist reconciliation, and acceptance criteria.
+
+### Q: What should the resume claim before Graph RAG exists?
+
+Answer:
+Do not claim a complete Graph RAG semantic memory platform until it exists. Safe claims are: built MVP, built architecture, designed retrieval system, designed Graph RAG layer, implemented local-first journal, implemented reflection system, and implemented semantic memory foundations. Every resume claim must survive deep technical discussion.

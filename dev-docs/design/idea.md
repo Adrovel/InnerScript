@@ -208,6 +208,27 @@ The product should show:
 
 The Google story should come from building a real personal-data system, not from bolting AI chat onto a notes UI.
 
+## Hiring Pipeline Strategy
+
+InnerScript does not need every future feature completed before Joel applies or interviews.
+
+The stronger strategy is to build the minimum usable journal product first, then prioritize the highest interview-signal technical layers while development continues:
+
+- local-first architecture
+- chunking
+- embeddings
+- retrieval
+- hybrid search
+- source grounding
+- citations
+- prompt contracts
+- entity extraction
+- knowledge graphs
+- Graph RAG design
+- rate limiting, caching, background jobs, and reliability
+
+The product should not claim completed Graph RAG or advanced semantic memory until those parts actually exist. It can truthfully present the MVP, architecture, retrieval design, Graph RAG design, reflection system, and semantic memory foundations as they are built.
+
 ## Open Questions
 
 - Should the first UI keep the current Alexandria dark editorial style?

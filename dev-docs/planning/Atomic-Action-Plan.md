@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [##--------] 19% - 56/300 visible tasks
+Overall checkbox progress: [##--------] 17% - 56/331 visible tasks
 
 Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
 
@@ -22,7 +22,8 @@ Notification rule: when overall checkbox progress reaches or crosses 40%, tell J
 | Phase 1 - Local Journal Core | [#####-----] 48% - 20/42 tasks |
 | Phase 1.5 - Product Clarity And Local UI Review | [#########-] 91% - 10/11 tasks |
 | Phase 2 - One Reflection Question | [----------] 0% - 0/11 tasks |
-| Phase 3 - Semantic Core | [----------] 0% - 0/31 tasks |
+| Phase 3 - Semantic Core | [----------] 0% - 0/39 tasks |
+| Phase 3.5 - Graph RAG Design Layer | [----------] 0% - 0/23 tasks |
 | Phase 4 - External Data Integrations | [----------] 0% - 0/39 tasks |
 | Phase 5 - Freeform People Notes | [----------] 0% - 0/19 tasks |
 | Phase 6 - Source-Backed Insights | [----------] 0% - 0/34 tasks |
@@ -43,6 +44,14 @@ Joel owns:
 - semantic search evaluation
 - Go distributed rate limiter design
 - final review of privacy and generated-insight behavior
+- chunking strategy and semantic chunking decisions
+- embeddings, retrieval, hybrid retrieval, and source-grounding decisions
+- citation system design
+- knowledge graph and Graph RAG architecture
+- entity extraction boundaries
+- AI safety boundaries
+- caching, background jobs, local-first architecture, privacy-first design, and AI evaluation methods
+- interview explanation for tradeoffs, failure modes, and scaling path
 
 ### Prithvi
 
@@ -55,6 +64,13 @@ Prithvi owns:
 - local setup docs
 - UI screens after behavior is specified
 - integration support for the Go rate limiter
+- Storybook
+- component architecture
+- design system and reusable UI primitives
+- editor UX, autosave UI, save indicators, entry list, open/edit, delete, and export flows
+- frontend testing with Playwright/Cypress or equivalent
+- accessibility, error states, empty states, and offline behavior
+- bug fixing, verification, checklist reconciliation, and acceptance criteria implementation
 
 ### Shared Rule
 
@@ -65,6 +81,10 @@ No app behavior change should be implemented while `dev-docs/design/idea.md`, `d
 If product clarity changes during a terminal session or user feedback loop, update the relevant docs in the same session. Use `design/idea.md` for product intent, `team/Design-Choices.md` for decisions, `planning/Features.md` for feature scope, `architecture/Architecture.md` for system shape, `planning/Plan.md` for phases, this file for task checkboxes, `planning/Future-Plan.md` for deferred-but-visible ideas, and `.wolf/update-log.md` for compact tracking.
 
 Development simplicity rule: during Phase 1 and early Phase 2, choose the smaller path when it still protects the journal data and product thesis. Do not introduce imports, dashboards, AI people, relationship analytics, hosted infrastructure, or distributed systems until the manual journal loop is boringly reliable.
+
+Hiring-pipeline strategy: do not wait to finish every future feature before applying. Build the minimum usable journal first, then prioritize the highest interview-signal technical layers Joel can explain deeply: local-first architecture, chunking, embeddings, retrieval, hybrid search, Graph RAG design, knowledge graphs, entity extraction, prompt contracts, rate limiting, caching, background jobs, privacy-first AI systems, source grounding, and reliability.
+
+Resume rule: do not claim a complete Graph RAG semantic memory platform until it exists. Every resume claim must survive a deep technical discussion.
 
 Relevant docs:
 
@@ -102,12 +122,13 @@ Assumptions:
 | Phase 1.5 - Product Clarity And Local UI Review | 4 | 0.7 | 4 | 1.3 | 1-2 days |
 | Phase 2 - One Reflection Question | 6 | 1.0 | 10 | 3.3 | 1 week |
 | Phase 3 - Semantic Core | 30 | 5.0 | 72 | 24.0 | 4-5 weeks |
+| Phase 3.5 - Graph RAG Design Layer | 24 | 4.0 | 18 | 6.0 | 1-2 weeks |
 | Phase 4 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | 5-6 weeks |
 | Phase 5 - Freeform People Notes | 10 | 1.7 | 26 | 8.7 | 1-2 weeks |
 | Phase 6 - Source-Backed Insights | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
 | Phase 7A - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
 | Phase 7B - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
-| Total | 264 | 44.1 | 446 | 148.7 | ~27-35 weeks |
+| Total | 288 | 48.1 | 464 | 154.7 | ~28-37 weeks |
 
 Important:
 
@@ -132,6 +153,9 @@ Important:
 | 3 | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
 | 3 | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
 | 3 | Search | 14 | 32 | Includes evaluation queries and UI |
+| 3.5 | Entity extraction | 8 | 6 | define safe entity boundaries before graph work |
+| 3.5 | Knowledge graph design | 8 | 4 | schema, source links, and graph update rules |
+| 3.5 | Graph RAG retrieval design | 8 | 8 | compare vector, hybrid, and graph retrieval before implementation claims |
 | 4 | Import framework | 8 | 24 | Parser interface, preview, idempotency |
 | 4 | Markdown/text imports | 4 | 16 | Early external data support |
 | 4 | External tools export/import agent | 6 | 24 | High Google impact; many parser edge cases across user-owned exports |
@@ -405,14 +429,19 @@ Build constraint:
 
 Goal: turn entries into searchable semantic memory.
 
+Interview-signal goal: Joel must be able to explain chunking decisions, embedding tradeoffs, retrieval failure modes, source grounding, citation behavior, and why the chosen retrieval path fits personal writing.
+
 ### Layer 1: Chunking — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
 
 #### Joel
 
 - [ ] Decide initial chunking rule: paragraph-first with max token fallback.
+- [ ] Compare fixed-size, paragraph-first, heading-aware, and semantic chunking strategies.
+- [ ] Write why the first chunking strategy was chosen.
 - [ ] Define chunk metadata fields.
 - [ ] Define minimum chunk size.
 - [ ] Define how source references are displayed.
+- [ ] Define chunking failure modes and expected mitigations.
 
 #### Prithvi
 
@@ -430,6 +459,8 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Approve embedding provider adapter interface.
 - [ ] Decide local AI-off behavior for embeddings.
 - [ ] Define error behavior if embeddings fail.
+- [ ] Compare embedding provider tradeoffs.
+- [ ] Define what gets embedded and what should never be embedded.
 
 #### Prithvi
 
@@ -446,6 +477,8 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Write 20 semantic search evaluation queries.
 - [ ] Label expected relevant sample entries.
 - [ ] Define Precision@5 target for MVP.
+- [ ] Compare vector search, lexical search, and hybrid search for journal text.
+- [ ] Define citation/source-grounding requirements for retrieval answers.
 
 #### Prithvi
 
@@ -462,6 +495,66 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Semantic search returns source-backed snippets.
 - [ ] Manual evaluation exists.
 - [ ] Search quality is measured, not guessed.
+- [ ] Joel can explain retrieval tradeoffs and failure modes.
+
+## Phase 3.5 - Graph RAG Design Layer — Estimate: Joel 24h / 4.0 days, Prithvi 18h / 6.0 days
+
+Goal: design the Graph RAG and knowledge graph layer before claiming it is built.
+
+Build constraint:
+
+- Do not claim production Graph RAG until there is working graph storage, extraction, graph retrieval, and source-backed evaluation.
+- Design and document the architecture first.
+
+### Layer 1: Entity Extraction — Estimate: Joel 8h / 1.3 days, Prithvi 6h / 2.0 days
+
+#### Joel
+
+- [ ] Define first entity types: people, concepts, places, projects, beliefs, moods, recurring themes.
+- [ ] Define safety boundaries for extracting sensitive entities from personal writing.
+- [ ] Define source-link requirements for every extracted entity.
+- [ ] Define false-positive handling and user correction behavior.
+
+#### Prithvi
+
+- [ ] Review entity model for UI/data practicality.
+- [ ] Prototype a small entity review UI only after behavior is specified.
+
+### Layer 2: Knowledge Graph Design — Estimate: Joel 8h / 1.3 days, Prithvi 4h / 1.3 days
+
+#### Joel
+
+- [ ] Define graph node and edge types.
+- [ ] Define how graph records link back to entries/chunks.
+- [ ] Define graph update rules when entries change.
+- [ ] Define when graph data should be deleted or corrected.
+
+#### Prithvi
+
+- [ ] Review graph schema for implementation risk.
+- [ ] Identify frontend states needed for graph-backed source review.
+
+### Layer 3: Graph RAG Retrieval Design — Estimate: Joel 8h / 1.3 days, Prithvi 8h / 2.7 days
+
+#### Joel
+
+- [ ] Compare plain vector retrieval, hybrid retrieval, and Graph RAG for InnerScript.
+- [ ] Write the first Graph RAG retrieval flow.
+- [ ] Define failure modes: stale graph, wrong entity extraction, overconnected nodes, privacy-sensitive inferences.
+- [ ] Define evaluation questions for graph retrieval.
+
+#### Prithvi
+
+- [ ] Review how graph retrieval results should be displayed with citations.
+- [ ] Add frontend acceptance criteria for graph-backed answers.
+
+### Exit Criteria
+
+- [ ] Graph RAG is designed but not overclaimed.
+- [ ] Entity extraction boundaries are documented.
+- [ ] Graph schema and source-link rules are documented.
+- [ ] Retrieval tradeoffs are documented.
+- [ ] Resume/project wording distinguishes designed vs implemented Graph RAG.
 
 ## Phase 4 - External Data Integrations — Estimate: Joel 24h / 4.0 days, Prithvi 84h / 28.0 days
 

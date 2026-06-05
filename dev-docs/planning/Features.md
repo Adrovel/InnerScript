@@ -100,12 +100,21 @@ Highest-priority Google-signal path:
 
 ```text
 entries/sources/chunks
-  -> import + voice ingestion
-  -> semantic search with evaluation
-  -> people/interactions route
-  -> weekly digest with provenance
-  -> Go/Redis rate limiter for hosted AI endpoints
+  -> minimum usable journal
+  -> current-entry reflection question
+  -> chunking + embeddings + retrieval + citations
+  -> hybrid search
+  -> entity extraction + knowledge graph + Graph RAG design
+  -> imports and broader memory
 ```
+
+Current hiring-pipeline strategy:
+
+- do not wait to finish every feature before applying
+- build the minimum usable product first
+- prioritize interview-signal layers Joel can explain deeply
+- continue product development during the hiring pipeline
+- defer dashboards, imports, relationship analytics, hosted auth/billing, and production Graph RAG until foundations are stronger
 
 ### 1. Minimal Journal
 
@@ -263,6 +272,27 @@ Google signal:
 - pgvector indexing
 - ranking and evaluation
 - lexical vs semantic search tradeoffs
+
+### 5.5. Graph RAG And Knowledge Graph Design
+
+Graph RAG is a high interview-signal direction, but it should be designed before it is claimed as built.
+
+Requirements:
+
+- define which entities matter first: people, concepts, places, projects, beliefs, moods, recurring themes
+- define entity extraction boundaries and safety rules
+- define how extracted entities link back to source entries/chunks
+- define graph retrieval flow and when graph context is useful
+- compare plain vector retrieval, hybrid retrieval, and Graph RAG
+- document failure modes and tradeoffs before implementation
+
+Google signal:
+
+- system design
+- data modeling
+- retrieval architecture
+- ability to explain tradeoffs
+- truthful resume framing
 
 ### 6. People Route
 

@@ -26,12 +26,32 @@ Notification rule: when overall roadmap progress reaches or crosses 40%, tell Jo
 
 ## Priority Order
 
-1. Keep the development-phase app simple enough to build and run locally.
-2. Keep product knowledge, priority changes, and implementation plans synchronized before more app changes.
-3. Build a useful therapy/reflection-first journaling loop.
-4. Preserve the Google-signal project path without forcing every later system into the MVP.
-5. Learn agentic AI and AI systems.
-6. Prepare for eventual consumer monetization.
+1. Build the minimum usable journal product first: write, save, autosave, open/edit, delete, export Markdown, and one reflection question.
+2. Prioritize the highest interview-signal technical layers before broad feature completeness.
+3. Keep product knowledge, priority changes, and implementation plans synchronized before more app changes.
+4. Preserve the Google-signal project path through architecture, tradeoffs, ownership, and system thinking.
+5. Learn and be able to explain AI/retrieval/backend concepts Joel has not deeply implemented before.
+6. Prepare for eventual consumer monetization only after the core product and interview-signal foundations are credible.
+
+## Core Strategic Shift
+
+InnerScript is no longer optimized around finishing every future feature before applying.
+
+It is now optimized around:
+
+```text
+Build the highest interview-signal parts first, while continuing development during the hiring pipeline.
+```
+
+Reason:
+
+Google project discussions are likely to focus more on architecture, tradeoffs, ownership, technical decisions, and system thinking than on complete feature coverage.
+
+Resume rule:
+
+- Do not claim a complete Graph RAG semantic memory platform until it exists.
+- Claims should survive deep technical discussion.
+- Safe framing before full implementation: built MVP, built architecture, designed retrieval system, designed Graph RAG layer, implemented local-first journal, implemented reflection system, implemented semantic memory foundations.
 
 ## Planning Sync Rule
 
@@ -63,6 +83,7 @@ Prefer:
 - local Postgres before hosted infrastructure
 - export before advanced analytics
 - simple freeform people notes before people graphs
+- chunking, embeddings, retrieval, citations, and Graph RAG design before dashboards/import breadth
 
 Defer:
 
@@ -70,8 +91,90 @@ Defer:
 - relationship analytics
 - mood/pattern dashboards
 - OCR and note-app imports
+- all imports until after journal MVP and retrieval foundations
 - Go/Redis rate limiter
 - hosted auth, billing, quotas, and consumer infrastructure
+- production Graph RAG
+- broad life analysis
+- complex memory systems
+
+## Interview-Signal Priority Order
+
+1. Local-first architecture
+2. Chunking
+3. Embeddings
+4. Retrieval
+5. Hybrid search
+6. Graph RAG
+7. Knowledge graphs
+8. Entity extraction
+9. Prompt contracts
+10. Rate limiting
+11. Caching
+12. Background jobs
+13. Privacy-first AI systems
+14. Source grounding
+15. Reliability engineering
+
+These create more immediate interview value than dashboards, analytics, hosted auth, billing, or broad life-analysis features.
+
+## Updated Build Order
+
+### Stage 1 - Minimum Usable Product
+
+- journal CRUD
+- autosave
+- open/edit
+- delete
+- Markdown export
+- one reflection question
+
+### Stage 2 - Semantic Memory Foundations
+
+- chunking
+- embeddings
+- retrieval
+- hybrid search
+- source grounding
+- citations
+
+### Stage 3 - Graph RAG Design Layer
+
+- entity extraction
+- graph structure
+- knowledge graph decisions
+- graph retrieval design
+- Graph RAG tradeoffs and failure modes
+
+### Stage 4 - Broader Memory
+
+- imports
+- search polish
+- advanced memory
+- dashboards only after enough source context exists
+
+## Ownership Update
+
+Joel should spend most of his InnerScript time on learning and architecture for areas he has not deeply implemented before:
+
+- chunking strategies and semantic chunking
+- embeddings and retrieval pipelines
+- hybrid retrieval and source grounding
+- citation systems
+- knowledge graphs and Graph RAG architecture
+- entity extraction
+- reflection prompt contracts
+- AI safety boundaries
+- rate limiting, caching, background jobs, local-first architecture, privacy-first design, and AI evaluation
+
+Prithvi should focus on frontend engineering depth and delivery:
+
+- Storybook
+- component architecture
+- design system and reusable UI primitives
+- editor UX, autosave UI, save indicators, entry list, open/edit, delete, export
+- frontend testing, Playwright/Cypress, accessibility, error states, empty states, offline behavior
+- bug fixing, verification, checklist reconciliation, and acceptance criteria
 
 ## Development Phase Roadmap
 

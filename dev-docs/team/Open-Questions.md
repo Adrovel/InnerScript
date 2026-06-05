@@ -209,3 +209,19 @@ Status: open
 Context:
 - Current direction: physical-note OCR, Obsidian, Google Keep, other notes, docs, chats.
 - Need to choose the first import source when implementation starts.
+
+### Q: What exact resume wording should InnerScript use before Graph RAG exists?
+
+Asked by: Joel
+Asked to: Joel
+Date: 2026-06-05
+Status: open
+
+Context:
+- Joel clarified that the resume must not claim a complete Graph RAG semantic memory platform until it actually exists.
+- Safe current framing should distinguish built MVP, built architecture, designed retrieval system, designed Graph RAG layer, implemented local-first journal, implemented reflection system, and implemented semantic memory foundations.
+
+Needed for:
+- resume updates
+- project page claims
+- interview story consistency
