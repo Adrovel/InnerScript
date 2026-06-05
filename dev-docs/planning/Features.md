@@ -53,7 +53,7 @@ Build first:
 - list
 - open
 - edit
-- export
+- export later as a data-ownership trust feature, not a blocker before reflection/retrieval
 - one current-entry reflection question
 
 Maintain while building:

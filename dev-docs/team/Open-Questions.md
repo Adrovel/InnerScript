@@ -22,6 +22,8 @@ Status: open
 Context:
 - The first AI moment is decided: a reflection question after writing.
 - The exact tone still needs testing in the UI.
+- Joel marked the reflection-question product decision as questionable on 2026-06-05.
+- The backend contract exists, but the product experience still needs review before treating this as settled.
 
 ### Q: Should mode switching be visible on the first screen or only after the user asks AI?
 
@@ -178,6 +180,17 @@ Status: open
 
 Context:
 - Joel asked to be reminded to understand autosave races in the InnerScript editor.
+
+### Q: How is InnerScript storing data right now?
+
+Asked by: Joel
+Asked to: Codex / anyone
+Date: 2026-06-05
+Status: open
+
+Context:
+- Joel asked to be reminded to explain how InnerScript stores data.
+- The explanation should cover the current local-first data path, `entries`, `sources`, API routes, Drizzle/Postgres, and what is not stored yet, such as chunks, embeddings, graph data, insights, and hosted-user data.
 - The follow-up should explain what happens when overlapping saves finish out of order, and how editor state, save queues, aborts, timestamps, or version checks can prevent stale content from overwriting newer content.
 
 ### Q: Why Drizzle, and what utility does it serve in InnerScript?

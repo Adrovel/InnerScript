@@ -15,6 +15,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 | `engineering-standards/` | InnerScript-local engineering rules for git workflow, branches, commits, PRs, and merges |
 | `product-knowledge/` | Product knowledge, priority changes, and structure/convention decisions learned while building |
 | `team/` | Team communication, product decisions, open questions, and identity/ownership notes |
+| `technical-scrutiny/` | Joel's deep code-review map for heavy technical areas he must be able to explain |
 | `context/` | Older LLM handoff and teaching context docs |
 | `superpowers/` | Older implementation plan/design-spec artifacts retained for reference |
 
@@ -30,6 +31,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [InnerScript Idea](./design/idea.md)
 - [InnerScript.in Landing Page Handover](./design/InnerScript.in-Landing-Page-Handover.md)
 - [Architecture](./architecture/Architecture.md)
+- [Chunking Strategy](./architecture/Chunking-Strategy.md)
 - [Stack and Tools](./architecture/Stack-and-Tools.md)
 - [Team Communication](./team/Team-Communication.md)
 - [Session Context](../.wolf/session-context.md)
@@ -45,6 +47,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [Product Knowledge](./product-knowledge/README.md)
 - [Priority Change Log](./product-knowledge/Priority-Change-Log.md)
 - [Structure and Conventions Plan](./product-knowledge/Structure-and-Conventions-Plan.md)
+- [Joel Code Scrutiny](./technical-scrutiny/Joel-Code-Scrutiny.md)
 - [Joel Identity](./team/Joel-Identity.md)
 - [Prithvi Identity](./team/Prithvi-Identity.md)
 - [LLM Context](./context/InnerScript-LLM-Context.md)

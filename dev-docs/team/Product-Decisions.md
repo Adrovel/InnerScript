@@ -32,12 +32,12 @@ Open today's journal and write. Pattern dashboards, search, and deep analysis co
 ### Q: What is the first AI moment after writing?
 
 Answer:
-A reflection question grounded in the current entry. Not a broad analysis report.
+A reflection-question path is implemented as a narrow first AI moment, but the product decision is still questionable until Joel reviews the experience in the UI. Current provisional rule: it must use only the current entry and must not become a broad analysis report.
 
 ### Q: Should the reflection question be generic or based on what was written?
 
 Answer:
-The reflection question should depend on what is written in the current entry. It should not be a fixed generic question unless there is not enough entry content to generate anything grounded.
+Questionable / provisional. The intended direction is that the question should depend on what is written in the current entry. The local fallback is generic only because no AI provider is wired yet; Joel still needs to decide whether that fallback feels useful or too generic.
 
 ### Q: How much context is needed before analysis?
 
@@ -82,7 +82,7 @@ When Joel or a teammate clarifies product intent, first workflow, AI behavior, v
 ### Q: How simple should the app be during development?
 
 Answer:
-During development, InnerScript should be simpler to build than the full long-term vision. Phase 1 and early Phase 2 should prioritize a small local journaling loop, clear schema, easy setup, visible save behavior, export, and one reflection-question path before adding imports, dashboards, AI people, relationship analytics, or distributed systems.
+During development, InnerScript should be simpler to build than the full long-term vision. Phase 1 and early Phase 2 should prioritize a small local journaling loop, clear schema, easy setup, visible save behavior, open/edit/delete, and one reflection-question path before adding export, imports, dashboards, AI people, relationship analytics, or distributed systems. Markdown export remains a trust/data-ownership feature, but it no longer blocks the higher-signal reflection and retrieval work.
 
 ### Q: What docs must stay updated before implementation?
 

@@ -36,3 +36,5 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-05 | loaded: Storybook setup, Next docs | changed: MSW preview and colocated stories | running: none | open: none
 2026-06-05 | loaded: Storybook runtime | changed: logged stale empty Storybook and set initial story path | running: storybook 6006 | open: none
 2026-06-05 | loaded: ownership decisions, plan, atomic | changed: unchecked owner split corrected in Plan and Atomic Plan | running: none | open: create future issues from corrected split
+2026-06-05 | loaded: reflection plan, entries API | changed: reflection contract and API with local fallback | running: none | open: UI trigger, provider wiring, chunking
+2026-06-05 | loaded: semantic plan, architecture | changed: chunking strategy doc and reflection decision made provisional | running: none | open: implement chunking utility

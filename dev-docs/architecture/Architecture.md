@@ -143,6 +143,8 @@ Planned source expansion should include OCR-normalized physical notes and extern
 
 Searchable semantic units.
 
+First strategy: paragraph-first chunking with max-token fallback. See `dev-docs/architecture/Chunking-Strategy.md` for the initial decision, alternatives considered, metadata, source-reference rules, and failure modes.
+
 ```text
 id
 entry_id

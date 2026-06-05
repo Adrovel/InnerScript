@@ -28,6 +28,7 @@ Define a stable project structure that tells contributors where to put:
 | Team decisions | `dev-docs/team/` | product decisions, open questions, communication, identity |
 | Engineering standards | `dev-docs/engineering-standards/` | InnerScript-local engineering rules |
 | Product knowledge | `dev-docs/product-knowledge/` | product knowledge, priority changes, structure/conventions plan |
+| Technical scrutiny | `dev-docs/technical-scrutiny/` | Joel's heavy-code walkthrough map for files he must explain deeply |
 | Operational files | `.wolf/` | buglog, memory, session context, update log, user review |
 | Workspace session log | `/home/moneydrome/2026-Projects/.wolf/sessions` | compact Codex/Claude session start/exit lines |
 
@@ -92,6 +93,7 @@ Rules to decide:
 - Each implementation change must update `idea.md`, `Plan.md`, and `Atomic-Action-Plan.md` if it affects product behavior, phase scope, or priority.
 - New docs need `dev-docs/README.md` index updates.
 - New folders need workspace anatomy updates.
+- Heavy Joel-owned technical code should also update `dev-docs/technical-scrutiny/Joel-Code-Scrutiny.md`.
 
 ### 5. Branch / Commit / PR Conventions
 

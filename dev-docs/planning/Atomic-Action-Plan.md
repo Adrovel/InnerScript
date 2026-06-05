@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [#---------] 15% - 56/380 visible tasks
+Overall checkbox progress: [##--------] 19% - 73/383 visible tasks
 
 Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
 
@@ -19,10 +19,11 @@ Notification rule: when overall checkbox progress reaches or crosses 40%, tell J
 | Phase 0 - Direction Lock | [####------] 35% - 6/17 visible tasks |
 | Phase 0.5 - Product Knowledge And Project Conventions | [####------] 36% - 10/28 tasks |
 | Phase 0.6 - Landing Page Handover | [#####-----] 45% - 10/22 tasks |
-| Phase 1 - Local Journal Core | [#####-----] 48% - 20/42 tasks |
+| Phase 1 - Local Journal Core | [######----] 56% - 20/36 tasks |
 | Phase 1.5 - Product Clarity And Local UI Review | [#########-] 91% - 10/11 tasks |
-| Phase 2 - One Reflection Question | [----------] 0% - 0/15 tasks |
-| Phase 3 - Semantic Core | [----------] 0% - 0/56 tasks |
+| Phase 2 - One Reflection Question | [######----] 56% - 9/16 tasks |
+| Phase 3 - Semantic Core | [#---------] 14% - 8/56 tasks |
+| Phase 3.2 - Markdown Export Trust Feature | [----------] 0% - 0/8 tasks |
 | Phase 3.5 - Graph RAG Design Layer | [----------] 0% - 0/29 tasks |
 | Phase 4 - External Data Integrations | [----------] 0% - 0/45 tasks |
 | Phase 5 - Freeform People Notes | [----------] 0% - 0/22 tasks |
@@ -80,7 +81,7 @@ No app behavior change should be implemented while `dev-docs/design/idea.md`, `d
 
 If product clarity changes during a terminal session or user feedback loop, update the relevant docs in the same session. Use `design/idea.md` for product intent, `team/Design-Choices.md` for decisions, `planning/Features.md` for feature scope, `architecture/Architecture.md` for system shape, `planning/Plan.md` for phases, this file for task checkboxes, `planning/Future-Plan.md` for deferred-but-visible ideas, and `.wolf/update-log.md` for compact tracking.
 
-Development simplicity rule: during Phase 1 and early Phase 2, choose the smaller path when it still protects the journal data and product thesis. Do not introduce imports, dashboards, AI people, relationship analytics, hosted infrastructure, or distributed systems until the manual journal loop is boringly reliable.
+Development simplicity rule: during Phase 1 and early Phase 2, choose the smaller path when it still protects the journal data and product thesis. Do not introduce export, imports, dashboards, AI people, relationship analytics, hosted infrastructure, or distributed systems until the manual journal loop and one-reflection-question path are boringly reliable.
 
 Hiring-pipeline strategy: do not wait to finish every future feature before applying. Build the minimum usable journal first, then prioritize the highest interview-signal technical layers Joel can explain deeply: local-first architecture, chunking, embeddings, retrieval, hybrid search, Graph RAG design, knowledge graphs, entity extraction, prompt contracts, rate limiting, caching, background jobs, privacy-first AI systems, source grounding, and reliability.
 
@@ -296,7 +297,8 @@ Goal: make InnerScript useful as a plain local journal before AI.
 
 Build constraint:
 
-- Keep the development app simple: write, save, list, open, export.
+- Keep the development app simple: write, save, list, open, delete, and one reflection question.
+- Markdown export is now deferred to Phase 3.2 so Phase 1 can stay focused on a reliable journal loop and the first reflection question.
 - Anything beyond that should be deferred unless it removes a blocker for local writing.
 
 ### Layer 1: Schema and API — Estimate: Joel 6h / 1.0 day, Prithvi 18h / 6.0 days
@@ -354,27 +356,13 @@ Build constraint:
 - [ ] Add test for "existing today entry is reused."
 - [ ] Add test for "missing today entry is created or suggested" according to Joel's decision.
 
-### Layer 4: Export — Estimate: Joel 5h / 0.8 days, Prithvi 14h / 4.7 days
-
-#### Joel
-
-- [ ] Approve export formats: Markdown first, JSON later.
-- [ ] Define file naming convention.
-
-#### Prithvi
-
-- [ ] Add `GET /api/export/markdown`.
-- [ ] Export all entries as Markdown bundle or single archive.
-- [ ] Preserve dates and source metadata.
-- [ ] Add export test with two entries.
-
 ### Exit Criteria
 
 - [ ] A user can write and save locally without AI.
-- [ ] A user can export their text.
-- [ ] Tests cover CRUD and export.
+- [ ] A user can open, edit, and delete entries.
+- [ ] Tests cover CRUD and save reliability.
 - [ ] No AI key is required for core journaling.
-- [ ] No dashboard, import flow, AI people UI, or relationship analytics is required for Phase 1 completion.
+- [ ] No export, dashboard, import flow, AI people UI, or relationship analytics is required for Phase 1 completion.
 
 ## Phase 1.5 - Product Clarity And Local UI Review — Estimate: Joel 4h / 0.7 days, Prithvi 4h / 1.3 days
 
@@ -413,14 +401,15 @@ Build constraint:
 
 ### Joel
 
-- [ ] Write the first reflection-question tone.
+- [X] Write the first reflection-question tone.
 - [ ] Approve safe language around reflection and therapy.
-- [ ] Define the current-entry-only prompt contract.
-- [ ] Define AI unavailable behavior.
-- [ ] Implement the smallest current-entry reflection API path after the prompt contract is written.
-- [ ] Add server-side tests proving the prompt receives only the selected/current entry.
-- [ ] Add server-side tests for AI key missing, provider failure, and empty-entry fallback.
-- [ ] Document why this is a reflection question, not diagnosis, life analysis, or therapy replacement.
+- [X] Define the current-entry-only prompt contract.
+- [X] Define AI unavailable behavior.
+- [X] Implement the smallest current-entry reflection API path after the prompt contract is written.
+- [X] Add server-side tests proving the prompt receives only the selected/current entry.
+- [X] Add server-side tests for no-provider local fallback and empty-entry rejection.
+- [ ] Add provider failure test when an AI provider is wired.
+- [X] Document why this is a reflection question, not diagnosis, life analysis, or therapy replacement.
 
 ### Prithvi
 
@@ -431,9 +420,9 @@ Build constraint:
 
 ### Exit Criteria
 
-- [ ] A user can write an entry and receive one grounded reflection question.
+- [X] A user can write an entry and receive one grounded reflection question.
 - [ ] The AI does not claim broader analysis from one entry.
-- [ ] The core journal still works without an AI key.
+- [X] The core journal still works without an AI key.
 
 ## Phase 3 - Semantic Core — Estimate: Joel 70h / 11.7 days, Prithvi 32h / 10.7 days
 
@@ -445,13 +434,13 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 
 #### Joel
 
-- [ ] Decide initial chunking rule: paragraph-first with max token fallback.
-- [ ] Compare fixed-size, paragraph-first, heading-aware, and semantic chunking strategies.
-- [ ] Write why the first chunking strategy was chosen.
-- [ ] Define chunk metadata fields.
-- [ ] Define minimum chunk size.
-- [ ] Define how source references are displayed.
-- [ ] Define chunking failure modes and expected mitigations.
+- [X] Decide initial chunking rule: paragraph-first with max token fallback.
+- [X] Compare fixed-size, paragraph-first, heading-aware, and semantic chunking strategies.
+- [X] Write why the first chunking strategy was chosen.
+- [X] Define chunk metadata fields.
+- [X] Define minimum chunk size.
+- [X] Define how source references are displayed.
+- [X] Define chunking failure modes and expected mitigations.
 - [ ] Implement chunking utility.
 - [ ] Add `chunks` table/model or migration path.
 - [ ] Create chunks after entry save.
@@ -459,7 +448,7 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 - [ ] Add tests for paragraph chunking.
 - [ ] Add tests for max token fallback.
 - [ ] Add tests for empty, tiny, long, and heading-heavy entries.
-- [ ] Write an implementation note explaining why this chunking strategy can be defended in an interview.
+- [X] Write an implementation note explaining why this chunking strategy can be defended in an interview.
 
 #### Prithvi
 
@@ -523,6 +512,32 @@ Interview-signal goal: Joel must be able to explain chunking decisions, embeddin
 - [ ] Manual evaluation exists.
 - [ ] Search quality is measured, not guessed.
 - [ ] Joel can explain retrieval tradeoffs and failure modes.
+
+## Phase 3.2 - Markdown Export Trust Feature — Estimate: Joel 5h / 0.8 days, Prithvi 14h / 4.7 days
+
+Goal: add a simple export path for data ownership after reflection and semantic foundations have the priority path.
+
+Priority note:
+
+- Markdown export matters for trust, portability, and local-first credibility.
+- It no longer blocks Phase 1, Phase 2, or Phase 3 because Google-signal work needs reflection, chunking, embeddings, retrieval, source grounding, and evaluation first.
+
+### Joel
+
+- [ ] Approve export formats: Markdown first, JSON later.
+- [ ] Define file naming convention.
+
+### Prithvi
+
+- [ ] Add `GET /api/export/markdown`.
+- [ ] Export all entries as Markdown bundle or single archive.
+- [ ] Preserve dates and source metadata.
+- [ ] Add export test with two entries.
+
+### Exit Criteria
+
+- [ ] A user can export their text.
+- [ ] Export preserves dates and source metadata.
 
 ## Phase 3.5 - Graph RAG Design Layer — Estimate: Joel 32h / 5.3 days, Prithvi 12h / 4.0 days
 
@@ -598,7 +613,7 @@ See `guardrails/External-Data-Integrations.md`.
 Defer rule:
 
 - Do not start Phase 4 until Stage 1 journal MVP and Stage 2 retrieval foundations are working.
-- Imports are useful later, but they are lower priority than write/save/autosave/open/edit/delete/export/reflection and chunking/embeddings/retrieval/citations.
+- Imports are useful later, but they are lower priority than write/save/autosave/open/edit/delete/reflection and chunking/embeddings/retrieval/citations.
 
 ### Layer 1: Import Framework — Estimate: Joel 8h / 1.3 days, Prithvi 24h / 8.0 days
 
@@ -687,7 +702,7 @@ Goal: add user-controlled freeform people notes without forcing person interacti
 Defer rule:
 
 - Do not start relationship analytics or generated people insights in this phase.
-- Freeform people notes can start only after the local journal loop is stable and export is working.
+- Freeform people notes can start only after the local journal loop, reflection question, and early retrieval foundations are stable.
 
 ### Layer 1: People CRUD — Estimate: Joel 5h / 0.8 days, Prithvi 20h / 6.7 days
 
@@ -742,7 +757,7 @@ Goal: create source-backed insight beyond basic search.
 
 Defer rule:
 
-- Do not start Phase 6 until journal CRUD/export, reflection question, chunking, embeddings, retrieval, and citations are stable enough to ground claims.
+- Do not start Phase 6 until journal CRUD, reflection question, chunking, embeddings, retrieval, citations, and export trust work are stable enough to ground claims.
 - No broad life analysis, dashboards, relationship analytics, or unsupported therapeutic claims in this phase.
 
 ### Layer 1: Metadata Extraction — Estimate: Joel 16h / 2.7 days, Prithvi 8h / 2.7 days

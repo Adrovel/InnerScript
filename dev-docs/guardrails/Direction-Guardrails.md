@@ -206,6 +206,31 @@ Examples:
 - Schema validation is required for structured extraction.
 - User should be able to mark insight as wrong.
 
+## Reflection Question Guardrail
+
+The first reflection feature is intentionally narrow. It asks one question from the current entry only.
+
+It is not:
+
+- diagnosis
+- treatment
+- therapy replacement
+- a life-pattern report
+- a relationship conclusion
+- a long-term psychological profile
+
+Why:
+
+- One entry is enough for a grounded question, not enough for broad analysis.
+- The feature should preserve writing trust and avoid making unsupported claims.
+- The prompt contract should be easy for Joel to explain: input is one current entry, output is one question, and failure mode is a local fallback or unavailable state.
+
+Implementation rule:
+
+- Do not pass older entries, chunks, people notes, or search results into this prompt until Phase 3 retrieval and citation work exists.
+- If the current entry is empty, return a clear unavailable/error state instead of inventing a question.
+- If an AI provider is unavailable, the journal must still work and the app may use a clearly local fallback question.
+
 ## Architecture Guardrails
 
 - Do not rewrite the entire app in Go.

@@ -46,3 +46,5 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-05 | Joel+Codex | Storybook | AI setup completed with MSW preview and colocated journal/UI stories | open: none
 2026-06-05 | Joel+Codex | Storybook | fixed empty Storybook state by restarting stale server and setting initial story path | open: none
 2026-06-05 | Joel+Codex | planning | corrected unchecked atomic ownership so Joel owns AI/retrieval/backend/system work and Prithvi owns frontend delivery/verification | open: create future issues from corrected owner split
+2026-06-05 | Joel+Codex | reflection | current-entry-only reflection contract, local fallback API, and focused tests added | open: UI trigger, provider wiring, safety rationale doc
+2026-06-05 | Joel+Codex | chunking | paragraph-first chunking strategy documented with alternatives, metadata, source refs, and failure modes | open: implement utility and chunks table

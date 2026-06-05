@@ -17,8 +17,8 @@ Notification rule: when overall roadmap progress reaches or crosses 40%, tell Jo
 | Phase 0.6 - Landing Page Handover | [#####-----] 45% | `innerscript.in` designer handover exists; final landing copy/design and implementation remain |
 | Phase 1 - Local Journal Core | [######----] 65% | entries/sources schema, CRUD APIs, editor, autosave, visible save state, and focused autosave tests exist; export/today/delete polish remain |
 | Phase 1.5 - Product Clarity And Local UI Review | [########--] 85% | local server review captured, UI feedback stored in `.wolf/user-review.md`, sidebar/editor polish mostly confirmed; autosave browser stress remains |
-| Phase 2 - Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
-| Phase 3 - Semantic Core | [----------] 0% | deferred until journal loop is reliable |
+| Phase 2 - Reflection Question | [#####-----] 50% | current-entry-only prompt contract, local fallback behavior, API route, and focused tests exist; UI trigger and provider wiring remain |
+| Phase 3 - Semantic Core | [#---------] 14% | chunking strategy is chosen and documented; implementation, chunks table, embeddings, and retrieval remain |
 | Phase 4 - Imports | [----------] 0% | deferred |
 | Phase 5 - Freeform People Notes | [----------] 0% | deferred |
 | Phase 6 - Source-Backed Insights | [----------] 0% | deferred |
@@ -26,7 +26,7 @@ Notification rule: when overall roadmap progress reaches or crosses 40%, tell Jo
 
 ## Priority Order
 
-1. Build the minimum usable journal product first: write, save, autosave, open/edit, delete, export Markdown, and one reflection question.
+1. Build the minimum usable journal product first: write, save, autosave, open/edit, delete, and one reflection question.
 2. Prioritize the highest interview-signal technical layers before broad feature completeness.
 3. Keep product knowledge, priority changes, and implementation plans synchronized before more app changes.
 4. Preserve the Google-signal project path through architecture, tradeoffs, ownership, and system thinking.
@@ -81,7 +81,7 @@ Prefer:
 - one journal-first home screen before dashboards
 - one reflection question after writing before multi-mode AI
 - local Postgres before hosted infrastructure
-- export before advanced analytics
+- export before hosted/consumer trust claims, but not before reflection, chunking, embeddings, and retrieval
 - simple freeform people notes before people graphs
 - chunking, embeddings, retrieval, citations, and Graph RAG design before dashboards/import breadth
 
@@ -126,7 +126,6 @@ These create more immediate interview value than dashboards, analytics, hosted a
 - autosave
 - open/edit
 - delete
-- Markdown export
 - one reflection question
 
 ### Stage 2 - Semantic Memory Foundations
@@ -137,6 +136,12 @@ These create more immediate interview value than dashboards, analytics, hosted a
 - hybrid search
 - source grounding
 - citations
+
+### Stage 2.5 - Data Ownership Trust Feature
+
+- Markdown export
+- export tests
+- export/delete trust copy
 
 ### Stage 3 - Graph RAG Design Layer
 
@@ -302,7 +307,7 @@ Deliverables:
 - minimal editor
 - autosave
 - daily entry
-- Markdown export
+- Markdown export later as a data-ownership trust feature
 - `.env.example`
 - local setup doc
 - AI-off mode
@@ -318,9 +323,8 @@ Joel:
 Prithvi:
 
 - implement entry CRUD
-- implement export endpoint
 - write setup docs
-- add tests for create/save/export
+- add tests for create/save/delete; export tests move to the later data-ownership trust pass
 
 Google signal:
 
@@ -330,7 +334,7 @@ Google signal:
 
 Simplicity rule:
 
-- If a Phase 1 task makes local setup, writing, saving, or export harder, defer it unless it is required for data safety.
+- If a Phase 1 task makes local setup, writing, saving, opening/editing, deleting, or reflection harder, defer it unless it is required for data safety.
 
 ## Phase 2 - Reflection Question
 
@@ -441,7 +445,7 @@ Google signal:
 
 Goal: start relationship memory as freeform notes before structured people analytics.
 
-Status: deferred behind the local journal MVP, export, and early retrieval foundations.
+Status: deferred behind the local journal MVP, reflection question, and early retrieval foundations.
 
 Deliverables:
 
@@ -474,7 +478,7 @@ Google signal:
 
 Goal: turn stored text into source-backed patterns.
 
-Status: deferred until journal CRUD/export, reflection question, chunking, embeddings, retrieval, and citations are stable.
+Status: deferred until journal CRUD, reflection question, chunking, embeddings, retrieval, citations, and the later export trust pass are stable.
 
 Deliverables:
 
@@ -592,19 +596,19 @@ Google signal:
 
 ### Joel - Next 5 Tasks
 
-1. Finalize schema for `entries`, `sources`, `chunks`, `people`, `interactions`.
-2. Write prompt contracts for metadata, assumptions, weekly digest.
-3. Define semantic search evaluation queries.
-4. Specify Go rate limiter API contract.
-5. Review every feature for Google interview explanation.
+1. Implement the paragraph-first chunking utility from `architecture/Chunking-Strategy.md`.
+2. Add unit tests for paragraph chunking, max-size fallback, empty entries, tiny paragraphs, and long paragraphs.
+3. Add the chunks table/model or migration path.
+4. Rebuild chunks when entry body changes.
+5. Define semantic search evaluation queries.
 
 ### Prithvi - Next 5 Tasks
 
 1. Add `.env.example` and local setup doc.
 2. Implement entry/source CRUD around the new model.
 3. Implement Markdown and text import parser.
-4. Implement Markdown export.
-5. Add tests for entry CRUD, import parsing, and export.
+4. Implement the one-reflection-question contract.
+5. Start chunking, embeddings, retrieval, and source-grounding work.
 
 ## Resume Target
 
