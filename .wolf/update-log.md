@@ -43,3 +43,5 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-04 | Joel+Codex | product knowledge | product knowledge folder, priority-change log, and structure/conventions plan added | open: discuss `.wolf`, source folders, tests, and conventions with Prithvi
 2026-06-04 | Joel+Codex | landing | innerscript.in landing page designer handover added | open: Joel review, visual design, final CTA
 2026-06-05 | Joel+Codex | strategy | shifted plan toward highest interview-signal layers before feature completeness | open: build MVP then retrieval/Graph RAG foundations
+2026-06-05 | Joel+Codex | Storybook | AI setup completed with MSW preview and colocated journal/UI stories | open: none
+2026-06-05 | Joel+Codex | Storybook | fixed empty Storybook state by restarting stale server and setting initial story path | open: none

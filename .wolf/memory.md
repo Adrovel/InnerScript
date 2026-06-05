@@ -33,3 +33,5 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-03 | loaded: Open Questions | changed: autosave race reminder added | running: unknown | open: explain editor save races
 2026-06-04 | loaded: idea, plan, atomic, standards | changed: product knowledge folder and planning sync rule | running: none | open: Prithvi structure conventions discussion
 2026-06-04 | loaded: Product Design brief, idea, DESIGN | changed: innerscript.in landing handover | running: none | open: Joel review, designer visual pass
+2026-06-05 | loaded: Storybook setup, Next docs | changed: MSW preview and colocated stories | running: none | open: none
+2026-06-05 | loaded: Storybook runtime | changed: logged stale empty Storybook and set initial story path | running: storybook 6006 | open: none
