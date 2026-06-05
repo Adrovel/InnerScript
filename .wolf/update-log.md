@@ -40,3 +40,5 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-04 | Joel+Codex | planning | WhatsApp-only import wording reframed as external tools export/import agent, with WhatsApp as one example parser | open: decide first external-tool parser target
 2026-06-03 | Joel+Codex | question | autosave race learning reminder added to Open Questions | open: explain editor save races
 2026-06-04 | Joel+Codex | engineering standards | git workflow standard added and branch renamed to fix/journal-autosave-feedback | open: push/PR after review
+2026-06-05 | Joel+Codex | Storybook | AI setup completed with MSW preview and colocated journal/UI stories | open: none
+2026-06-05 | Joel+Codex | Storybook | fixed empty Storybook state by restarting stale server and setting initial story path | open: none

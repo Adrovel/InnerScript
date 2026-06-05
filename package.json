@@ -16,7 +16,7 @@
     "db:studio": "drizzle-kit studio",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.js",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --initial-path /?path=/story/journal-entry-editor--written-entry",
     "build-storybook": "storybook build"
   },
   "dependencies": {
