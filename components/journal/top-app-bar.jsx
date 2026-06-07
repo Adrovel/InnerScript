@@ -1,7 +1,7 @@
 "use client";
 
 import { SaveStatus } from "@/components/journal/save-status";
-import { Menu, RefreshCw } from "lucide-react";
+import { Menu } from "lucide-react";
 
 export function TopAppBar({
   saveStatus,
@@ -9,7 +9,6 @@ export function TopAppBar({
   lastEditedAt,
   onRetrySave,
   onMenuClick,
-  onRefresh,
 }) {
   return (
     <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center border-b border-surface-variant/20 bg-surface md:border-b-0">
@@ -28,24 +27,12 @@ export function TopAppBar({
           </span>
         </div>
 
-        <div className="flex items-center gap-sm md:gap-md">
-          <SaveStatus
-            status={saveStatus}
-            activityId={saveActivityId}
-            lastEditedAt={lastEditedAt}
-            onRetry={onRetrySave}
-          />
-
-          <button
-            type="button"
-            aria-label="Reload entries"
-            title="Reload entries"
-            onClick={onRefresh}
-            className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary active:scale-95"
-          >
-            <RefreshCw className="size-5" aria-hidden="true" />
-          </button>
-        </div>
+        <SaveStatus
+          status={saveStatus}
+          activityId={saveActivityId}
+          lastEditedAt={lastEditedAt}
+          onRetry={onRetrySave}
+        />
       </div>
     </header>
   );

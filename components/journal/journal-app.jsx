@@ -13,6 +13,7 @@ import {
   fetchEntries,
   findTodayJournalEntry,
   formatRelativeEditTime,
+  getNextUntitledNoteTitle,
   updateEntry,
 } from "@/lib/journal";
 
@@ -42,6 +43,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [lastEditedAt, setLastEditedAt] = useState(null);
   const [creatingNote, setCreatingNote] = useState(false);
+  const [editorFocusRequest, setEditorFocusRequest] = useState(null);
 
   const saveTimerRef = useRef(null);
   const pendingSaveRef = useRef(null);
@@ -90,6 +92,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
         setSelectedEntryId(null);
         setDraft(createDraft());
       }
+      setEditorFocusRequest(null);
     } catch (error) {
       setLoadError(error instanceof Error ? error.message : "Failed to load entries");
     } finally {
@@ -292,6 +295,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       setSelectedEntryId(entry.id);
       setDraft(createDraft());
       setSaveStatus("idle");
+      setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
       setLastEditedAt(entry.updated_at ? new Date(entry.updated_at) : new Date(entry.created_at));
     },
     [flushPendingSave],
@@ -307,8 +311,9 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
     setSaveStatus("saving");
 
     try {
+      const noteTitle = getNextUntitledNoteTitle(entries);
       const note = await createEntry({
-        title: null,
+        title: noteTitle,
         body: "",
         entry_type: "note",
         occurred_at: new Date().toISOString(),
@@ -317,6 +322,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       setEntries((current) => [note, ...current.filter((entry) => entry.id !== note.id)]);
       setSelectedEntryId(note.id);
       setDraft(createDraft());
+      setEditorFocusRequest({ entryId: note.id, target: "entry-end" });
       setSaveStatus("saved");
       setLastEditedAt(new Date());
     } catch {
@@ -324,7 +330,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
     } finally {
       setCreatingNote(false);
     }
-  }, [creatingNote, flushPendingSave]);
+  }, [creatingNote, entries, flushPendingSave]);
 
   const showEmptyState =
     !loading && !loadError && entries.length === 0 && isDraft && draft.body.trim().length === 0;
@@ -355,7 +361,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
           lastEditedAt={headerEditedLabel}
           onRetrySave={runSave}
           onMenuClick={() => setMobileSidebarOpen(true)}
-          onRefresh={loadEntries}
         />
 
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -398,7 +403,13 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
                 occurredAt={editorState.occurredAt}
                 updatedAt={editorState.updatedAt}
                 isDraft={isDraft}
-                autoFocus={isDraft}
+                focusTarget={
+                  editorFocusRequest?.entryId === selectedEntryId
+                    ? editorFocusRequest.target
+                    : isDraft
+                      ? "body"
+                      : null
+                }
                 onTitleChange={(title) => updateEditor({ title })}
                 onBodyChange={(body) => updateEditor({ body })}
               />
