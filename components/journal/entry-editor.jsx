@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   countWords,
   formatEntryCreated,
@@ -15,13 +15,33 @@ export function EntryEditor({
   isDraft = false,
   onTitleChange,
   onBodyChange,
-  autoFocus = false,
+  focusTarget = null,
 }) {
   const createdIso = occurredAt ?? new Date().toISOString();
   const editedIso = updatedAt ?? createdIso;
   const wordCount = countWords(body);
   const characterCount = body.length;
+  const titleRef = useRef(null);
   const bodyRef = useRef(null);
+
+  useEffect(() => {
+    if (focusTarget === "entry-end") {
+      if (body.length > 0) {
+        bodyRef.current?.focus();
+        bodyRef.current?.setSelectionRange(body.length, body.length);
+        return;
+      }
+
+      const titleInput = titleRef.current;
+
+      titleInput?.focus();
+      titleInput?.setSelectionRange(title.length, title.length);
+    }
+
+    if (focusTarget === "body") {
+      bodyRef.current?.focus();
+    }
+  }, [body, focusTarget, title]);
 
   function handleTitleKeyDown(event) {
     if (event.key !== "Enter") {
@@ -38,18 +58,18 @@ export function EntryEditor({
         <div className="mb-xl">
           <div className="flex items-baseline">
             <input
+              ref={titleRef}
               value={title}
               onChange={(event) => onTitleChange(event.target.value)}
               onKeyDown={handleTitleKeyDown}
               placeholder="Untitled"
-              className="w-full min-w-0 bg-transparent font-heading text-[1.75rem] font-semibold leading-tight tracking-tight text-on-background outline-none placeholder:font-heading placeholder:font-normal placeholder:text-on-surface-variant/45 md:text-[2rem]"
+              className="w-full min-w-0 bg-transparent font-sans text-[1.75rem] font-semibold leading-tight tracking-tight text-on-background outline-none placeholder:font-sans placeholder:font-normal placeholder:text-on-surface-variant/45 md:text-[2rem]"
             />
           </div>
         </div>
 
         <textarea
           ref={bodyRef}
-          autoFocus={autoFocus}
           value={body}
           onChange={(event) => onBodyChange(event.target.value)}
           placeholder="How was your day?"

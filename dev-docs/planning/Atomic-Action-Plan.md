@@ -148,12 +148,12 @@ Goal: make the project coherent before code changes.
 
 ### Prithvi Tasks
 
-- [ ] Read `planning/Features.md`, `architecture/Architecture.md`, and `planning/Plan.md`.
+- [X] Read `planning/Features.md`, `architecture/Architecture.md`, and `planning/Plan.md`.
 - [ ] List unclear implementation questions in a temporary issue/task note.
-- [ ] Verify the app runs locally.
-- [ ] Verify `.env.example` contains all required keys.
-- [ ] Verify Docker/Postgres setup path.
-- [ ] Create a local smoke-test checklist.
+- [X] Verify the app runs locally.
+- [X] Verify `.env.example` contains all required keys.
+- [X] Verify Docker/Postgres setup path.
+- [X] Create a local smoke-test checklist.
 
 ### Exit Criteria
 
@@ -222,7 +222,7 @@ Build constraint:
 #### Prithvi
 
 - [ ] Add `GET /api/entries/today`.
-- [ ] Open today's entry on journal load.
+- [X] Open today's entry on journal load.
 - [ ] Add test for "existing today entry is reused."
 - [ ] Add test for "missing today entry is created or suggested" according to Joel's decision.
 

@@ -1,4 +1,3 @@
-import { expect } from "storybook/test";
 import { TopAppBar } from "./top-app-bar";
 
 const meta = {
@@ -15,13 +14,6 @@ export const DesktopSaved = {
     lastEditedAt: "just now",
     onRetrySave: () => {},
     onMenuClick: () => {},
-    onRefresh: () => {},
-  },
-  play: async ({ canvas }) => {
-    await expect(canvas.getByRole("button", { name: /reload entries/i })).toHaveAttribute(
-      "title",
-      "Reload entries",
-    );
   },
 };
 
@@ -32,6 +24,5 @@ export const SaveFailed = {
     lastEditedAt: "2m ago",
     onRetrySave: () => {},
     onMenuClick: () => {},
-    onRefresh: () => {},
   },
 };
