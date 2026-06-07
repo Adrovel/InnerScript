@@ -30,6 +30,7 @@ const config = {
     config.optimizeDeps = config.optimizeDeps ?? {};
     config.optimizeDeps.include = [
       ...(config.optimizeDeps.include ?? []),
+      "@base-ui/react/menu",
       "@base-ui/react/tooltip",
       "mockdate",
       "msw-storybook-addon",

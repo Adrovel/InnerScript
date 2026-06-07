@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { EntryActionsMenu } from "@/components/journal/entry-actions-menu";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -121,9 +122,11 @@ export function EntrySidebar({
   entries,
   selectedEntryId,
   onSelectEntry,
+  onDeleteEntry,
   onNewNote,
   onMobileClose,
   creatingNote = false,
+  deletingEntryId = null,
 }) {
   const { setOpen, setOpenMobile, state } = useSidebar();
   const [searchOpen, setSearchOpen] = useState(false);
@@ -167,7 +170,7 @@ export function EntrySidebar({
         collapsible="offcanvas"
         className="border-sidebar-border/70 bg-sidebar"
       >
-        <SidebarHeader className="gap-4 border-b border-sidebar-border/60 px-3 pb-4 pt-4">
+        <SidebarHeader className="gap-4 border-b border-sidebar-border/70 px-3 pb-4 pt-4">
           <h2 className="sr-only">InnerScript navigation</h2>
 
           <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/45 p-2.5 shadow-[inset_0_0_0_1px_var(--sidebar-border)]">
@@ -261,7 +264,7 @@ export function EntrySidebar({
                         <SidebarMenuButton
                           type="button"
                           className={cn(
-                            sidebarRowBaseClass,
+                            sidebarEntryRowClass,
                             "group text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
                           )}
                         />
@@ -278,9 +281,9 @@ export function EntrySidebar({
                     </CollapsibleTrigger>
 
                     <CollapsibleContent className="h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] duration-150 ease-out data-ending-style:h-0 data-starting-style:h-0">
-                      <SidebarMenuSub className="mx-4 gap-1 border-sidebar-border/55 px-2 py-1">
+                      <SidebarMenuSub className="ml-4 mr-0 gap-1 border-sidebar-border/55 py-1 pl-2 pr-0">
                         {group.entries.map((entry) => (
-                          <SidebarMenuSubItem key={entry.id}>
+                          <SidebarMenuSubItem key={entry.id} className="group/sidebar-entry">
                             <SidebarMenuSubButton
                               render={<button type="button" />}
                               isActive={selectedEntryId === entry.id}
@@ -290,6 +293,7 @@ export function EntrySidebar({
                               }}
                               className={cn(
                                 sidebarEntryRowClass,
+                                "pr-8",
                                 selectedEntryId === entry.id
                                   ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-[inset_2px_0_0_var(--sidebar-primary),0_0_0_1px_var(--sidebar-border)]"
                                   : "text-sidebar-foreground/72 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground hover:shadow-[inset_2px_0_0_color-mix(in_srgb,var(--sidebar-primary)_55%,transparent)]",
@@ -297,6 +301,12 @@ export function EntrySidebar({
                             >
                               <span className="min-w-0 flex-1 truncate">{getEntryLabel(entry)}</span>
                             </SidebarMenuSubButton>
+                            <EntryActionsMenu
+                              entry={entry}
+                              onDeleteEntry={onDeleteEntry}
+                              disabled={Boolean(deletingEntryId)}
+                              className="absolute right-0 top-1/2 -translate-y-1/2"
+                            />
                           </SidebarMenuSubItem>
                         ))}
                       </SidebarMenuSub>

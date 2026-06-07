@@ -53,3 +53,8 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-07 | Prithvi+Codex | UI | Reload entries removed from sidebar and stale Storybook interaction removed | open: none
 2026-06-07 | Prithvi+Codex | UI | top-right Edited timestamp removed from save status | open: none
 2026-06-07 | Prithvi+Codex | UI | sidebar child entry rows now fill submenu width for full-row highlight | open: none
+2026-06-07 | Prithvi+Codex | UI/tests | sidebar entry dropdown actions can delete notes/journals; Storybook pre-optimizes Base UI menu | open: none
+2026-06-07 | Prithvi+Codex | UI/tests | fixed entry action trigger open state and row-selection isolation coverage | open: none
+2026-06-07 | Prithvi+Codex | UI | nested sidebar entries now extend to the right edge with ellipsis pinned at row end | open: none
+2026-06-07 | Prithvi+Codex | UI | child sidebar entries now match Journal/Note group row sizing | open: none
+2026-06-07 | Prithvi+Codex | UI | fixed Search split line overflow outside sidebar | open: none

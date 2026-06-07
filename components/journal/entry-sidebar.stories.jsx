@@ -1,4 +1,4 @@
-import { expect } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { EntrySidebar } from "./entry-sidebar";
 
@@ -41,16 +41,17 @@ export const WithEntries = {
   args: {
     entries,
     selectedEntryId: "entry-journal-1",
-    onSelectEntry: () => {},
+    onSelectEntry: fn(),
+    onDeleteEntry: fn(),
     onNewNote: () => {},
     onToggleCollapse: () => {},
     onMobileClose: () => {},
   },
-  play: async ({ canvas }) => {
+  play: async ({ args, canvas }) => {
     await expect(canvas.getByText("InnerScript")).toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^search$/i })).toHaveClass(/h-9/);
-    await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(/h-9/);
+    await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(/h-7/);
     await expect(canvas.getByRole("button", { name: /^new note$/i })).not.toHaveClass(
       /border-outline-variant/,
     );
@@ -61,13 +62,26 @@ export const WithEntries = {
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(
       /text-sidebar-foreground\/76/,
     );
-    await expect(canvas.getByRole("button", { name: /friday reflection/i })).toHaveClass(
+    await expect(canvas.getByRole("button", { name: /^friday reflection$/i })).toHaveClass(
       /bg-sidebar-accent/,
     );
+    await expect(canvas.getByRole("button", { name: /^friday reflection$/i })).toHaveClass(/h-7/);
     await expect(canvas.getByRole("button", { name: /^note$/i })).toBeInTheDocument();
     await expect(
-      canvas.getByRole("button", { name: /therapy question/i }).querySelector("svg"),
+      canvas.getByRole("button", { name: /^therapy question$/i }).querySelector("svg"),
     ).toBeNull();
+    await expect(
+      canvas.getByRole("button", { name: /open actions for friday reflection/i }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("button", { name: /open actions for friday reflection/i }),
+    ).toHaveClass(/right-0/);
+    await userEvent.click(canvas.getByRole("button", { name: /open actions for friday reflection/i }));
+    await expect(args.onSelectEntry).not.toHaveBeenCalled();
+    await userEvent.click(
+      await within(document.body).findByRole("menuitem", { name: /^delete journal$/i }),
+    );
+    await expect(args.onDeleteEntry).toHaveBeenCalledWith(entries[0]);
   },
 };
 
@@ -76,6 +90,7 @@ export const Empty = {
     entries: [],
     selectedEntryId: null,
     onSelectEntry: () => {},
+    onDeleteEntry: () => {},
     onNewNote: () => {},
     onToggleCollapse: () => {},
     onMobileClose: () => {},
@@ -88,6 +103,7 @@ export const CreatingNote = {
     selectedEntryId: "entry-note-1",
     creatingNote: true,
     onSelectEntry: () => {},
+    onDeleteEntry: () => {},
     onNewNote: () => {},
     onToggleCollapse: () => {},
     onMobileClose: () => {},

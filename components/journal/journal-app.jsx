@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getAutosaveTitle, resolveSavedEntryState } from "@/lib/autosave";
 import {
   createEntry,
+  deleteEntry,
   fetchEntries,
   findTodayJournalEntry,
   getNextUntitledNoteTitle,
@@ -55,11 +56,13 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(initialError);
   const [creatingNote, setCreatingNote] = useState(false);
+  const [deletingEntryId, setDeletingEntryId] = useState(null);
   const [editorFocusRequest, setEditorFocusRequest] = useState(null);
 
   const saveTimerRef = useRef(null);
   const pendingSaveRef = useRef(null);
   const activeSaveRef = useRef(false);
+  const deletedEntryIdsRef = useRef(new Set());
   const runSaveRef = useRef(null);
 
   const selectedEntry = useMemo(
@@ -162,6 +165,14 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         return true;
       }
 
+      if (deletedEntryIdsRef.current.has(savedEntry.id)) {
+        if (pendingSaveRef.current?.entryId === savedEntry.id) {
+          pendingSaveRef.current = null;
+        }
+        setSaveStatus("idle");
+        return true;
+      }
+
       const { entryForList, nextPending, hasNewerPending } = resolveSavedEntryState({
         pending,
         latestPending: pendingSaveRef.current,
@@ -190,6 +201,11 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
 
       return true;
     } catch {
+      if (pending.entryId && deletedEntryIdsRef.current.has(pending.entryId)) {
+        setSaveStatus("idle");
+        return true;
+      }
+
       setSaveStatus("error");
       return false;
     } finally {
@@ -338,6 +354,70 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     }
   }, [creatingNote, entries, flushPendingSave]);
 
+  const handleDeleteEntry = useCallback(
+    async (entry) => {
+      if (deletingEntryId) {
+        return;
+      }
+
+      const entryId = entry.id;
+      const isDeletingSelectedEntry = selectedEntryId === entryId;
+      let cancelledPendingSave = null;
+
+      setDeletingEntryId(entryId);
+      deletedEntryIdsRef.current.add(entryId);
+
+      if (pendingSaveRef.current?.entryId === entryId) {
+        cancelledPendingSave = pendingSaveRef.current;
+        if (saveTimerRef.current) {
+          clearTimeout(saveTimerRef.current);
+          saveTimerRef.current = null;
+        }
+        pendingSaveRef.current = null;
+      } else {
+        await flushPendingSave();
+      }
+
+      if (isDeletingSelectedEntry) {
+        setSaveStatus("saving");
+      }
+
+      try {
+        await deleteEntry(entryId);
+
+        if (isDeletingSelectedEntry) {
+          const nextEntries = entries.filter((currentEntry) => currentEntry.id !== entryId);
+          const nextSelectedEntry = findTodayJournalEntry(nextEntries) ?? nextEntries[0] ?? null;
+          setEntries(nextEntries);
+          setSelectedEntryId(nextSelectedEntry?.id ?? null);
+          setDraft(createDraft());
+          setEditorFocusRequest(
+            nextSelectedEntry ? { entryId: nextSelectedEntry.id, target: "entry-end" } : null,
+          );
+          setSaveStatus("idle");
+        } else {
+          setEntries((current) => current.filter((currentEntry) => currentEntry.id !== entryId));
+        }
+      } catch {
+        deletedEntryIdsRef.current.delete(entryId);
+        if (cancelledPendingSave) {
+          pendingSaveRef.current = cancelledPendingSave;
+          saveTimerRef.current = setTimeout(() => {
+            runSaveRef.current?.();
+          }, AUTOSAVE_DELAY_MS);
+          setSaveActivityId((current) => current + 1);
+          setSaveStatus("dirty");
+          return;
+        }
+
+        setSaveStatus("error");
+      } finally {
+        setDeletingEntryId(null);
+      }
+    },
+    [deletingEntryId, entries, flushPendingSave, selectedEntryId],
+  );
+
   const showEmptyState =
     !loading && !loadError && entries.length === 0 && isDraft && draft.body.trim().length === 0;
 
@@ -347,9 +427,11 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         entries={entries}
         selectedEntryId={selectedEntryId}
         onSelectEntry={handleSelectEntry}
+        onDeleteEntry={handleDeleteEntry}
         onNewNote={handleNewNote}
         onMobileClose={() => setOpenMobile(false)}
         creatingNote={creatingNote}
+        deletingEntryId={deletingEntryId}
       />
 
       <SidebarInset className="h-svh min-w-0 overflow-hidden bg-background">
