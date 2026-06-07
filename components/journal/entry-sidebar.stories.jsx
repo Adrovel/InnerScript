@@ -39,9 +39,20 @@ export const WithEntries = {
     onMobileClose: () => {},
   },
   play: async ({ canvas }) => {
+    await expect(canvas.getByText("InnerScript")).toBeInTheDocument();
+    await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
+    await expect(canvas.getByRole("button", { name: /^search$/i })).toHaveClass(/h-9/);
+    await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(/h-9/);
+    await expect(
+      canvas.getByRole("button", { name: /^new note$/i }).querySelectorAll("svg"),
+    ).toHaveLength(1);
     await expect(canvas.getByRole("button", { name: /friday reflection/i })).toHaveClass(
       /bg-surface-container-high/,
     );
+    await expect(canvas.getByRole("button", { name: /^note$/i })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("button", { name: /therapy question/i }).querySelector("svg"),
+    ).toBeNull();
   },
 };
 
