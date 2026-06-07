@@ -12,13 +12,8 @@ import { getEntryLabel } from "@/lib/journal";
 import { cn } from "@/lib/utils";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 
-function getEntryTypeLabel(entry) {
-  return entry.entry_type === "journal" ? "journal" : "note";
-}
-
 export function EntryOptionsMenu({ entry, onDeleteEntry, disabled = false, className }) {
   const entryLabel = getEntryLabel(entry);
-  const entryTypeLabel = getEntryTypeLabel(entry);
 
   return (
     <DropdownMenu>
@@ -50,7 +45,7 @@ export function EntryOptionsMenu({ entry, onDeleteEntry, disabled = false, class
             }}
           >
             <Trash2 aria-hidden="true" />
-            Delete {entryTypeLabel}
+            Delete
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

@@ -79,7 +79,7 @@ export const WithEntries = {
     await userEvent.click(canvas.getByRole("button", { name: /open options for friday reflection/i }));
     await expect(args.onSelectEntry).not.toHaveBeenCalled();
     await userEvent.click(
-      await within(document.body).findByRole("menuitem", { name: /^delete journal$/i }),
+      await within(document.body).findByRole("menuitem", { name: /^delete$/i }),
     );
     await expect(args.onDeleteEntry).toHaveBeenCalledWith(entries[0]);
   },
