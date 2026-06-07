@@ -34,3 +34,7 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-05 | loaded: Storybook setup, Next docs | changed: MSW preview and colocated stories | running: none | open: none
 2026-06-05 | loaded: Storybook runtime | changed: logged stale empty Storybook and set initial story path | running: storybook 6006 | open: none
 2026-06-07 | loaded: sidebar design target | changed: identity header toggle, shared sidebar row sizing | running: next 3000 existing | open: none
+2026-06-07 | loaded: sidebar component | changed: sidebar toggle uses double chevrons | running: unknown | open: none
+2026-06-07 | loaded: sidebar row styles | changed: New Note matches Search row | running: unknown | open: none
+2026-06-07 | loaded: sidebar spacing | changed: more gap under identity header | running: unknown | open: none
+2026-06-07 | loaded: sidebar selection | changed: folder rows stay neutral, selected files highlight | running: unknown | open: none
