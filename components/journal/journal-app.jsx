@@ -5,14 +5,13 @@ import { EntryEditor } from "@/components/journal/entry-editor";
 import { EntrySidebar } from "@/components/journal/entry-sidebar";
 import { TopAppBar } from "@/components/journal/top-app-bar";
 import { Button } from "@/components/ui/button";
+import { SidebarInset, SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAutosaveTitle, resolveSavedEntryState } from "@/lib/autosave";
-import { cn } from "@/lib/utils";
 import {
   createEntry,
   fetchEntries,
   findTodayJournalEntry,
-  formatRelativeEditTime,
   getNextUntitledNoteTitle,
   updateEntry,
 } from "@/lib/journal";
@@ -30,6 +29,22 @@ function createDraft({ entryType = "journal", occurredAt = new Date().toISOStrin
 }
 
 export function JournalApp({ initialEntries = [], initialError = null }) {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  return (
+    <SidebarProvider
+      open={sidebarOpen}
+      onOpenChange={setSidebarOpen}
+      style={{ "--sidebar-width": "var(--spacing-sidebar-width, 280px)" }}
+      className="h-svh min-h-0 overflow-hidden bg-background text-on-background"
+    >
+      <JournalWorkspace initialEntries={initialEntries} initialError={initialError} />
+    </SidebarProvider>
+  );
+}
+
+function JournalWorkspace({ initialEntries = [], initialError = null }) {
+  const { setOpenMobile } = useSidebar();
   const initialTodayEntry = findTodayJournalEntry(initialEntries);
 
   const [entries, setEntries] = useState(initialEntries);
@@ -39,9 +54,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
   const [saveActivityId, setSaveActivityId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(initialError);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [lastEditedAt, setLastEditedAt] = useState(null);
   const [creatingNote, setCreatingNote] = useState(false);
   const [editorFocusRequest, setEditorFocusRequest] = useState(null);
 
@@ -72,8 +84,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
         occurredAt: draft.occurred_at,
         updatedAt: draft.occurred_at,
       };
-
-  const headerEditedLabel = lastEditedAt ? formatRelativeEditTime(lastEditedAt) : null;
 
   const loadEntries = useCallback(async () => {
     setLoading(true);
@@ -171,7 +181,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
 
       setSelectedEntryId(savedEntry.id);
       setDraft(createDraft());
-      setLastEditedAt(new Date());
 
       if (!hasNewerPending) {
         setSaveStatus("saved");
@@ -231,7 +240,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
         runSave();
       }, AUTOSAVE_DELAY_MS);
 
-      setLastEditedAt(new Date());
       setSaveActivityId((current) => current + 1);
       setSaveStatus("dirty");
     },
@@ -296,7 +304,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       setDraft(createDraft());
       setSaveStatus("idle");
       setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
-      setLastEditedAt(entry.updated_at ? new Date(entry.updated_at) : new Date(entry.created_at));
     },
     [flushPendingSave],
   );
@@ -324,7 +331,6 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       setDraft(createDraft());
       setEditorFocusRequest({ entryId: note.id, target: "entry-end" });
       setSaveStatus("saved");
-      setLastEditedAt(new Date());
     } catch {
       setSaveStatus("error");
     } finally {
@@ -336,31 +342,22 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
     !loading && !loadError && entries.length === 0 && isDraft && draft.body.trim().length === 0;
 
   return (
-    <div className="flex h-svh overflow-hidden bg-background text-on-background">
+    <>
       <EntrySidebar
         entries={entries}
         selectedEntryId={selectedEntryId}
         onSelectEntry={handleSelectEntry}
         onNewNote={handleNewNote}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed((current) => !current)}
-        mobileOpen={mobileSidebarOpen}
-        onMobileClose={() => setMobileSidebarOpen(false)}
+        onMobileClose={() => setOpenMobile(false)}
         creatingNote={creatingNote}
       />
 
-      <div
-        className={cn(
-          "flex h-full flex-1 flex-col transition-all duration-300",
-          sidebarCollapsed ? "md:ml-0" : "md:ml-sidebar-width",
-        )}
-      >
+      <SidebarInset className="h-svh min-w-0 overflow-hidden bg-background">
         <TopAppBar
           saveStatus={saveStatus}
           saveActivityId={saveActivityId}
-          lastEditedAt={headerEditedLabel}
           onRetrySave={runSave}
-          onMenuClick={() => setMobileSidebarOpen(true)}
+          onMenuClick={() => setOpenMobile(true)}
         />
 
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
@@ -416,7 +413,7 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
             </>
           ) : null}
         </div>
-      </div>
-    </div>
+      </SidebarInset>
+    </>
   );
 }

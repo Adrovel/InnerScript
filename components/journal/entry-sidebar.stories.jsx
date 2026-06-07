@@ -1,4 +1,5 @@
 import { expect } from "storybook/test";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { EntrySidebar } from "./entry-sidebar";
 
 const entries = [
@@ -25,6 +26,13 @@ const entries = [
 const meta = {
   component: EntrySidebar,
   tags: ["ai-generated"],
+  decorators: [
+    (Story) => (
+      <SidebarProvider style={{ "--sidebar-width": "var(--spacing-sidebar-width, 280px)" }}>
+        <Story />
+      </SidebarProvider>
+    ),
+  ],
 };
 
 export default meta;
@@ -50,11 +58,11 @@ export const WithEntries = {
     await expect(
       canvas.getByRole("button", { name: /^new note$/i }).querySelectorAll("svg"),
     ).toHaveLength(1);
-    await expect(canvas.getByRole("button", { name: /^journal$/i })).not.toHaveClass(
-      /bg-surface-container-high/,
+    await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(
+      /text-sidebar-foreground\/76/,
     );
     await expect(canvas.getByRole("button", { name: /friday reflection/i })).toHaveClass(
-      /bg-surface-container-high/,
+      /bg-sidebar-accent/,
     );
     await expect(canvas.getByRole("button", { name: /^note$/i })).toBeInTheDocument();
     await expect(

@@ -7,7 +7,7 @@ import { Cloud, CloudOff, LoaderCircle } from "lucide-react";
 const SAVING_VISIBILITY_DELAY_MS = 150;
 const SAVED_READ_TIME_MS = 1600;
 
-export function SaveStatus({ status, activityId = 0, lastEditedAt, onRetry }) {
+export function SaveStatus({ status, activityId = 0, onRetry }) {
   const [displayStatus, setDisplayStatus] = useState(status);
   const timerRef = useRef(null);
 
@@ -78,12 +78,6 @@ export function SaveStatus({ status, activityId = 0, lastEditedAt, onRetry }) {
           aria-hidden="true"
         />
         <span>{label}</span>
-        {lastEditedAt && displayStatus !== "saving" ? (
-          <>
-            <span className="opacity-30">•</span>
-            <span suppressHydrationWarning>Edited {lastEditedAt}</span>
-          </>
-        ) : null}
       </div>
       {displayStatus === "error" && onRetry ? (
         <button

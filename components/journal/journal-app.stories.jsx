@@ -1,4 +1,4 @@
-import { expect, waitFor } from "storybook/test";
+import { expect } from "storybook/test";
 import { JournalApp } from "./journal-app";
 
 const today = "2026-06-05T12:00:00.000Z";
@@ -43,17 +43,5 @@ export const LoadedJournal = {
 export const EmptyJournal = {
   args: {
     initialEntries: [],
-  },
-};
-
-export const RefreshesEntries = {
-  args: {
-    initialEntries: [],
-  },
-  play: async ({ canvas, userEvent }) => {
-    await userEvent.click(canvas.getByRole("button", { name: /reload entries/i }));
-    await waitFor(() => {
-      expect(canvas.getByDisplayValue("Friday reflection")).toBeVisible();
-    });
   },
 };

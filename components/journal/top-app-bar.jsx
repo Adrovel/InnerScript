@@ -6,7 +6,6 @@ import { Menu } from "lucide-react";
 export function TopAppBar({
   saveStatus,
   saveActivityId,
-  lastEditedAt,
   onRetrySave,
   onMenuClick,
 }) {
@@ -30,7 +29,6 @@ export function TopAppBar({
         <SaveStatus
           status={saveStatus}
           activityId={saveActivityId}
-          lastEditedAt={lastEditedAt}
           onRetry={onRetrySave}
         />
       </div>

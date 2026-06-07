@@ -12,10 +12,9 @@ export const Saved = {
   args: {
     status: "saved",
     activityId: 1,
-    lastEditedAt: "just now",
   },
   play: async ({ canvas }) => {
-    await expect(await canvas.findByText(/edited just now/i)).toBeVisible();
+    await expect(await canvas.findByText(/saved/i)).toBeVisible();
   },
 };
 
