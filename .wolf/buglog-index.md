@@ -24,6 +24,7 @@ Source log: `buglog.jsonl`
 | innerscript-bug-015 | 2026-06-07 | journal, sidebar, dropdown-menu, storybook, ui | `components/journal/entry-actions-menu.jsx`; `components/journal/entry-sidebar.stories.jsx` | Entry actions menu failed to open after trigger-level propagation was stopped. | Removed trigger propagation stops, kept delete item isolation, added open/delete coverage; lint, tests, build, and browser flow pass. |
 | innerscript-bug-016 | 2026-06-07 | journal, sidebar, dropdown-menu, ui, storybook | `components/journal/entry-sidebar.jsx`; `components/journal/entry-sidebar.stories.jsx` | Nested entry rows and ellipsis actions ended too far inside the sidebar because submenu nesting applied right margin and padding. | Switched submenu to left-only indentation, pinned actions with `right-0`, added coverage; lint, tests, build, and browser geometry check pass. |
 | innerscript-bug-017 | 2026-06-07 | journal, sidebar, ui, separator | `components/journal/entry-sidebar.jsx` | Horizontal split line between Search and entries rendered outside the sidebar bounds. | Removed overflowing separator and used the scoped header bottom border; lint, tests, build, and browser bounds check pass. |
+| innerscript-bug-018 | 2026-06-07 | journal, sidebar, ui, new-note, hit-test | `components/journal/entry-sidebar.jsx` | Group plus button was visible but the folder row trigger intercepted pointer clicks. | Changed group header to a flex row with plus owning its own end slot; lint, tests, build, and browser payload checks pass. |
 
 ## Logging Rule
 

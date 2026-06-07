@@ -13,7 +13,7 @@ import {
   deleteEntry,
   fetchEntries,
   findTodayJournalEntry,
-  getNextUntitledNoteTitle,
+  getNextUntitledEntryTitle,
   updateEntry,
 } from "@/lib/journal";
 
@@ -324,35 +324,37 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     [flushPendingSave],
   );
 
-  const handleNewNote = useCallback(async () => {
+  const handleNewNote = useCallback(async (entryType) => {
     if (creatingNote) {
       return;
     }
+
+    const targetEntryType = entryType ?? (selectedEntry?.entry_type === "journal" ? "journal" : "note");
 
     setCreatingNote(true);
     await flushPendingSave();
     setSaveStatus("saving");
 
     try {
-      const noteTitle = getNextUntitledNoteTitle(entries);
-      const note = await createEntry({
-        title: noteTitle,
+      const entryTitle = getNextUntitledEntryTitle(entries);
+      const entry = await createEntry({
+        title: entryTitle,
         body: "",
-        entry_type: "note",
+        entry_type: targetEntryType,
         occurred_at: new Date().toISOString(),
       });
 
-      setEntries((current) => [note, ...current.filter((entry) => entry.id !== note.id)]);
-      setSelectedEntryId(note.id);
+      setEntries((current) => [entry, ...current.filter((currentEntry) => currentEntry.id !== entry.id)]);
+      setSelectedEntryId(entry.id);
       setDraft(createDraft());
-      setEditorFocusRequest({ entryId: note.id, target: "entry-end" });
+      setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
       setSaveStatus("saved");
     } catch {
       setSaveStatus("error");
     } finally {
       setCreatingNote(false);
     }
-  }, [creatingNote, entries, flushPendingSave]);
+  }, [creatingNote, entries, flushPendingSave, selectedEntry]);
 
   const handleDeleteEntry = useCallback(
     async (entry) => {

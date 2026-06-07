@@ -43,7 +43,7 @@ export const WithEntries = {
     selectedEntryId: "entry-journal-1",
     onSelectEntry: fn(),
     onDeleteEntry: fn(),
-    onNewNote: () => {},
+    onNewNote: fn(),
     onToggleCollapse: () => {},
     onMobileClose: () => {},
   },
@@ -52,6 +52,8 @@ export const WithEntries = {
     await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^search$/i })).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(/h-7/);
+    await expect(canvas.getByRole("button", { name: /^add journal$/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("button", { name: /^add note$/i })).toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).not.toHaveClass(
       /border-outline-variant/,
     );
@@ -82,6 +84,10 @@ export const WithEntries = {
       await within(document.body).findByRole("menuitem", { name: /^delete$/i }),
     );
     await expect(args.onDeleteEntry).toHaveBeenCalledWith(entries[0]);
+    await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
+    await expect(args.onNewNote).toHaveBeenCalledWith("journal");
+    await userEvent.click(canvas.getByRole("button", { name: /^add note$/i }));
+    await expect(args.onNewNote).toHaveBeenCalledWith("note");
   },
 };
 
