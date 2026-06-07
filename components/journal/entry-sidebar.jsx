@@ -1,11 +1,32 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarInput,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarRail,
+  useSidebar,
+} from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { getEntryLabel } from "@/lib/journal";
 import {
   BookOpen,
-  ChevronDown,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
@@ -31,55 +52,44 @@ const GROUP_CONFIG = [
 ];
 
 const sidebarRowBaseClass =
-  "interactive-element flex h-9 w-full items-center gap-2.5 rounded-lg px-3 text-left text-sm font-medium shadow-transparent";
+  "interactive-element h-9 rounded-lg px-3 text-sm font-medium shadow-transparent";
+
+const sidebarEntryRowClass =
+  "interactive-element h-7 w-full rounded-md px-2 text-left text-[13px] shadow-transparent";
 
 function SidebarNavRow({
   Icon,
   children,
   active = false,
-  iconVariant = "default",
   trailing = null,
   className,
   iconClassName,
   ...props
 }) {
   return (
-    <button
+    <SidebarMenuButton
       type="button"
+      isActive={active}
       className={cn(
         sidebarRowBaseClass,
         active
-          ? "bg-surface-container-high text-on-surface shadow-[0_0_0_1px_color-mix(in_srgb,var(--outline-variant)_28%,transparent)]"
-          : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+          ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-[0_0_0_1px_var(--sidebar-border)]"
+          : "text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
         className,
       )}
       {...props}
     >
-      <span
-        className={cn(
-          "flex size-5 shrink-0 items-center justify-center",
-          iconVariant === "primary"
-            ? "rounded-full bg-primary-container text-on-primary-container"
-            : null,
-        )}
-      >
-        <Icon
-          className={cn(
-            iconVariant === "primary" ? "size-3.5" : "size-4",
-            active && iconVariant !== "primary" ? "text-primary" : null,
-            !active && iconVariant !== "primary" ? "text-on-surface-variant/70" : null,
-            iconClassName,
-          )}
-          aria-hidden="true"
-        />
-      </span>
+      <Icon
+        className={cn(active ? "text-sidebar-primary" : "text-sidebar-foreground/62", iconClassName)}
+        aria-hidden="true"
+      />
       <span className="min-w-0 flex-1 truncate">{children}</span>
       {trailing ? (
-        <span className="flex size-4 shrink-0 items-center justify-center text-on-surface-variant/65">
+        <span className="ml-auto flex shrink-0 items-center text-sidebar-foreground/60">
           {trailing}
         </span>
       ) : null}
-    </button>
+    </SidebarMenuButton>
   );
 }
 
@@ -112,18 +122,12 @@ export function EntrySidebar({
   selectedEntryId,
   onSelectEntry,
   onNewNote,
-  collapsed = false,
-  onToggleCollapse,
-  mobileOpen = false,
   onMobileClose,
   creatingNote = false,
 }) {
+  const { setOpen, setOpenMobile, state } = useSidebar();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [openGroups, setOpenGroups] = useState({
-    journal: true,
-    note: true,
-  });
   const searchInputRef = useRef(null);
   const filteredEntries = useMemo(() => filterEntries(entries, searchQuery), [entries, searchQuery]);
   const entryGroups = useMemo(() => groupEntries(filteredEntries), [filteredEntries]);
@@ -137,163 +141,174 @@ export function EntrySidebar({
     }
   }, [searchOpen]);
 
-  const toggleGroup = (groupId) => {
-    setOpenGroups((current) => ({
-      ...current,
-      [groupId]: !current[groupId],
-    }));
+  const closeMobileSidebar = () => {
+    setOpenMobile(false);
+    onMobileClose?.();
   };
 
   return (
     <>
-      {mobileOpen ? (
-        <button
+      {state === "collapsed" ? (
+        <Button
           type="button"
-          aria-label="Close sidebar"
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={onMobileClose}
-        />
-      ) : null}
-
-      {collapsed ? (
-        <button
-          type="button"
+          variant="ghost"
+          size="icon-lg"
           aria-label="Expand sidebar"
-          onClick={onToggleCollapse}
-          className="interactive-element fixed left-4 top-4 z-50 hidden rounded-full border border-surface-variant/20 bg-surface-container-low p-2 text-on-surface-variant shadow-sm hover:bg-surface-container-high hover:text-primary md:inline-flex"
+          onClick={() => setOpen(true)}
+          className="interactive-element fixed left-4 top-4 z-50 hidden rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground shadow-sm hover:bg-sidebar-accent hover:text-sidebar-primary md:inline-flex"
         >
-          <ChevronsRight className="size-5" aria-hidden="true" />
-        </button>
+          <ChevronsRight aria-hidden="true" />
+        </Button>
       ) : null}
 
-      <nav
+      <Sidebar
+        role="navigation"
         aria-label="InnerScript navigation"
-        className={cn(
-          "fixed left-0 top-0 z-50 flex h-full w-sidebar-width flex-col border-r border-surface-variant/20 bg-surface-container-low py-md transition-transform duration-300",
-          mobileOpen ? "translate-x-0" : "-translate-x-full",
-          collapsed ? "md:-translate-x-full" : "md:translate-x-0",
-        )}
+        collapsible="offcanvas"
+        className="border-sidebar-border/70 bg-sidebar"
       >
-        <h2 className="sr-only">InnerScript navigation</h2>
+        <SidebarHeader className="gap-4 border-b border-sidebar-border/60 px-3 pb-4 pt-4">
+          <h2 className="sr-only">InnerScript navigation</h2>
 
-        <div className="mb-md px-sm">
-          <div className="mb-md flex items-center gap-sm px-1">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-container-high">
-              <User className="size-5 text-on-surface-variant" aria-hidden="true" />
+          <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/45 p-2.5 shadow-[inset_0_0_0_1px_var(--sidebar-border)]">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground shadow-sm">
+              <User aria-hidden="true" />
             </div>
             <div className="min-w-0 flex-1">
-              <h3 className="truncate text-sm font-semibold text-on-surface">InnerScript</h3>
-              <p className="truncate text-xs text-on-surface-variant/65">Journal</p>
+              <h3 className="truncate text-sm font-semibold text-sidebar-foreground">InnerScript</h3>
+              <p className="truncate text-xs text-sidebar-foreground/58">Private journal</p>
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-lg"
               aria-label="Collapse sidebar"
-              onClick={onToggleCollapse}
-              className="interactive-element hidden size-9 shrink-0 items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--outline-variant)_45%,transparent)] md:inline-flex"
+              onClick={() => setOpen(false)}
+              className="interactive-element hidden rounded-full text-sidebar-foreground/72 hover:bg-sidebar hover:text-sidebar-primary hover:shadow-[0_0_0_1px_var(--sidebar-border)] md:inline-flex"
             >
-              <ChevronsLeft className="size-5" aria-hidden="true" />
-            </button>
+              <ChevronsLeft aria-hidden="true" />
+            </Button>
           </div>
 
-          <div className="mb-xs">
-            <SidebarNavRow
-              Icon={Plus}
-              disabled={creatingNote}
-              aria-busy={creatingNote}
-              onClick={() => {
-                onNewNote();
-                onMobileClose?.();
-              }}
-              className="disabled:cursor-wait disabled:opacity-70 disabled:active:scale-100"
-            >
-              {creatingNote ? "Creating..." : "New Note"}
-            </SidebarNavRow>
-          </div>
+          <SidebarMenu className="gap-1">
+            <SidebarMenuItem>
+              <SidebarNavRow
+                Icon={Plus}
+                disabled={creatingNote}
+                aria-busy={creatingNote}
+                onClick={() => {
+                  onNewNote();
+                  closeMobileSidebar();
+                }}
+                className="disabled:cursor-wait disabled:opacity-70 disabled:active:scale-100"
+              >
+                {creatingNote ? "Creating..." : "New Note"}
+              </SidebarNavRow>
+            </SidebarMenuItem>
 
-          <SidebarNavRow
-            Icon={Search}
-            aria-expanded={searchOpen}
-            onClick={() => setSearchOpen((current) => !current)}
-            active={searchOpen}
-          >
-            Search
-          </SidebarNavRow>
+            <SidebarMenuItem>
+              <SidebarNavRow
+                Icon={Search}
+                aria-expanded={searchOpen}
+                onClick={() => setSearchOpen((current) => !current)}
+                active={searchOpen}
+              >
+                Search
+              </SidebarNavRow>
+            </SidebarMenuItem>
+          </SidebarMenu>
 
           {searchOpen ? (
-            <div className="px-1 pt-xs">
-              <input
-                ref={searchInputRef}
-                type="search"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search entries"
-                className="h-9 w-full rounded-lg border border-outline-variant/25 bg-surface-container-lowest px-3 text-sm text-on-surface placeholder:text-on-surface-variant/45 focus:border-primary/45 focus:outline-none"
-              />
-            </div>
+            <SidebarGroup className="p-0">
+              <SidebarGroupContent className="relative">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sidebar-foreground/45"
+                  aria-hidden="true"
+                />
+                <SidebarInput
+                  ref={searchInputRef}
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search entries"
+                  className="h-9 rounded-lg bg-sidebar-accent/35 pl-9 text-sidebar-foreground placeholder:text-sidebar-foreground/45 focus-visible:ring-sidebar-ring/40"
+                />
+              </SidebarGroupContent>
+            </SidebarGroup>
           ) : null}
-        </div>
+        </SidebarHeader>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-sm">
-          <div className="border-t border-outline-variant/10 pt-sm">
-            {!hasEntries ? (
-              <p className="px-2 py-sm text-[13px] leading-5 text-on-surface-variant/65">
-                No entries yet. Start with one honest page.
-              </p>
-            ) : null}
+        <SidebarContent className="px-2 py-3">
+          <SidebarGroup className="p-0">
+            <SidebarGroupContent>
+              {!hasEntries ? (
+                <p className="px-2 py-sm text-[13px] leading-5 text-sidebar-foreground/62">
+                  No entries yet. Start with one honest page.
+                </p>
+              ) : null}
 
-            {hasEntries && hasSearchQuery && !hasVisibleEntries ? (
-              <p className="px-2 py-sm text-[13px] leading-5 text-on-surface-variant/65">
-                No matching entries.
-              </p>
-            ) : null}
+              {hasEntries && hasSearchQuery && !hasVisibleEntries ? (
+                <p className="px-2 py-sm text-[13px] leading-5 text-sidebar-foreground/62">
+                  No matching entries.
+                </p>
+              ) : null}
 
-            <ul className="space-y-1">
-              {entryGroups.map((group) => (
-                <li key={group.id}>
-                  <SidebarNavRow
-                    Icon={group.Icon}
-                    aria-expanded={openGroups[group.id]}
-                    onClick={() => toggleGroup(group.id)}
-                    trailing={
-                      openGroups[group.id] ? (
-                        <ChevronDown className="size-4" aria-hidden="true" />
-                      ) : (
-                        <ChevronRight className="size-4" aria-hidden="true" />
-                      )
-                    }
-                  >
-                    {group.label}
-                  </SidebarNavRow>
+              <SidebarMenu className="gap-1">
+                {entryGroups.map((group) => (
+                  <Collapsible key={group.id} defaultOpen render={<SidebarMenuItem />}>
+                    <CollapsibleTrigger
+                      render={
+                        <SidebarMenuButton
+                          type="button"
+                          className={cn(
+                            sidebarRowBaseClass,
+                            "group text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+                          )}
+                        />
+                      }
+                    >
+                      <span className="flex shrink-0 items-center text-sidebar-foreground/60">
+                        <ChevronRight
+                          className="transition-transform duration-150 ease-out group-data-panel-open:rotate-90"
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <group.Icon className="text-sidebar-foreground/62" aria-hidden="true" />
+                      <span className="min-w-0 flex-1 truncate">{group.label}</span>
+                    </CollapsibleTrigger>
 
-                  {openGroups[group.id] ? (
-                    <ul className="mt-0.5 space-y-0.5 pl-8">
-                      {group.entries.map((entry) => (
-                        <li key={entry.id}>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              onSelectEntry(entry);
-                              onMobileClose?.();
-                            }}
-                            className={cn(
-                              "interactive-element flex h-7 w-full items-center rounded-md px-2 text-left text-[13px] shadow-transparent",
-                              selectedEntryId === entry.id
-                                ? "bg-surface-container-high text-on-surface shadow-[inset_2px_0_0_var(--primary),0_0_0_1px_color-mix(in_srgb,var(--outline-variant)_28%,transparent)]"
-                                : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface hover:shadow-[inset_2px_0_0_color-mix(in_srgb,var(--primary)_65%,transparent)]",
-                            )}
-                          >
-                            <span className="min-w-0 flex-1 truncate">{getEntryLabel(entry)}</span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </nav>
+                    <CollapsibleContent className="h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] duration-150 ease-out data-ending-style:h-0 data-starting-style:h-0">
+                      <SidebarMenuSub className="mx-4 gap-1 border-sidebar-border/55 px-2 py-1">
+                        {group.entries.map((entry) => (
+                          <SidebarMenuSubItem key={entry.id}>
+                            <SidebarMenuSubButton
+                              render={<button type="button" />}
+                              isActive={selectedEntryId === entry.id}
+                              onClick={() => {
+                                onSelectEntry(entry);
+                                closeMobileSidebar();
+                              }}
+                              className={cn(
+                                sidebarEntryRowClass,
+                                selectedEntryId === entry.id
+                                  ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-[inset_2px_0_0_var(--sidebar-primary),0_0_0_1px_var(--sidebar-border)]"
+                                  : "text-sidebar-foreground/72 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground hover:shadow-[inset_2px_0_0_color-mix(in_srgb,var(--sidebar-primary)_55%,transparent)]",
+                              )}
+                            >
+                              <span className="min-w-0 flex-1 truncate">{getEntryLabel(entry)}</span>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </Collapsible>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
     </>
   );
 }
