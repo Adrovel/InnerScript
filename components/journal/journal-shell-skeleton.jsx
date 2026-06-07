@@ -5,7 +5,7 @@ export function JournalShellSkeleton() {
     <div className="flex h-svh w-full overflow-hidden bg-background">
       <div className="hidden w-sidebar-width shrink-0 border-r border-surface-variant/20 bg-surface-container-low px-sm py-md md:block">
         <div className="mb-md">
-          <div className="mb-sm flex items-center gap-sm px-1">
+          <div className="mb-md flex items-center gap-sm px-1">
             <Skeleton className="h-9 w-9 rounded-full bg-surface-container-high/70" />
             <div className="min-w-0 flex-1">
               <Skeleton className="mb-1.5 h-4 w-24 rounded bg-surface-container-high/65" />

@@ -7,8 +7,8 @@ import {
   BookOpen,
   ChevronDown,
   ChevronRight,
-  PanelLeft,
-  PanelLeftClose,
+  ChevronsLeft,
+  ChevronsRight,
   Plus,
   Search,
   StickyNote,
@@ -162,7 +162,7 @@ export function EntrySidebar({
           onClick={onToggleCollapse}
           className="interactive-element fixed left-4 top-4 z-50 hidden rounded-full border border-surface-variant/20 bg-surface-container-low p-2 text-on-surface-variant shadow-sm hover:bg-surface-container-high hover:text-primary md:inline-flex"
         >
-          <PanelLeft className="size-5" aria-hidden="true" />
+          <ChevronsRight className="size-5" aria-hidden="true" />
         </button>
       ) : null}
 
@@ -177,7 +177,7 @@ export function EntrySidebar({
         <h2 className="sr-only">InnerScript navigation</h2>
 
         <div className="mb-md px-sm">
-          <div className="mb-sm flex items-center gap-sm px-1">
+          <div className="mb-md flex items-center gap-sm px-1">
             <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-surface-container-high">
               <User className="size-5 text-on-surface-variant" aria-hidden="true" />
             </div>
@@ -191,21 +191,20 @@ export function EntrySidebar({
               onClick={onToggleCollapse}
               className="interactive-element hidden size-9 shrink-0 items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high hover:text-primary hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--outline-variant)_45%,transparent)] md:inline-flex"
             >
-              <PanelLeftClose className="size-5" aria-hidden="true" />
+              <ChevronsLeft className="size-5" aria-hidden="true" />
             </button>
           </div>
 
           <div className="mb-xs">
             <SidebarNavRow
               Icon={Plus}
-              iconVariant="primary"
               disabled={creatingNote}
               aria-busy={creatingNote}
               onClick={() => {
                 onNewNote();
                 onMobileClose?.();
               }}
-              className="border border-outline-variant/20 bg-surface-container text-on-surface shadow-sm hover:border-primary/35 hover:bg-surface-container-high hover:text-primary disabled:cursor-wait disabled:opacity-70 disabled:active:scale-100"
+              className="disabled:cursor-wait disabled:opacity-70 disabled:active:scale-100"
             >
               {creatingNote ? "Creating..." : "New Note"}
             </SidebarNavRow>
@@ -255,7 +254,6 @@ export function EntrySidebar({
                     Icon={group.Icon}
                     aria-expanded={openGroups[group.id]}
                     onClick={() => toggleGroup(group.id)}
-                    active={group.entries.some((entry) => entry.id === selectedEntryId)}
                     trailing={
                       openGroups[group.id] ? (
                         <ChevronDown className="size-4" aria-hidden="true" />
