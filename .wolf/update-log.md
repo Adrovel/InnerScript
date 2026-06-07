@@ -47,3 +47,9 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-07 | Prithvi+Codex | UI | New Note row now matches Search row styling | open: none
 2026-06-07 | Prithvi+Codex | UI | sidebar identity header has more space before action rows | open: none
 2026-06-07 | Prithvi+Codex | UI | sidebar folder rows stay neutral while selected files are highlighted | open: none
+2026-06-07 | Prithvi+Codex | UI | journal sidebar rebuilt on shadcn Sidebar primitives with reload/search/new-note/group behavior preserved | open: none
+2026-06-07 | Prithvi+Codex | UI | sidebar Journal/Note groups now use shadcn Collapsible instead of custom openGroups state | open: none
+2026-06-07 | Prithvi+Codex | UI | sidebar group chevrons moved to the left of Journal and Note rows | open: none
+2026-06-07 | Prithvi+Codex | UI | Reload entries removed from sidebar and stale Storybook interaction removed | open: none
+2026-06-07 | Prithvi+Codex | UI | top-right Edited timestamp removed from save status | open: none
+2026-06-07 | Prithvi+Codex | UI | sidebar child entry rows now fill submenu width for full-row highlight | open: none

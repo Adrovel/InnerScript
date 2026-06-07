@@ -19,6 +19,7 @@ Source log: `buglog.jsonl`
 | innerscript-bug-009 | 2026-06-03 | journal, ui, autosave, save-status, lint | `components/journal/save-status.jsx` | Joel reported the saving status flashes too fast during autosave. | Save indicator now delays `Saving...`, keeps `Saved` readable briefly, and avoids synchronous effect state updates so lint passes. |
 | innerscript-bug-010 | 2026-06-03 | journal, ui, autosave, save-status, user-review | `components/journal/journal-app.jsx`; `components/journal/save-status.jsx`; `components/journal/top-app-bar.jsx` | Joel reported the save status does not change for further edits after the first save cycle. | Added save activity counter and explicit `dirty` state so every edit shows `Unsaved changes`, then `Saving...`, then `Saved`. |
 | innerscript-bug-012 | 2026-06-05 | storybook, local-setup, ui, stale-process | `.storybook/main.js`; `package.json`; local Storybook process on port 6006 | Storybook at `localhost:6006` showed `Oh no! Your Storybook is empty`. | Restarted stale Storybook server, verified `/index.json` lists colocated stories, and set the `storybook` script initial path to an existing journal story. |
+| innerscript-bug-013 | 2026-06-07 | storybook, vitest, dependencies, collapsible, local-setup | `components/ui/collapsible.jsx`; Storybook/Vitest dependency cache | First `npm test` after adding shadcn Collapsible failed because Vite re-optimized `@base-ui/react/collapsible` and reloaded Storybook tests. | Reran `npm test`; all 35 tests passed. No config change unless this repeats. |
 
 ## Logging Rule
 
