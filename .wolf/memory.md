@@ -38,3 +38,9 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-07 | loaded: sidebar row styles | changed: New Note matches Search row | running: unknown | open: none
 2026-06-07 | loaded: sidebar spacing | changed: more gap under identity header | running: unknown | open: none
 2026-06-07 | loaded: sidebar selection | changed: folder rows stay neutral, selected files highlight | running: unknown | open: none
+2026-06-07 | loaded: stash docs | changed: restored dev-docs planning/product decisions, dropped non-doc stash | running: unknown | open: review doc diff
+2026-06-07 | loaded: AGENTS | changed: source-file citation rule added | running: unknown | open: none
+2026-06-07 | loaded: shadcn sidebar, app shell | changed: sidebar uses shadcn provider/inset/menu | running: none | open: none
+2026-06-07 | loaded: shadcn collapsible | changed: sidebar groups use Collapsible | running: none | open: none
+2026-06-07 | loaded: sidebar groups | changed: chevrons moved left | running: none | open: none
+2026-06-07 | loaded: sidebar actions | changed: removed Reload entries | running: none | open: none
