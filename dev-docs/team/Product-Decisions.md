@@ -83,3 +83,23 @@ When Joel or a teammate clarifies product intent, first workflow, AI behavior, v
 
 Answer:
 During development, InnerScript should be simpler to build than the full long-term vision. Phase 1 and early Phase 2 should prioritize a small local journaling loop, clear schema, easy setup, visible save behavior, export, and one reflection-question path before adding imports, dashboards, AI people, relationship analytics, or distributed systems.
+
+### Q: What is the current hiring-pipeline build strategy?
+
+Answer:
+InnerScript should build the highest Google-interview-signal parts first while development continues during the hiring pipeline. The goal is not to finish every feature before applying. The near-term proof should be architecture, tradeoffs, ownership, technical decisions, system thinking, and failure-mode reasoning.
+
+### Q: What is the minimum usable product now?
+
+Answer:
+The minimum usable product is write, save, autosave, open/edit, delete, export Markdown, and one current-entry reflection question. Everything else is secondary until that loop is reliable.
+
+### Q: How should Joel and Prithvi split ownership now?
+
+Answer:
+Joel should focus on learning and architecture depth: chunking, embeddings, retrieval, hybrid search, source grounding, Graph RAG design, entity extraction, prompt contracts, AI safety, rate limiting, caching, background jobs, local-first architecture, privacy-first design, and AI evaluation. Prithvi should focus on frontend and delivery depth: Storybook, component architecture, design system, editor UX, autosave UI, entry CRUD flows, export flow, tests, accessibility, empty/error/offline states, verification, and acceptance criteria.
+
+### Q: What can the resume claim before Graph RAG is fully built?
+
+Answer:
+Do not claim a complete Graph RAG semantic memory platform until graph retrieval actually works. Safe claims are built MVP, built architecture, designed retrieval system, designed Graph RAG layer, implemented local-first journal, implemented reflection system, and implemented semantic memory foundations. Every resume line must survive deep technical discussion.

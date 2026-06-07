@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall checkbox progress: [##--------] 22% - 29/132 visible tasks
+Overall checkbox progress: [##--------] 15% - 43/295 visible tasks
 
 Count note: progress is counted from the visible checkbox tasks in this file. Larger future-layer subtasks may expand the denominator later.
 
@@ -16,44 +16,195 @@ Notification rule: when overall checkbox progress reaches or crosses 40%, tell J
 
 | Phase | Checkbox progress |
 |---|---|
-| Phase 0 - Direction Lock | [#####-----] 50% - 4/8 visible tasks |
-| Phase 1 - Local Journal Core | [####------] 43% - 18/42 tasks |
-| Phase 1.5 - Product Clarity And Local UI Review | [########--] 82% - 9/11 tasks |
-| Phase 2 - One Reflection Question | [----------] 0% - 0/8 tasks |
-| Phase 3 - Semantic Core | [----------] 0% - 0/3 tasks |
-| Phase 4 - External Data Integrations | [----------] 0% - 0/37 tasks |
-| Phase 5 - Freeform People Notes | [----------] 0% - 0/19 tasks |
-| Phase 6 - Source-Backed Insights | [----------] 0% - 0/34 tasks |
-| Phase 7 - Systems And Hosted Profile | [----------] 0% - 0/9 tasks |
+| Phase 0 - Direction Lock | [#######---] 71% - 12/17 tasks |
+| Phase 1 - Local Journal Core | [#####-----] 50% - 21/42 tasks |
+| Phase 1.5 - Product Clarity And Local UI Review | [#########-] 91% - 10/11 tasks |
+| Phase 2 - One Reflection Question | [----------] 0% - 0/11 tasks |
+| Phase 3A - Semantic Retrieval Core | [----------] 0% - 0/34 tasks |
+| Phase 3B - Entity And Graph RAG Foundations | [----------] 0% - 0/31 tasks |
+| Phase 4 - Deferred External Data Integrations | [----------] 0% - 0/39 tasks |
+| Phase 5 - Deferred Freeform People Notes | [----------] 0% - 0/19 tasks |
+| Phase 6 - Deferred Source-Backed Insights | [----------] 0% - 0/34 tasks |
+| Phase 7A - Deferred Google Systems Layer | [----------] 0% - 0/26 tasks |
+| Phase 7B - Deferred Hosted Consumer Profile | [----------] 0% - 0/10 tasks |
+| Final Google-Readiness Checklist | [----------] 0% - 0/21 tasks |
+
+## 2026-06-06 Strategy Update
+
+Core strategic shift:
+
+```text
+Old strategy: finish every feature before applying.
+New strategy: build the highest interview-signal parts first while continuing development during the hiring pipeline.
+```
+
+Reason:
+
+- Google project discussions reward architecture, tradeoffs, ownership, technical decisions, system thinking, and failure-mode reasoning more than raw feature completeness.
+- The project should be useful and demonstrable early, but every resume claim must survive deep technical discussion.
+
+Minimum usable product first:
+
+```text
+write -> save -> autosave -> open/edit -> delete -> export markdown -> one reflection question
+```
+
+Everything outside that loop is secondary until Stage 1 is reliable.
+
+### Current Build Order
+
+Stage 1:
+
+- Journal CRUD
+- Autosave
+- Export
+- One current-entry reflection question
+
+Stage 2:
+
+- Chunking
+- Embeddings
+- Retrieval
+- Citations
+- Retrieval evaluation
+
+Stage 3:
+
+- Entity extraction
+- Graph structure
+- Graph retrieval
+- Graph RAG architecture explanation
+
+Stage 4:
+
+- Imports
+- Broader search surfaces
+- Advanced memory
+
+### Highest Google-Signal Topics
+
+Priority order:
+
+1. Local-first architecture
+2. Chunking
+3. Embeddings
+4. Retrieval
+5. Hybrid search
+6. Graph RAG
+7. Knowledge graphs
+8. Entity extraction
+9. Prompt contracts
+10. Rate limiting
+11. Caching
+12. Background jobs
+13. Privacy-first AI systems
+14. Source grounding
+15. Reliability engineering
+
+### Defer Until Later
+
+Do not start these until Stage 1 is reliable and the Stage 2 retrieval path has a clear contract:
+
+- dashboards
+- imports
+- people analytics
+- relationship analytics
+- hosted auth
+- billing
+- multi-user systems
+- Redis infrastructure
+- production Graph RAG
+- broad life analysis
+- complex memory systems
+
+Reason:
+
+- These add complexity before the project has the interview-signal foundation.
+- They are weaker immediate proof than local-first UX, chunking, retrieval, source grounding, Graph RAG design, and reliability.
+
+### Resume Claim Rule
+
+Do not claim "built complete Graph RAG semantic memory platform" until the graph retrieval layer actually works.
+
+Safe current claim direction:
+
+- built MVP
+- built architecture
+- designed retrieval system
+- designed Graph RAG layer
+- implemented local-first journal
+- implemented reflection system
+- implemented semantic memory foundations
+
+Rule:
+
+- Everything on the resume must survive a deep technical discussion.
 
 ## Ownership Model
 
-### Joel
+### Joel - Learning And Architecture
 
 Joel owns:
 
-- product direction
-- Google interview signal
-- architecture decisions
+- product direction and Google interview signal
+- architecture decisions and tradeoff explanations
 - data model approval
-- AI prompt contracts
-- semantic search evaluation
-- Go distributed rate limiter design
-- final review of privacy and generated-insight behavior
+- chunking strategy decisions
+- semantic chunking decisions
+- embedding and retrieval approach decisions
+- hybrid retrieval design
+- source grounding and citation contracts
+- entity extraction boundaries
+- knowledge graph and Graph RAG architecture
+- reflection prompt contracts
+- AI safety boundaries
+- rate limiting, caching, background job, local-first, and privacy-first system design
+- AI evaluation methods
+- final review of generated-insight behavior
 
-### Prithvi
+Joel must be able to explain:
+
+- why Graph RAG is useful here
+- why the chunking strategy was chosen
+- why the retrieval approach was chosen
+- failure modes
+- tradeoffs
+- scaling path
+- privacy boundaries
+- what is implemented vs only designed
+
+### Prithvi - Frontend And Delivery
 
 Prithvi owns:
 
-- scoped implementation tickets
-- CRUD/API wiring
-- import/export parsers
-- tests
-- local setup docs
-- UI screens after behavior is specified
-- integration support for the Go rate limiter
+- scoped implementation tickets after behavior is specified
+- frontend engineering depth
+- Storybook and component architecture
+- design system and reusable UI primitives
+- editor UX
+- autosave UI and save indicators
+- entry list, open/edit flow, delete flow, and export flow
+- reflection-question UI after Joel defines the prompt contract
+- frontend tests
+- Playwright/Cypress verification
+- accessibility
+- error states and empty states
+- offline behavior
+- bug fixing and checklist reconciliation
+- acceptance criteria implementation
 
-### Shared Rule
+Prithvi must be able to demonstrate:
+
+- polished frontend
+- Storybook coverage
+- reliable journal CRUD
+- visible autosave behavior
+- export flow
+- tests
+- accessibility and reliability handling
+- production-quality UX
+
+### Shared Rules
 
 If a feature changes the app direction, data model, privacy model, or Google signal, it must update the relevant docs under `dev-docs/` before implementation.
 
@@ -87,20 +238,22 @@ Assumptions:
 | Phase | Joel hours | Joel days | Prithvi hours | Prithvi days | Calendar estimate with parallel work |
 |---|---:|---:|---:|---:|---|
 | Phase 0 - Direction Lock | 12 | 2.0 | 6 | 2.0 | 2 days |
-| Phase 1 - Local Journal Core | 18 | 3.0 | 54 | 18.0 | 3-4 weeks |
-| Phase 2 - Semantic Core | 30 | 5.0 | 72 | 24.0 | 4-5 weeks |
-| Phase 3 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | 5-6 weeks |
-| Phase 4 - People Records | 10 | 1.7 | 26 | 8.7 | 1-2 weeks |
-| Phase 5 - Insights and Reflection | 42 | 7.0 | 78 | 26.0 | 5-6 weeks |
-| Phase 6 - Go Distributed Rate Limiter | 72 | 12.0 | 36 | 12.0 | 3-4 weeks |
-| Phase 7 - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | 5-6 weeks |
-| Total | 244 | 40.7 | 428 | 142.7 | ~26-34 weeks |
+| Stage 1 - Local Journal MVP and Reflection | 24 | 4.0 | 64 | 21.3 | 3-4 weeks |
+| Stage 2 - Semantic Retrieval Core | 32 | 5.3 | 76 | 25.3 | 4-5 weeks |
+| Stage 3 - Entity and Graph RAG Foundations | 36 | 6.0 | 44 | 14.7 | 3-4 weeks |
+| Stage 4 - External Data Integrations | 24 | 4.0 | 84 | 28.0 | deferred |
+| Later - Freeform People Notes | 10 | 1.7 | 26 | 8.7 | deferred |
+| Later - Source-Backed Insights | 42 | 7.0 | 78 | 26.0 | deferred |
+| Later - Systems Learning / Rate Limiter | 72 | 12.0 | 36 | 12.0 | design now, build later |
+| Later - Hosted Consumer Profile | 36 | 6.0 | 72 | 24.0 | deferred |
+| Total including deferred layers | 288 | 48.0 | 486 | 162.0 | not a hiring blocker |
 
 Important:
 
-- The Google-ready project does not require Phase 7.
-- A strong Google portfolio target is Phases 0-6 with benchmarks.
-- A useful local open-source target is Phases 0-5 without hosted mode.
+- The Google-ready project does not require every later feature to be complete.
+- The near-term Google portfolio target is Stage 1 through Stage 3 with clear tradeoffs, tests, and explanation.
+- Systems topics like rate limiting, caching, and background jobs should be learned and designed early, but implementation waits until they protect a real hosted path.
+- A useful local open-source target is Stage 1 plus Stage 2 retrieval foundations.
 
 ## Layer Estimate Summary
 
@@ -113,24 +266,28 @@ Important:
 | 1 | Daily entry | 3 | 8 | Small but important UX loop |
 | 1 | Export | 5 | 14 | Open-source trust feature |
 | 2 | Reflection question | 6 | 10 | Current-entry-only first AI moment; no broad analysis |
-| 3 | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
-| 3 | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
-| 3 | Search | 14 | 32 | Includes evaluation queries and UI |
-| 4 | Import framework | 8 | 24 | Parser interface, preview, idempotency |
-| 4 | Markdown/text imports | 4 | 16 | Early external data support |
-| 4 | External tools export/import agent | 6 | 24 | High Google impact; many parser edge cases across user-owned exports |
-| 4 | Voice journaling | 6 | 20 | Audio/transcription/review flow |
-| 5 | People CRUD | 5 | 20 | Manual people records only |
+| 3A | Chunking | 8 | 18 | Joel defines rules; Prithvi implements/tests |
+| 3A | Embeddings | 8 | 22 | Provider adapter and failure modes matter |
+| 3A | Retrieval, hybrid search, citations | 16 | 36 | Includes evaluation queries, source snippets, and retrieval tradeoffs |
+| 3B | Entity extraction contract | 10 | 12 | Joel defines boundaries before extraction is trusted |
+| 3B | Graph structure | 12 | 14 | Graph model is explain-first, implementation second |
+| 3B | Graph retrieval prototype | 14 | 18 | Prototype only after Stage 2 retrieval is stable |
+| 4 | Import framework | 8 | 24 | Deferred until journal/retrieval foundations work |
+| 4 | Markdown/text imports | 4 | 16 | Deferred external data support |
+| 4 | External tools export/import agent | 6 | 24 | Deferred; many parser edge cases across user-owned exports |
+| 4 | Voice journaling | 6 | 20 | Deferred audio/transcription/review flow |
+| 5 | People CRUD | 5 | 20 | Deferred manual people records only |
 | 5 | People page basics | 5 | 6 | Linking and summaries deferred |
-| 6 | Metadata extraction | 8 | 18 | Structured AI output |
-| 6 | Weekly digest | 10 | 18 | High product and Google signal |
-| 6 | Assumptions/challenge mode | 14 | 24 | AI behavior needs Joel ownership |
+| 6 | Metadata extraction | 8 | 18 | Deferred structured AI output |
+| 6 | Weekly digest | 10 | 18 | Deferred until retrieval and citations are trustworthy |
+| 6 | Assumptions/challenge mode | 14 | 24 | Deferred; AI behavior needs Joel ownership |
 | 6 | Contradiction/change detection | 10 | 18 | Defer if search quality is weak |
-| 7 | Go rate limiter API contract | 8 | 4 | Joel owns design |
-| 7 | Go rate limiter service | 38 | 12 | Core systems component |
-| 7 | Metrics/load testing | 26 | 20 | Benchmark output is the point |
-| 7 | Hosted architecture decisions | 12 | 6 | Can defer |
-| 7 | User ownership/auth/billing/export/delete | 24 | 66 | Hosted-only trust requirements |
+| 7A | Rate limiting design | 8 | 4 | Joel owns design; implementation later |
+| 7A | Caching and background job design | 12 | 4 | Interview signal first; build only when needed |
+| 7A | Go rate limiter service | 38 | 12 | Deferred core systems component |
+| 7A | Metrics/load testing | 14 | 16 | Benchmark output is the point |
+| 7B | Hosted architecture decisions | 12 | 6 | Can defer |
+| 7B | User ownership/auth/billing/export/delete | 24 | 66 | Hosted-only trust requirements |
 
 ## Phase 0 - Direction Lock — Estimate: Joel 12h / 2.0 days, Prithvi 6h / 2.0 days
 
@@ -141,8 +298,8 @@ Goal: make the project coherent before code changes.
 - [X] Read `Cracking-Google.md`, `01-Production-RAG-Backend.md`, and `02-Distributed-Rate-Limiter.md`.
 - [X] Confirm the one-line product thesis in `planning/Features.md`.
 - [X] Confirm the top 6 high-Google-impact features.
-- [ ] Decide whether the MVP prioritizes local-first open source or hosted demo first.
-- [ ] Write a short ADR if that priority changes.
+- [X] Decide the MVP prioritizes local-first interview-signal work over hosted demo completeness.
+- [ ] Write a short ADR if this priority needs architecture-level detail beyond this plan.
 - [ ] Approve the core domain entities: `entries`, `sources`, `chunks`, `people`, `interactions`, `insights`.
 - [ ] Approve what AI is allowed to infer and what it must not infer.
 
@@ -168,7 +325,7 @@ Goal: make InnerScript useful as a plain local journal before AI.
 
 Build constraint:
 
-- Keep the development app simple: write, save, list, open, export.
+- Keep the development app simple: write, save, autosave, list, open, edit, delete, export.
 - Anything beyond that should be deferred unless it removes a blocker for local writing.
 
 ### Layer 1: Schema and API — Estimate: Joel 6h / 1.0 day, Prithvi 18h / 6.0 days
@@ -303,9 +460,15 @@ Build constraint:
 - [ ] The AI does not claim broader analysis from one entry.
 - [ ] The core journal still works without an AI key.
 
-## Phase 3 - Semantic Core — Estimate: Joel 30h / 5.0 days, Prithvi 72h / 24.0 days
+## Phase 3A - Semantic Retrieval Core — Estimate: Joel 32h / 5.3 days, Prithvi 76h / 25.3 days
 
-Goal: turn entries into searchable semantic memory.
+Goal: turn entries into source-backed semantic memory through chunking, embeddings, retrieval, citations, and measured search quality.
+
+Build constraint:
+
+- Joel must define and be able to explain the retrieval decisions before broad AI features build on them.
+- Prithvi implements the smallest reliable retrieval path after the chunking, embedding, and citation contracts are clear.
+- Do not claim production Graph RAG from this phase alone.
 
 ### Layer 1: Chunking — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
 
@@ -347,12 +510,15 @@ Goal: turn entries into searchable semantic memory.
 
 - [ ] Write 20 semantic search evaluation queries.
 - [ ] Label expected relevant sample entries.
+- [ ] Decide first retrieval path: vector-only, lexical baseline, or hybrid lexical+dense.
+- [ ] Define citation format for retrieved chunks.
 - [ ] Define Precision@5 target for MVP.
 
 #### Prithvi
 
 - [ ] Add `POST /api/search`.
 - [ ] Add scope filters: all, date range, source, person later.
+- [ ] Add lexical baseline or hybrid retrieval after Joel chooses the first path.
 - [ ] Return source snippets with similarity scores.
 - [ ] Build search UI.
 - [ ] Add API tests for search.
@@ -365,11 +531,82 @@ Goal: turn entries into searchable semantic memory.
 - [ ] Manual evaluation exists.
 - [ ] Search quality is measured, not guessed.
 
-## Phase 4 - External Data Integrations — Estimate: Joel 24h / 4.0 days, Prithvi 84h / 28.0 days
+## Phase 3B - Entity And Graph RAG Foundations — Estimate: Joel 36h / 6.0 days, Prithvi 44h / 14.7 days
+
+Goal: design and prototype the graph layer only after Stage 2 retrieval is explainable and measured.
+
+Build constraint:
+
+- Graph work is an interview-signal architecture layer, not a license to build broad life analysis early.
+- Joel owns the Graph RAG reasoning and failure-mode explanation.
+- Prithvi owns the scoped implementation only after entity and graph contracts are clear.
+- Keep production Graph RAG claims off the resume until graph retrieval actually works.
+
+### Layer 1: Entity Extraction Contract — Estimate: Joel 10h / 1.7 days, Prithvi 12h / 4.0 days
+
+#### Joel
+
+- [ ] Define initial entity types: people, projects, places, topics, beliefs, goals.
+- [ ] Define what entity extraction may infer and what it must not infer.
+- [ ] Write entity extraction prompt contract with safety boundaries.
+- [ ] Define confidence and source-link requirements for extracted entities.
+- [ ] Define evaluation examples for correct and incorrect entity extraction.
+
+#### Prithvi
+
+- [ ] Add feature-flagged entity extraction endpoint after Joel approves contract.
+- [ ] Add schema validation for extracted entities.
+- [ ] Store source references for extracted entities.
+- [ ] Add mocked extraction tests.
+
+### Layer 2: Graph Structure — Estimate: Joel 12h / 2.0 days, Prithvi 14h / 4.7 days
+
+#### Joel
+
+- [ ] Choose first graph model: SQL adjacency tables, property graph later, or hybrid.
+- [ ] Define node and edge types for the first graph pass.
+- [ ] Define edge provenance requirements.
+- [ ] Define how graph data differs from user-authored people notes.
+- [ ] Define deletion/rebuild behavior when source entries change.
+
+#### Prithvi
+
+- [ ] Add graph tables or graph-ready schema after model approval.
+- [ ] Add source-backed node creation path.
+- [ ] Add source-backed edge creation path.
+- [ ] Add rebuild/delete tests for graph references.
+
+### Layer 3: Graph Retrieval — Estimate: Joel 14h / 2.3 days, Prithvi 18h / 6.0 days
+
+#### Joel
+
+- [ ] Define first Graph RAG use case.
+- [ ] Define when graph retrieval should improve over chunk-only retrieval.
+- [ ] Define graph retrieval failure modes.
+- [ ] Define scaling path from local SQL graph to richer graph tooling if needed.
+
+#### Prithvi
+
+- [ ] Add graph-neighborhood retrieval utility.
+- [ ] Combine graph-neighborhood context with chunk retrieval in a prototype endpoint.
+- [ ] Return citations for graph-derived context.
+- [ ] Add tests for source-backed graph retrieval.
+
+### Exit Criteria
+
+- [ ] Entity extraction has a prompt contract, schema, and safety boundary.
+- [ ] Graph nodes and edges are source-backed.
+- [ ] Graph retrieval prototype cites source entries or chunks.
+- [ ] Joel can explain Graph RAG design, tradeoffs, scaling path, and failure modes.
+- [ ] Resume language still distinguishes designed, prototyped, and fully implemented graph work.
+
+## Phase 4 - Deferred External Data Integrations — Estimate: Joel 24h / 4.0 days, Prithvi 84h / 28.0 days
 
 Goal: ingest journal-related text from other apps without brittle private APIs.
 
 See `guardrails/External-Data-Integrations.md`.
+
+Status: deferred until Stage 1 is reliable and Stage 2 retrieval has a clear contract.
 
 ### Layer 1: Import Framework — Estimate: Joel 8h / 1.3 days, Prithvi 24h / 8.0 days
 
@@ -445,9 +682,11 @@ See `guardrails/External-Data-Integrations.md`.
 - [ ] Voice transcript creates editable entries.
 - [ ] Imported content enters chunking/search pipeline.
 
-## Phase 5 - Freeform People Notes — Estimate: Joel 10h / 1.7 days, Prithvi 26h / 8.7 days
+## Phase 5 - Deferred Freeform People Notes — Estimate: Joel 10h / 1.7 days, Prithvi 26h / 8.7 days
 
 Goal: add user-controlled freeform people notes without forcing person interactions into the entry model.
+
+Status: deferred until the journal loop and retrieval foundation are reliable. Entity extraction and graph work may happen first as a source-backed technical foundation, but user-facing people analytics remain later.
 
 ### Layer 1: People CRUD — Estimate: Joel 5h / 0.8 days, Prithvi 20h / 6.7 days
 
@@ -493,9 +732,11 @@ Generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
 - [ ] Person page shows only user-controlled profile data.
 - [ ] Entry schema does not include `person_interaction`.
 
-## Phase 6 - Source-Backed Insights — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
+## Phase 6 - Deferred Source-Backed Insights — Estimate: Joel 42h / 7.0 days, Prithvi 78h / 26.0 days
 
 Goal: create source-backed insight beyond basic search.
+
+Status: deferred until retrieval, citations, and AI safety boundaries are proven. Do not build broad life analysis, dashboards, or complex memory systems before that.
 
 ### Layer 1: Metadata Extraction — Estimate: Joel 8h / 1.3 days, Prithvi 18h / 6.0 days
 
@@ -566,11 +807,13 @@ Goal: create source-backed insight beyond basic search.
 - [ ] Assumptions can be challenged.
 - [ ] No therapeutic claims are made.
 
-## Phase 7A - Google Systems Layer: Go Distributed Rate Limiter — Estimate: Joel 72h / 12.0 days, Prithvi 36h / 12.0 days
+## Phase 7A - Deferred Google Systems Layer: Rate Limiting, Caching, Jobs — Estimate: Joel 72h / 12.0 days, Prithvi 36h / 12.0 days
 
-Goal: create a standalone systems component that protects hosted AI endpoints.
+Goal: understand and design the systems layer now, but implement it only when hosted AI endpoints need protection.
 
-### Layer 1: API Contract — Estimate: Joel 8h / 1.3 days, Prithvi 4h / 1.3 days
+Status: deferred for implementation. Joel should still learn and explain rate limiting, caching, background jobs, concurrency, failure modes, and scaling path because they are high-signal interview topics.
+
+### Layer 1: API Contract And Systems Design — Estimate: Joel 8h / 1.3 days, Prithvi 4h / 1.3 days
 
 #### Joel
 
@@ -578,6 +821,7 @@ Goal: create a standalone systems component that protects hosted AI endpoints.
 - [ ] Define request shape: `user_id`, `feature`, `cost_weight`, `plan`.
 - [ ] Define response shape: `allowed`, `remaining`, `retry_after`.
 - [ ] Define fail-open/fail-closed policy.
+- [ ] Define caching and background-job responsibilities for future hosted AI features.
 
 #### Prithvi
 
@@ -622,9 +866,11 @@ Goal: create a standalone systems component that protects hosted AI endpoints.
 - [ ] failure modes are documented.
 - [ ] protected endpoints call limiter in hosted profile.
 
-## Phase 7B - Hosted Consumer Profile — Estimate: Joel 36h / 6.0 days, Prithvi 72h / 24.0 days
+## Phase 7B - Deferred Hosted Consumer Profile — Estimate: Joel 36h / 6.0 days, Prithvi 72h / 24.0 days
 
 Goal: make hosted InnerScript possible without weakening local-first trust.
+
+Status: deferred. Do not start hosted auth, billing, multi-user systems, or Redis infrastructure until the local-first product and retrieval story are defensible.
 
 ### Joel
 
@@ -647,14 +893,24 @@ Goal: make hosted InnerScript possible without weakening local-first trust.
 
 ## Final Google-Readiness Checklist
 
+- [ ] Joel can explain the local-first architecture.
+- [ ] Joel can explain the retrieval flow end to end.
 - [ ] Can explain why chunking improves retrieval.
+- [ ] Can explain the chosen chunking strategy and alternatives.
+- [ ] Can explain embeddings and retrieval tradeoffs.
+- [ ] Can explain vector-only vs hybrid search tradeoffs.
 - [ ] Can show search Precision@5.
-- [ ] Can show import parser tests.
-- [ ] Can show source-backed AI insights.
-- [ ] Can show people route with guarded language.
-- [ ] Can show Go rate limiter benchmark.
-- [ ] Can explain token bucket vs sliding window.
-- [ ] Can explain Redis Lua atomicity.
+- [ ] Can show citations or source snippets for retrieved results.
+- [ ] Joel can explain Graph RAG design, graph structure, and failure modes.
+- [ ] Can explain entity extraction boundaries and source grounding.
+- [ ] Can explain prompt contracts and AI safety boundaries.
+- [ ] Can explain rate limiting, caching, and background-job designs even if implementation is deferred.
+- [ ] Can explain scaling path from local-first MVP to hosted profile.
 - [ ] Can explain local vs hosted tradeoffs.
+- [ ] Prithvi can demonstrate polished journal CRUD.
+- [ ] Prithvi can demonstrate autosave UI, save indicators, delete flow, and export flow.
+- [ ] Prithvi can show Storybook/component coverage for core UI.
+- [ ] Prithvi can show frontend tests or browser verification for core flows.
+- [ ] Prithvi can explain reliability, accessibility, empty state, error state, and offline behavior.
 - [ ] Can show one-page architecture diagram.
 - [ ] Can produce 2-minute STAR story about ambiguity and ownership.
