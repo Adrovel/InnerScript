@@ -42,3 +42,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-04 | Joel+Codex | engineering standards | git workflow standard added and branch renamed to fix/journal-autosave-feedback | open: push/PR after review
 2026-06-05 | Joel+Codex | Storybook | AI setup completed with MSW preview and colocated journal/UI stories | open: none
 2026-06-05 | Joel+Codex | Storybook | fixed empty Storybook state by restarting stale server and setting initial story path | open: none
+2026-06-07 | Prithvi+Codex | UI | sidebar identity header holds collapse toggle; New Note/Search/Journal/Note rows share one row size with chevrons accommodated | open: none

@@ -33,3 +33,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-03 | loaded: Open Questions | changed: autosave race reminder added | running: unknown | open: explain editor save races
 2026-06-05 | loaded: Storybook setup, Next docs | changed: MSW preview and colocated stories | running: none | open: none
 2026-06-05 | loaded: Storybook runtime | changed: logged stale empty Storybook and set initial story path | running: storybook 6006 | open: none
+2026-06-07 | loaded: sidebar design target | changed: identity header toggle, shared sidebar row sizing | running: next 3000 existing | open: none
