@@ -12,7 +12,6 @@ import {
   createEntry,
   fetchEntries,
   findTodayJournalEntry,
-  formatRelativeEditTime,
   getNextUntitledNoteTitle,
   updateEntry,
 } from "@/lib/journal";
@@ -55,7 +54,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
   const [saveActivityId, setSaveActivityId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(initialError);
-  const [lastEditedAt, setLastEditedAt] = useState(null);
   const [creatingNote, setCreatingNote] = useState(false);
   const [editorFocusRequest, setEditorFocusRequest] = useState(null);
 
@@ -86,8 +84,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         occurredAt: draft.occurred_at,
         updatedAt: draft.occurred_at,
       };
-
-  const headerEditedLabel = lastEditedAt ? formatRelativeEditTime(lastEditedAt) : null;
 
   const loadEntries = useCallback(async () => {
     setLoading(true);
@@ -185,7 +181,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
 
       setSelectedEntryId(savedEntry.id);
       setDraft(createDraft());
-      setLastEditedAt(new Date());
 
       if (!hasNewerPending) {
         setSaveStatus("saved");
@@ -245,7 +240,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         runSave();
       }, AUTOSAVE_DELAY_MS);
 
-      setLastEditedAt(new Date());
       setSaveActivityId((current) => current + 1);
       setSaveStatus("dirty");
     },
@@ -310,7 +304,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
       setDraft(createDraft());
       setSaveStatus("idle");
       setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
-      setLastEditedAt(entry.updated_at ? new Date(entry.updated_at) : new Date(entry.created_at));
     },
     [flushPendingSave],
   );
@@ -338,7 +331,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
       setDraft(createDraft());
       setEditorFocusRequest({ entryId: note.id, target: "entry-end" });
       setSaveStatus("saved");
-      setLastEditedAt(new Date());
     } catch {
       setSaveStatus("error");
     } finally {
@@ -364,7 +356,6 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         <TopAppBar
           saveStatus={saveStatus}
           saveActivityId={saveActivityId}
-          lastEditedAt={headerEditedLabel}
           onRetrySave={runSave}
           onMenuClick={() => setOpenMobile(true)}
         />
