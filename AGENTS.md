@@ -14,6 +14,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Put simple answered product decisions in `dev-docs/team/Product-Decisions.md`. Put ambiguous or unanswered questions in `dev-docs/team/Open-Questions.md`.
 - For InnerScript-specific bugs, failed commands, runtime errors, broken UI states, failed tests, or local setup issues, log them in local `.wolf/buglog.jsonl` and update `.wolf/buglog-index.md`. Use workspace `.wolf/buglog.jsonl` only for cross-workspace/OpenWolf issues.
 - Before making code, config, dependency, or setup updates, map the request to `README.md` and the relevant `dev-docs/` notes, then load only the necessary context.
+- When an agent answers using information found in project files, include the source files it used. Prefer concise references like `dev-docs/planning/Plan.md` or `AGENTS.md`; include line numbers when useful. This is required because agents may search many files, and the reader needs to know where the answer came from.
 - Treat `dev-docs/` as guidance for implementation direction, ownership, guardrails, and Google-worthiness, not as files to automatically update.
 - Use `.wolf/update-log.md` for compact tracking of notable project updates: who changed what and what remains open.
 - If implementation needs conflict with `dev-docs/`, state the mismatch and ask before changing canonical docs.
