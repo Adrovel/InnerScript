@@ -71,12 +71,12 @@ export const WithEntries = {
       canvas.getByRole("button", { name: /^therapy question$/i }).querySelector("svg"),
     ).toBeNull();
     await expect(
-      canvas.getByRole("button", { name: /open actions for friday reflection/i }),
+      canvas.getByRole("button", { name: /open options for friday reflection/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("button", { name: /open actions for friday reflection/i }),
+      canvas.getByRole("button", { name: /open options for friday reflection/i }),
     ).toHaveClass(/right-0/);
-    await userEvent.click(canvas.getByRole("button", { name: /open actions for friday reflection/i }));
+    await userEvent.click(canvas.getByRole("button", { name: /open options for friday reflection/i }));
     await expect(args.onSelectEntry).not.toHaveBeenCalled();
     await userEvent.click(
       await within(document.body).findByRole("menuitem", { name: /^delete journal$/i }),

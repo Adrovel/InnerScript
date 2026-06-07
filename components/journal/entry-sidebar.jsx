@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { EntryActionsMenu } from "@/components/journal/entry-actions-menu";
+import { EntryOptionsMenu } from "@/components/journal/entry-options-menu";
 import { Button } from "@/components/ui/button";
 import {
   Collapsible,
@@ -301,7 +301,7 @@ export function EntrySidebar({
                             >
                               <span className="min-w-0 flex-1 truncate">{getEntryLabel(entry)}</span>
                             </SidebarMenuSubButton>
-                            <EntryActionsMenu
+                            <EntryOptionsMenu
                               entry={entry}
                               onDeleteEntry={onDeleteEntry}
                               disabled={Boolean(deletingEntryId)}

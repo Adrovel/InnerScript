@@ -16,7 +16,7 @@ function getEntryTypeLabel(entry) {
   return entry.entry_type === "journal" ? "journal" : "note";
 }
 
-export function EntryActionsMenu({ entry, onDeleteEntry, disabled = false, className }) {
+export function EntryOptionsMenu({ entry, onDeleteEntry, disabled = false, className }) {
   const entryLabel = getEntryLabel(entry);
   const entryTypeLabel = getEntryTypeLabel(entry);
 
@@ -29,7 +29,7 @@ export function EntryActionsMenu({ entry, onDeleteEntry, disabled = false, class
             variant="ghost"
             size="icon-xs"
             disabled={disabled}
-            aria-label={`Open actions for ${entryLabel}`}
+            aria-label={`Open options for ${entryLabel}`}
             className={cn(
               "interactive-element rounded-md text-sidebar-foreground/58 hover:bg-sidebar-accent hover:text-sidebar-primary data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-primary",
               className,
