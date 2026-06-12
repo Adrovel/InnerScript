@@ -62,3 +62,9 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-11 | Prithvi+Codex | Storybook/UI | sidebar module moved to components/sidebar with explicit component files and isolated stories | open: none
 2026-06-11 | Prithvi+Codex | UI | sidebar top simplified to Innerscript plus collapse; profile avatar row moved to footer with empty dots menu | open: none
 2026-06-11 | Prithvi+Codex | UI | sidebar search changed from separate reveal row to inline input row | open: none
+2026-06-11 | Prithvi+Codex | DB/API | folders table, document entry type, journal_date, and folder APIs added with tests | open: frontend tree wiring
+2026-06-12 | Prithvi+Codex | DB | dev Postgres migrated to folder model and invalid app rows cleared | open: none
+2026-06-12 | Prithvi+Codex | UI | default Note sidebar group removed; non-journal entries render at root | open: folder tree wiring
+2026-06-12 | Prithvi+Codex | UI | sidebar empty no-entries message removed; search no-results kept | open: folder tree wiring
+2026-06-12 | Prithvi+Codex | setup | worktree .env.local points runtime to local Postgres; entries API loads empty list | open: none
+2026-06-12 | Prithvi+Codex | folders | Journal is a seeded default folder; sidebar grouping and journal creation use folder_id plus journal_date | open: nested folder tree wiring
