@@ -1,20 +1,5 @@
-import { BookOpen, StickyNote } from "lucide-react";
+import { Folder } from "lucide-react";
 import { getEntryLabel } from "@/lib/journal";
-
-const SIDEBAR_GROUPS = [
-  {
-    id: "journal",
-    label: "Journal",
-    Icon: BookOpen,
-    filter: (entry) => entry.entry_type === "journal",
-  },
-  {
-    id: "note",
-    label: "Note",
-    Icon: StickyNote,
-    filter: (entry) => entry.entry_type !== "journal",
-  },
-];
 
 export function filterSidebarEntries(entries, query) {
   const normalizedQuery = query.trim().toLowerCase();
@@ -31,9 +16,15 @@ export function filterSidebarEntries(entries, query) {
   });
 }
 
-export function groupSidebarEntries(entries) {
-  return SIDEBAR_GROUPS.map((group) => ({
-    ...group,
-    entries: entries.filter(group.filter),
+export function groupSidebarEntries(entries, folders = []) {
+  return folders.map((folder) => ({
+    id: folder.id,
+    label: folder.name,
+    Icon: Folder,
+    entries: entries.filter((entry) => entry.folder_id === folder.id),
   }));
+}
+
+export function getRootSidebarEntries(entries) {
+  return entries.filter((entry) => !entry.folder_id);
 }

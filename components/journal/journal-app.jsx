@@ -8,28 +8,47 @@ import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider, useSidebar } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAutosaveTitle, resolveSavedEntryState } from "@/lib/autosave";
+import { findDefaultJournalFolder } from "@/lib/folder-defaults";
 import {
   createEntry,
   deleteEntry,
   fetchEntries,
+  fetchFolders,
   findTodayJournalEntry,
+  getLocalDayKey,
   getNextUntitledEntryTitle,
   updateEntry,
 } from "@/lib/journal";
 
 const AUTOSAVE_DELAY_MS = 800;
 
-function createDraft({ entryType = "journal", occurredAt = new Date().toISOString() } = {}) {
+function createDraft({
+  folderId = null,
+  journalDate = null,
+  occurredAt = new Date().toISOString(),
+} = {}) {
   return {
     id: null,
     title: "",
     body: "",
-    entry_type: entryType,
+    entry_type: "document",
+    folder_id: folderId,
+    journal_date: journalDate,
     occurred_at: occurredAt,
   };
 }
 
-export function JournalApp({ initialEntries = [], initialError = null }) {
+function createJournalDraft(journalFolder) {
+  const occurredAt = new Date().toISOString();
+
+  return createDraft({
+    folderId: journalFolder?.id ?? null,
+    journalDate: getLocalDayKey(new Date(occurredAt)),
+    occurredAt,
+  });
+}
+
+export function JournalApp({ initialEntries = [], initialFolders = [], initialError = null }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
@@ -39,17 +58,23 @@ export function JournalApp({ initialEntries = [], initialError = null }) {
       style={{ "--sidebar-width": "var(--spacing-sidebar-width, 280px)" }}
       className="h-svh min-h-0 overflow-hidden bg-background text-on-background"
     >
-      <JournalWorkspace initialEntries={initialEntries} initialError={initialError} />
+      <JournalWorkspace
+        initialEntries={initialEntries}
+        initialFolders={initialFolders}
+        initialError={initialError}
+      />
     </SidebarProvider>
   );
 }
 
-function JournalWorkspace({ initialEntries = [], initialError = null }) {
+function JournalWorkspace({ initialEntries = [], initialFolders = [], initialError = null }) {
   const { setOpenMobile } = useSidebar();
   const initialTodayEntry = findTodayJournalEntry(initialEntries);
+  const initialJournalFolder = findDefaultJournalFolder(initialFolders);
 
   const [entries, setEntries] = useState(initialEntries);
-  const [draft, setDraft] = useState(() => createDraft());
+  const [folders, setFolders] = useState(initialFolders);
+  const [draft, setDraft] = useState(() => createJournalDraft(initialJournalFolder));
   const [selectedEntryId, setSelectedEntryId] = useState(initialTodayEntry?.id ?? null);
   const [saveStatus, setSaveStatus] = useState("idle");
   const [saveActivityId, setSaveActivityId] = useState(0);
@@ -69,6 +94,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     () => entries.find((entry) => entry.id === selectedEntryId) ?? null,
     [entries, selectedEntryId],
   );
+  const journalFolder = useMemo(() => findDefaultJournalFolder(folders), [folders]);
 
   const isDraft = !selectedEntryId;
 
@@ -77,6 +103,8 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         title: selectedEntry.title ?? "",
         body: selectedEntry.body,
         entryType: selectedEntry.entry_type,
+        folderId: selectedEntry.folder_id,
+        journalDate: selectedEntry.journal_date,
         occurredAt: selectedEntry.occurred_at ?? selectedEntry.created_at,
         updatedAt: selectedEntry.updated_at ?? selectedEntry.created_at,
       }
@@ -84,6 +112,8 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         title: draft.title,
         body: draft.body,
         entryType: draft.entry_type,
+        folderId: draft.folder_id,
+        journalDate: draft.journal_date,
         occurredAt: draft.occurred_at,
         updatedAt: draft.occurred_at,
       };
@@ -93,17 +123,19 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     setLoadError(null);
 
     try {
-      const nextEntries = await fetchEntries();
+      const [nextEntries, nextFolders] = await Promise.all([fetchEntries(), fetchFolders()]);
       setEntries(nextEntries);
+      setFolders(nextFolders);
 
       const todayEntry = findTodayJournalEntry(nextEntries);
+      const nextJournalFolder = findDefaultJournalFolder(nextFolders);
 
       if (todayEntry) {
         setSelectedEntryId(todayEntry.id);
-        setDraft(createDraft());
+        setDraft(createJournalDraft(nextJournalFolder));
       } else {
         setSelectedEntryId(null);
-        setDraft(createDraft());
+        setDraft(createJournalDraft(nextJournalFolder));
       }
       setEditorFocusRequest(null);
     } catch (error) {
@@ -113,7 +145,15 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     }
   }, []);
 
-  const persistEntry = useCallback(async ({ title, body, entryType, occurredAt, entryId }) => {
+  const persistEntry = useCallback(async ({
+    title,
+    body,
+    entryType,
+    folderId,
+    journalDate,
+    occurredAt,
+    entryId,
+  }) => {
     const trimmedBody = body.trim();
 
     if (!entryId) {
@@ -125,6 +165,8 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         title: getAutosaveTitle(title),
         body,
         entry_type: entryType,
+        folder_id: folderId,
+        journal_date: journalDate,
         occurred_at: occurredAt,
       });
     }
@@ -191,7 +233,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
       });
 
       setSelectedEntryId(savedEntry.id);
-      setDraft(createDraft());
+      setDraft(createJournalDraft(journalFolder));
 
       if (!hasNewerPending) {
         setSaveStatus("saved");
@@ -221,7 +263,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         }, AUTOSAVE_DELAY_MS);
       }
     }
-  }, [persistEntry]);
+  }, [journalFolder, persistEntry]);
 
   useEffect(() => {
     runSaveRef.current = runSave;
@@ -244,6 +286,8 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         title: nextState.title,
         body: nextState.body,
         entryType: nextState.entryType,
+        folderId: nextState.folderId,
+        journalDate: nextState.journalDate,
         occurredAt: nextState.occurredAt,
         entryId: nextState.entryId,
       };
@@ -275,6 +319,8 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
       const currentTitle = selectedEntry ? (selectedEntry.title ?? "") : draft.title;
       const currentBody = selectedEntry ? selectedEntry.body : draft.body;
       const currentEntryType = selectedEntry ? selectedEntry.entry_type : draft.entry_type;
+      const currentFolderId = selectedEntry ? selectedEntry.folder_id : draft.folder_id;
+      const currentJournalDate = selectedEntry ? selectedEntry.journal_date : draft.journal_date;
       const currentOccurredAt = selectedEntry
         ? (selectedEntry.occurred_at ?? selectedEntry.created_at)
         : draft.occurred_at;
@@ -306,6 +352,8 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         title: nextTitle,
         body: nextBody,
         entryType: currentEntryType,
+        folderId: currentFolderId,
+        journalDate: currentJournalDate,
         occurredAt: currentOccurredAt,
         entryId: selectedEntryId,
       });
@@ -317,36 +365,41 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     async (entry) => {
       await flushPendingSave();
       setSelectedEntryId(entry.id);
-      setDraft(createDraft());
+      setDraft(createJournalDraft(journalFolder));
       setSaveStatus("idle");
       setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
     },
-    [flushPendingSave],
+    [flushPendingSave, journalFolder],
   );
 
-  const handleNewNote = useCallback(async (entryType) => {
+  const handleNewNote = useCallback(async (folderId = null) => {
     if (creatingNote) {
       return;
     }
-
-    const targetEntryType = entryType ?? (selectedEntry?.entry_type === "journal" ? "journal" : "note");
 
     setCreatingNote(true);
     await flushPendingSave();
     setSaveStatus("saving");
 
     try {
+      const occurredAt = new Date().toISOString();
+      const isJournalFolder = folderId === journalFolder?.id;
       const entryTitle = getNextUntitledEntryTitle(entries);
       const entry = await createEntry({
         title: entryTitle,
         body: "",
-        entry_type: targetEntryType,
-        occurred_at: new Date().toISOString(),
+        entry_type: "document",
+        folder_id: folderId,
+        journal_date: isJournalFolder ? getLocalDayKey(new Date(occurredAt)) : null,
+        occurred_at: occurredAt,
       });
 
-      setEntries((current) => [entry, ...current.filter((currentEntry) => currentEntry.id !== entry.id)]);
+      setEntries((current) => [
+        entry,
+        ...current.filter((currentEntry) => currentEntry.id !== entry.id),
+      ]);
       setSelectedEntryId(entry.id);
-      setDraft(createDraft());
+      setDraft(createJournalDraft(journalFolder));
       setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
       setSaveStatus("saved");
     } catch {
@@ -354,7 +407,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     } finally {
       setCreatingNote(false);
     }
-  }, [creatingNote, entries, flushPendingSave, selectedEntry]);
+  }, [creatingNote, entries, flushPendingSave, journalFolder]);
 
   const handleDeleteEntry = useCallback(
     async (entry) => {
@@ -392,7 +445,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
           const nextSelectedEntry = findTodayJournalEntry(nextEntries) ?? nextEntries[0] ?? null;
           setEntries(nextEntries);
           setSelectedEntryId(nextSelectedEntry?.id ?? null);
-          setDraft(createDraft());
+          setDraft(createJournalDraft(journalFolder));
           setEditorFocusRequest(
             nextSelectedEntry ? { entryId: nextSelectedEntry.id, target: "entry-end" } : null,
           );
@@ -417,7 +470,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
         setDeletingEntryId(null);
       }
     },
-    [deletingEntryId, entries, flushPendingSave, selectedEntryId],
+    [deletingEntryId, entries, flushPendingSave, journalFolder, selectedEntryId],
   );
 
   const showEmptyState =
@@ -427,6 +480,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
     <>
       <AppSidebar
         entries={entries}
+        folders={folders}
         selectedEntryId={selectedEntryId}
         onSelectEntry={handleSelectEntry}
         onDeleteEntry={handleDeleteEntry}
@@ -478,7 +532,10 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
                 </div>
               ) : null}
               <EntryEditor
-                key={selectedEntryId ?? `${draft.entry_type}-${draft.occurred_at}`}
+                key={
+                  selectedEntryId ??
+                  `${draft.folder_id ?? "root"}-${draft.journal_date ?? "document"}-${draft.occurred_at}`
+                }
                 title={editorState.title}
                 body={editorState.body}
                 occurredAt={editorState.occurredAt}

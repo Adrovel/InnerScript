@@ -11,6 +11,12 @@ const JournalApp = nextDynamic(
   },
 );
 
-export function JournalPageClient({ initialEntries, initialError }) {
-  return <JournalApp initialEntries={initialEntries} initialError={initialError} />;
+export function JournalPageClient({ initialEntries, initialFolders, initialError }) {
+  return (
+    <JournalApp
+      initialEntries={initialEntries}
+      initialFolders={initialFolders}
+      initialError={initialError}
+    />
+  );
 }
