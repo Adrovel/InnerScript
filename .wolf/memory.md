@@ -44,3 +44,14 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-07 | loaded: shadcn collapsible | changed: sidebar groups use Collapsible | running: none | open: none
 2026-06-07 | loaded: sidebar groups | changed: chevrons moved left | running: none | open: none
 2026-06-07 | loaded: sidebar actions | changed: removed Reload entries | running: none | open: none
+2026-06-07 | loaded: shadcn dropdown, sidebar CRUD | changed: entry action menu deletes notes/journals | running: none | open: none
+2026-06-07 | loaded: sidebar dropdown bugs | changed: fixed trigger open behavior and interaction coverage | running: next 3000 existing | open: none
+2026-06-07 | loaded: sidebar nested rows | changed: entry rows extend right, ellipsis pinned | running: next 3000 existing | open: none
+2026-06-07 | loaded: sidebar row sizing | changed: child entries match group row size | running: next 3000 existing | open: none
+2026-06-11 | loaded: AGENTS, team docs, session memory | changed: AGENTS response style rule added | running: unknown | open: none
+2026-06-11 | loaded: sidebar Storybook, README, design docs | changed: exported sidebar parts and isolated stories | running: none | open: none
+2026-06-11 | loaded: sidebar module | changed: sidebar moved to components/sidebar explicit files, no index barrel | running: none | open: none
+2026-06-11 | loaded: shadcn avatar/sidebar, Next client docs | changed: sidebar top brand simplified, profile footer added | running: next 3000 existing | open: none
+2026-06-11 | loaded: sidebar profile, shadcn docs | changed: footer avatar color lightened | running: none | open: none
+2026-06-11 | loaded: sidebar profile, brand | changed: footer profile row lightened, brand text bigger | running: none | open: none
+2026-06-11 | loaded: sidebar search | changed: search row is inline input | running: none | open: none

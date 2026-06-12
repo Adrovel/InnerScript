@@ -1,12 +1,12 @@
 import { describe, expect, test } from "vitest";
-import { getNextUntitledNoteTitle } from "../../lib/journal.js";
+import { getNextUntitledEntryTitle } from "../../lib/journal.js";
 
 describe("journal helpers", () => {
-  test("generates the next Untitled note title from existing numbered titles", () => {
-    expect(getNextUntitledNoteTitle([])).toBe("Untitled 1");
+  test("generates the next Untitled entry title from existing numbered titles", () => {
+    expect(getNextUntitledEntryTitle([])).toBe("Untitled 1");
 
     expect(
-      getNextUntitledNoteTitle([
+      getNextUntitledEntryTitle([
         { title: "Untitled 1" },
         { title: "Untitled 2" },
         { title: "Untitled" },
@@ -18,7 +18,7 @@ describe("journal helpers", () => {
 
   test("uses the highest existing Untitled number to avoid duplicates", () => {
     expect(
-      getNextUntitledNoteTitle([
+      getNextUntitledEntryTitle([
         { title: "Untitled 1" },
         { title: "Untitled 4" },
       ]),
