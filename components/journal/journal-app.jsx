@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { EntryEditor } from "@/components/journal/entry-editor";
-import { EntrySidebar } from "@/components/journal/entry-sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { TopAppBar } from "@/components/journal/top-app-bar";
 import { Button } from "@/components/ui/button";
 import { SidebarInset, SidebarProvider, useSidebar } from "@/components/ui/sidebar";
@@ -425,7 +425,7 @@ function JournalWorkspace({ initialEntries = [], initialError = null }) {
 
   return (
     <>
-      <EntrySidebar
+      <AppSidebar
         entries={entries}
         selectedEntryId={selectedEntryId}
         onSelectEntry={handleSelectEntry}

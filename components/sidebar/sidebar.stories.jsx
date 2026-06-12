@@ -1,6 +1,6 @@
 import { expect, fn, userEvent, within } from "storybook/test";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { EntrySidebar } from "./entry-sidebar";
+import { AppSidebar } from "./app-sidebar";
 
 const entries = [
   {
@@ -24,7 +24,8 @@ const entries = [
 ];
 
 const meta = {
-  component: EntrySidebar,
+  title: "Sidebar/App Sidebar",
+  component: AppSidebar,
   tags: ["ai-generated"],
   decorators: [
     (Story) => (
@@ -44,13 +45,16 @@ export const WithEntries = {
     onSelectEntry: fn(),
     onDeleteEntry: fn(),
     onNewNote: fn(),
-    onToggleCollapse: () => {},
     onMobileClose: () => {},
   },
   play: async ({ args, canvas }) => {
-    await expect(canvas.getByText("InnerScript")).toBeInTheDocument();
+    await expect(canvas.getByText("Innerscript")).toBeInTheDocument();
+    await expect(canvas.getByText("Username")).toBeInTheDocument();
+    await expect(canvas.queryByText("Private journal")).not.toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
-    await expect(canvas.getByRole("button", { name: /^search$/i })).toHaveClass(/h-9/);
+    await expect(
+      canvas.getByRole("searchbox", { name: /^search entries$/i }).closest("[data-sidebar='menu-button']"),
+    ).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(/h-7/);
     await expect(canvas.getByRole("button", { name: /^add journal$/i })).toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^add note$/i })).toBeInTheDocument();
@@ -98,7 +102,6 @@ export const Empty = {
     onSelectEntry: () => {},
     onDeleteEntry: () => {},
     onNewNote: () => {},
-    onToggleCollapse: () => {},
     onMobileClose: () => {},
   },
 };
@@ -111,7 +114,6 @@ export const CreatingNote = {
     onSelectEntry: () => {},
     onDeleteEntry: () => {},
     onNewNote: () => {},
-    onToggleCollapse: () => {},
     onMobileClose: () => {},
   },
 };

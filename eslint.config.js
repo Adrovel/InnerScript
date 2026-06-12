@@ -10,6 +10,7 @@ globalIgnores([
   ".next/**",
   "out/**",
   "build/**",
+  "storybook-static/**",
   "coverage/**",
   "next-env.d.ts",
   "public/mockServiceWorker.js",

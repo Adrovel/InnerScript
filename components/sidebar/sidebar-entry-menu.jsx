@@ -1,5 +1,6 @@
 "use client";
 
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,9 +11,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getEntryLabel } from "@/lib/journal";
 import { cn } from "@/lib/utils";
-import { MoreHorizontal, Trash2 } from "lucide-react";
 
-export function EntryOptionsMenu({ entry, onDeleteEntry, disabled = false, className }) {
+export function SidebarEntryMenu({ entry, onDeleteEntry, disabled = false, className }) {
   const entryLabel = getEntryLabel(entry);
 
   return (
