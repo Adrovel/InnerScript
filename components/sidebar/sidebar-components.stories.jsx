@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { expect, fn, userEvent, within } from "storybook/test";
-import { BookOpen, Plus, StickyNote } from "lucide-react";
+import { Folder, Plus } from "lucide-react";
 import {
   SidebarContent,
   SidebarFooter,
@@ -21,12 +21,26 @@ import { SidebarMessage } from "./sidebar-message";
 import { SidebarProfile } from "./sidebar-profile";
 import { SidebarSearch } from "./sidebar-search";
 
+const folders = [
+  {
+    id: "folder-journal",
+    name: "Journal",
+    parent_folder_id: null,
+    sort_order: 0,
+    created_at: "2026-06-05T12:00:00.000Z",
+    updated_at: "2026-06-05T12:00:00.000Z",
+  },
+];
+
 const entries = [
   {
     id: "entry-journal-1",
     title: "Friday reflection",
     body: "A journal entry about attention and avoidance.",
-    entry_type: "journal",
+    entry_type: "document",
+    folder_id: "folder-journal",
+    journal_date: "2026-06-05",
+    source_id: null,
     occurred_at: "2026-06-05T12:00:00.000Z",
     created_at: "2026-06-05T12:00:00.000Z",
     updated_at: "2026-06-05T12:00:00.000Z",
@@ -35,7 +49,10 @@ const entries = [
     id: "entry-journal-2",
     title: "Long honest page about repeating loops and unfinished conversations",
     body: "A longer journal entry.",
-    entry_type: "journal",
+    entry_type: "document",
+    folder_id: "folder-journal",
+    journal_date: "2026-06-04",
+    source_id: null,
     occurred_at: "2026-06-04T12:00:00.000Z",
     created_at: "2026-06-04T12:00:00.000Z",
     updated_at: "2026-06-04T12:00:00.000Z",
@@ -44,7 +61,10 @@ const entries = [
     id: "entry-note-1",
     title: "Therapy question",
     body: "A note.",
-    entry_type: "note",
+    entry_type: "document",
+    folder_id: null,
+    journal_date: null,
+    source_id: null,
     occurred_at: "2026-06-04T18:30:00.000Z",
     created_at: "2026-06-04T18:30:00.000Z",
     updated_at: "2026-06-04T18:30:00.000Z",
@@ -52,17 +72,10 @@ const entries = [
 ];
 
 const journalGroup = {
-  id: "journal",
-  label: "Journal",
-  Icon: BookOpen,
-  entries: entries.filter((entry) => entry.entry_type === "journal"),
-};
-
-const noteGroup = {
-  id: "note",
-  label: "Note",
-  Icon: StickyNote,
-  entries: entries.filter((entry) => entry.entry_type !== "journal"),
+  id: folders[0].id,
+  label: folders[0].name,
+  Icon: Folder,
+  entries: entries.filter((entry) => entry.folder_id === folders[0].id),
 };
 
 const meta = {
@@ -180,20 +193,6 @@ export const SearchBox = {
   },
 };
 
-export const EmptyMessage = {
-  render: () => (
-    <SidebarFrame>
-      <SidebarContent className="px-2 py-3">
-        <SidebarGroup className="p-0">
-          <SidebarGroupContent>
-            <SidebarMessage type="empty" />
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </SidebarFrame>
-  ),
-};
-
 export const NoResultsMessage = {
   render: () => (
     <SidebarFrame>
@@ -227,7 +226,7 @@ export const JournalGroup = {
   play: async ({ args, canvas }) => {
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toBeInTheDocument();
     await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
-    await expect(args.onNewNote).toHaveBeenCalledWith("journal");
+    await expect(args.onNewNote).toHaveBeenCalledWith("folder-journal");
     await userEvent.click(canvas.getByRole("button", { name: /^friday reflection$/i }));
     await expect(args.onSelectEntry).toHaveBeenCalledWith(entries[0]);
   },
@@ -243,7 +242,7 @@ export const EmptyGroup = {
     <SidebarFrame>
       <SidebarContent className="px-2 py-3">
         <SidebarMenu className="gap-1">
-          <SidebarEntryGroup group={{ ...noteGroup, entries: [] }} selectedEntryId={null} {...args} />
+          <SidebarEntryGroup group={{ ...journalGroup, entries: [] }} selectedEntryId={null} {...args} />
         </SidebarMenu>
       </SidebarContent>
     </SidebarFrame>

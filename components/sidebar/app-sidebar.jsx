@@ -15,16 +15,22 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { CollapsedSidebarButton } from "./collapsed-sidebar-button";
-import { filterSidebarEntries, groupSidebarEntries } from "./sidebar-data";
+import {
+  filterSidebarEntries,
+  getRootSidebarEntries,
+  groupSidebarEntries,
+} from "./sidebar-data";
 import { SidebarActionRow } from "./sidebar-action-row";
 import { SidebarBrand } from "./sidebar-brand";
 import { SidebarEntryGroup } from "./sidebar-entry-group";
+import { SidebarEntryRow } from "./sidebar-entry-row";
 import { SidebarMessage } from "./sidebar-message";
 import { SidebarProfile } from "./sidebar-profile";
 import { SidebarSearch } from "./sidebar-search";
 
 export function AppSidebar({
   entries,
+  folders = [],
   selectedEntryId,
   onSelectEntry,
   onDeleteEntry,
@@ -39,7 +45,11 @@ export function AppSidebar({
     () => filterSidebarEntries(entries, searchQuery),
     [entries, searchQuery],
   );
-  const entryGroups = useMemo(() => groupSidebarEntries(filteredEntries), [filteredEntries]);
+  const entryGroups = useMemo(
+    () => groupSidebarEntries(filteredEntries, folders),
+    [filteredEntries, folders],
+  );
+  const rootEntries = useMemo(() => getRootSidebarEntries(filteredEntries), [filteredEntries]);
   const hasSearchQuery = searchQuery.trim().length > 0;
   const hasEntries = entries.length > 0;
   const hasVisibleEntries = filteredEntries.length > 0;
@@ -89,10 +99,6 @@ export function AppSidebar({
         <SidebarContent className="px-2 py-3">
           <SidebarGroup className="p-0">
             <SidebarGroupContent>
-              {!hasEntries ? (
-                <SidebarMessage type="empty" />
-              ) : null}
-
               {hasEntries && hasSearchQuery && !hasVisibleEntries ? (
                 <SidebarMessage type="no-results" />
               ) : null}
@@ -108,6 +114,18 @@ export function AppSidebar({
                     onNewNote={onNewNote}
                     onMobileClose={closeMobileSidebar}
                     creatingNote={creatingNote}
+                    deletingEntryId={deletingEntryId}
+                  />
+                ))}
+
+                {rootEntries.map((entry) => (
+                  <SidebarEntryRow
+                    key={entry.id}
+                    entry={entry}
+                    selected={selectedEntryId === entry.id}
+                    onSelectEntry={onSelectEntry}
+                    onDeleteEntry={onDeleteEntry}
+                    onMobileClose={closeMobileSidebar}
                     deletingEntryId={deletingEntryId}
                   />
                 ))}

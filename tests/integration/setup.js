@@ -14,7 +14,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await getPool().query("TRUNCATE TABLE entries, sources RESTART IDENTITY");
+  await getPool().query("TRUNCATE TABLE entries, sources, folders RESTART IDENTITY CASCADE");
 });
 
 afterAll(async () => {

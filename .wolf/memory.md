@@ -55,3 +55,8 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-11 | loaded: sidebar profile, shadcn docs | changed: footer avatar color lightened | running: none | open: none
 2026-06-11 | loaded: sidebar profile, brand | changed: footer profile row lightened, brand text bigger | running: none | open: none
 2026-06-11 | loaded: sidebar search | changed: search row is inline input | running: none | open: none
+2026-06-11 | loaded: schema, contracts, API tests | changed: document entry type, folders table, journal_date, folder APIs | running: postgres test 5434 | open: frontend folder tree wiring
+2026-06-12 | loaded: git workflow, origin/main | changed: feature/document-folder-model from latest main with backend WIP reapplied | running: none | open: stash safety copy
+2026-06-12 | loaded: README, DB docs, docker state | changed: dev DB migrated to 0002 and entries/sources/folders cleared | running: postgres 5433/5434 | open: none
+2026-06-12 | loaded: sidebar data/stories | changed: removed default Note group, root notes still visible | running: none | open: folder tree wiring
+2026-06-12 | loaded: sidebar app/message/stories | changed: removed sidebar no-entries message, kept search no-results | running: none | open: folder tree wiring

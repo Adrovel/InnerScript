@@ -15,6 +15,20 @@
       "when": 1780329076668,
       "tag": "0001_clean_pete_wisdom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781171798186,
+      "tag": "0002_flashy_blue_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1781248767267,
+      "tag": "0003_seed_journal_folder",
+      "breakpoints": true
     }
   ]
 }
