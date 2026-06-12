@@ -22,3 +22,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - For feature/API/schema work, check `dev-docs/planning/Features.md`, `dev-docs/planning/Plan.md`, `dev-docs/planning/Atomic-Action-Plan.md`, and `.wolf/update-log.md` when update history matters.
 - For imports/external data, check `dev-docs/guardrails/External-Data-Integrations.md`.
 - For AI/search/insights, check `dev-docs/research/Semantic-Meaning-Research.md` and `dev-docs/guardrails/Direction-Guardrails.md`.
+
+## Response Style
+
+- Answer english text in concise words, sacrifice grammar for making the sentences concise.

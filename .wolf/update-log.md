@@ -59,3 +59,6 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-07 | Prithvi+Codex | UI | child sidebar entries now match Journal/Note group row sizing | open: none
 2026-06-07 | Prithvi+Codex | UI | fixed Search split line overflow outside sidebar | open: none
 2026-06-07 | Prithvi+Codex | UI | New Note follows selected group and Journal/Note plus buttons create typed entries | open: none
+2026-06-11 | Prithvi+Codex | Storybook/UI | sidebar module moved to components/sidebar with explicit component files and isolated stories | open: none
+2026-06-11 | Prithvi+Codex | UI | sidebar top simplified to Innerscript plus collapse; profile avatar row moved to footer with empty dots menu | open: none
+2026-06-11 | Prithvi+Codex | UI | sidebar search changed from separate reveal row to inline input row | open: none
