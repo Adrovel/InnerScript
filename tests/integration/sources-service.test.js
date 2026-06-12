@@ -9,22 +9,24 @@ describe("source ingestion service", () => {
     const result = await createSourceWithEntries({
       source: {
         source_type: "manual",
-        display_name: "Manual journal entry",
+        display_name: "Manual document",
       },
       entries: [
         {
-          body: "A manually written journal entry.",
-          entry_type: "journal",
+          body: "A manually written document.",
+          entry_type: "document",
+          journal_date: "2026-06-11",
         },
       ],
     });
 
     expect(result.source).toMatchObject({
       source_type: "manual",
-      display_name: "Manual journal entry",
+      display_name: "Manual document",
     });
     expect(result.entries[0]).toMatchObject({
-      entry_type: "journal",
+      entry_type: "document",
+      journal_date: "2026-06-11",
       source_id: result.source.id,
     });
   });
@@ -43,13 +45,14 @@ describe("source ingestion service", () => {
         {
           title: "2026-05-01",
           body: "Felt anxious before the interview.",
-          entry_type: "journal",
+          entry_type: "document",
+          journal_date: "2026-05-01",
           occurred_at: "2026-05-01T12:00:00.000Z",
         },
         {
           title: "Project notes",
           body: "InnerScript should preserve source provenance.",
-          entry_type: "note",
+          entry_type: "document",
         },
       ],
     });
@@ -96,7 +99,7 @@ describe("source ingestion service", () => {
       entries: [
         {
           body: "A parsed text file entry.",
-          entry_type: "journal",
+          entry_type: "document",
         },
       ],
     });
