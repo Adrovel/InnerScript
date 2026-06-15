@@ -74,3 +74,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-15 | Prithvi+Codex | sidebar CRUD | file and folder rename use inline editing; empty folders can be deleted | open: non-empty folder delete messaging
 2026-06-15 | Prithvi+Codex | cleanup | journal app duplicated rename/list/skeleton code reduced | open: none
 2026-06-15 | Prithvi+Codex | cleanup | journal-app split into shell, workspace hook, autosave hook, state helpers; files under 500 lines | open: none
+2026-06-15 | Prithvi+Codex | folders | folder delete now cascades child folders and entries instead of 500ing on FK restrict | open: none

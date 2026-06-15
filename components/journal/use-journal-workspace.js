@@ -19,6 +19,7 @@ import {
   createJournalDraft,
   getEditorKey,
   getEditorState,
+  getFolderSubtreeIds,
   getFocusTarget,
   removeById,
   replaceById,
@@ -297,14 +298,31 @@ export function useJournalWorkspace({
 
     try {
       await deleteFolder(folder.id);
-      setFolders((current) => removeById(current, folder.id));
+      const deletedFolderIds = new Set(getFolderSubtreeIds(folders, folder.id));
+      const nextFolders = folders.filter((currentFolder) => !deletedFolderIds.has(currentFolder.id));
+      const nextEntries = entries.filter((entry) => !deletedFolderIds.has(entry.folder_id));
+      const selectedEntryWasDeleted =
+        selectedEntryId && !nextEntries.some((entry) => entry.id === selectedEntryId);
+
+      setFolders(nextFolders);
+      setEntries(nextEntries);
+
+      if (selectedEntryWasDeleted) {
+        const fallbackEntry = findTodayJournalEntry(nextEntries) ?? nextEntries[0] ?? null;
+        setSelectedEntryId(fallbackEntry?.id ?? null);
+        setDraft(createJournalDraft(findDefaultJournalFolder(nextFolders)));
+        setEditorFocusRequest(
+          fallbackEntry ? { entryId: fallbackEntry.id, target: "entry-end" } : null,
+        );
+      }
+
       setSaveStatus("saved");
     } catch {
       setSaveStatus("error");
     } finally {
       setDeletingFolderId(null);
     }
-  }, [deletingFolderId, flushPendingSave]);
+  }, [deletingFolderId, entries, flushPendingSave, folders, selectedEntryId]);
 
   return {
     editorKey: getEditorKey({ selectedEntryId, draft }),

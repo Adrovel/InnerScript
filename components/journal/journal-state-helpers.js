@@ -63,6 +63,28 @@ export function getFocusTarget({ editorFocusRequest, selectedEntryId, isDraft })
   return isDraft ? "body" : null;
 }
 
+export function getFolderSubtreeIds(folders, rootFolderId) {
+  const childrenByParentId = new Map();
+
+  for (const folder of folders) {
+    const parentFolderId = folder.parent_folder_id ?? null;
+    const children = childrenByParentId.get(parentFolderId) ?? [];
+    children.push(folder.id);
+    childrenByParentId.set(parentFolderId, children);
+  }
+
+  const folderIds = [];
+  const pendingFolderIds = [rootFolderId];
+
+  while (pendingFolderIds.length > 0) {
+    const folderId = pendingFolderIds.pop();
+    folderIds.push(folderId);
+    pendingFolderIds.push(...(childrenByParentId.get(folderId) ?? []));
+  }
+
+  return folderIds;
+}
+
 export function replaceById(items, nextItem) {
   return items.map((item) => (item.id === nextItem.id ? nextItem : item));
 }

@@ -2,6 +2,10 @@ import { NextRequest } from "next/server";
 import { describe, expect, test } from "vitest";
 import { GET, POST } from "../../app/api/folders/route.js";
 import {
+  GET as LIST_ENTRIES,
+  POST as CREATE_ENTRY,
+} from "../../app/api/entries/route.js";
+import {
   DELETE as DELETE_FOLDER,
   GET as GET_FOLDER,
   PUT as UPDATE_FOLDER,
@@ -168,5 +172,54 @@ describe("folders API", () => {
       params(folder.id),
     );
     expect(missingResponse.status).toBe(404);
+  });
+
+  test("deletes a folder with child folders and entries", async () => {
+    const parentResponse = await POST(jsonRequest("http://localhost/api/folders", { name: "Projects" }));
+    const { folder: parentFolder } = await parentResponse.json();
+    const childResponse = await POST(
+      jsonRequest("http://localhost/api/folders", {
+        name: "InnerScript",
+        parent_folder_id: parentFolder.id,
+      }),
+    );
+    const { folder: childFolder } = await childResponse.json();
+
+    await CREATE_ENTRY(
+      jsonRequest("http://localhost/api/entries", {
+        title: "Parent note",
+        body: "Belongs to parent.",
+        folder_id: parentFolder.id,
+      }),
+    );
+    await CREATE_ENTRY(
+      jsonRequest("http://localhost/api/entries", {
+        title: "Child note",
+        body: "Belongs to child.",
+        folder_id: childFolder.id,
+      }),
+    );
+
+    const deletedResponse = await DELETE_FOLDER(
+      new NextRequest(`http://localhost/api/folders/${parentFolder.id}`, { method: "DELETE" }),
+      params(parentFolder.id),
+    );
+
+    expect(deletedResponse.status).toBe(204);
+
+    const parentMissingResponse = await GET_FOLDER(
+      new NextRequest(`http://localhost/api/folders/${parentFolder.id}`),
+      params(parentFolder.id),
+    );
+    const childMissingResponse = await GET_FOLDER(
+      new NextRequest(`http://localhost/api/folders/${childFolder.id}`),
+      params(childFolder.id),
+    );
+    const entriesResponse = await LIST_ENTRIES(new NextRequest("http://localhost/api/entries"));
+    const entriesPayload = await entriesResponse.json();
+
+    expect(parentMissingResponse.status).toBe(404);
+    expect(childMissingResponse.status).toBe(404);
+    expect(entriesPayload.entries).toEqual([]);
   });
 });
