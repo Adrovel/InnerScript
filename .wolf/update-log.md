@@ -75,3 +75,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-15 | Prithvi+Codex | cleanup | journal app duplicated rename/list/skeleton code reduced | open: none
 2026-06-15 | Prithvi+Codex | cleanup | journal-app split into shell, workspace hook, autosave hook, state helpers; files under 500 lines | open: none
 2026-06-15 | Prithvi+Codex | folders | folder delete now cascades child folders and entries instead of 500ing on FK restrict | open: none
+2026-06-15 | Prithvi+Codex | editor UX | new file creation selects the full Untitled title once so typing replaces it without repeated reselection | open: none

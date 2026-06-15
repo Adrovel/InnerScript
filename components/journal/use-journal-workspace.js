@@ -137,7 +137,7 @@ export function useJournalWorkspace({
       setEntries((current) => upsertById(current, entry));
       setSelectedEntryId(entry.id);
       setDraft(createJournalDraft(journalFolder));
-      setEditorFocusRequest({ entryId: entry.id, target: "entry-end" });
+      setEditorFocusRequest({ entryId: entry.id, target: "title-all" });
       setSaveStatus("saved");
     } catch {
       setSaveStatus("error");

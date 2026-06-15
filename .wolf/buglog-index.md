@@ -27,6 +27,7 @@ Source log: `buglog.jsonl`
 | innerscript-bug-018 | 2026-06-07 | journal, sidebar, ui, new-note, hit-test | `components/journal/entry-sidebar.jsx` | Group plus button was visible but the folder row trigger intercepted pointer clicks. | Changed group header to a flex row with plus owning its own end slot; lint, tests, build, and browser payload checks pass. |
 | innerscript-bug-019 | 2026-06-11 | nextjs, webpack, build, journal, sidebar, module-resolution | `components/sidebar/`; `components/journal/journal-app.jsx` | Next/Webpack failed to compile because `components/journal/entry-sidebar.jsx` was missing after the folder split. | Moved sidebar code/stories to `components/sidebar/*`, removed the `entry-sidebar` folder and index barrel, and updated explicit imports; lint, Storybook build, and Next build pass. |
 | innerscript-bug-020 | 2026-06-15 | folders, delete, api, sidebar, database | `lib/folders.js`; `components/journal/use-journal-workspace.js` | `DELETE /api/folders/:id` returned 500 when the folder had entries or child folders. | Fixed folder delete to cascade through child folders and entries in one transaction; client removes the deleted subtree from local state. |
+| innerscript-bug-021 | 2026-06-15 | journal, editor, focus, title, ui | `components/journal/entry-editor.jsx`; `components/journal/entry-editor.stories.jsx` | New file title kept reselecting all text after each typed character. | Made focus placement run once per focus target and added controlled Storybook coverage that types over `Untitled 1`. |
 
 ## Logging Rule
 
