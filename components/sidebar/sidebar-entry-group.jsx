@@ -54,14 +54,13 @@ export function SidebarEntryGroup({
 
   return (
     <Collapsible defaultOpen render={itemRender}>
-      <div className="flex items-center gap-1">
+      <div className="relative">
         {isRenamingFolder ? (
           <SidebarRenameControl
             initialName={group.label}
             Icon={group.Icon}
             nested={nested}
             saving={renamingFolderId === group.id}
-            className="w-0 flex-1"
             onRename={(name) => onRenameFolder?.(group, name)}
             onCancel={onCancelRename}
           />
@@ -73,7 +72,7 @@ export function SidebarEntryGroup({
                   type="button"
                   className={cn(
                     sidebarEntryRowClass,
-                    "group w-0 flex-1 text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
+                    "group pr-14 text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
                   )}
                 />
               }
@@ -87,22 +86,24 @@ export function SidebarEntryGroup({
               <group.Icon className="text-sidebar-foreground/62" aria-hidden="true" />
               <span className="min-w-0 flex-1 truncate">{group.label}</span>
             </CollapsibleTrigger>
-            <SidebarFolderCreateMenu
-              folderLabel={group.label}
-              disabled={creatingNote}
-              onNewFile={() => {
-                onNewNote?.(group.id);
-                onMobileClose?.();
-              }}
-              onNewFolder={() => onStartNewFolder?.(group.id)}
-            />
-            <SidebarFolderMenu
-              folder={group}
-              folderLabel={group.label}
-              disabled={Boolean(creatingNote || deletingFolderId || renamingFolderId)}
-              onStartRename={onStartFolderRename}
-              onDeleteFolder={onDeleteFolder}
-            />
+            <div className="absolute right-0 top-1/2 flex -translate-y-1/2 items-center gap-0.5">
+              <SidebarFolderCreateMenu
+                folderLabel={group.label}
+                disabled={creatingNote}
+                onNewFile={() => {
+                  onNewNote?.(group.id);
+                  onMobileClose?.();
+                }}
+                onNewFolder={() => onStartNewFolder?.(group.id)}
+              />
+              <SidebarFolderMenu
+                folder={group}
+                folderLabel={group.label}
+                disabled={Boolean(creatingNote || deletingFolderId || renamingFolderId)}
+                onStartRename={onStartFolderRename}
+                onDeleteFolder={onDeleteFolder}
+              />
+            </div>
           </>
         )}
       </div>

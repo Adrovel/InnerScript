@@ -115,7 +115,7 @@ export const WithEntries = {
     await userEvent.click(
       within(journalRow).getByRole("button", { name: /^open options for journal$/i }),
     );
-    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename folder$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename$/i }));
     await userEvent.clear(canvas.getByRole("textbox", { name: /^rename$/i }));
     await userEvent.type(canvas.getByRole("textbox", { name: /^rename$/i }), "Journal Archive");
     await userEvent.tab();
@@ -128,7 +128,7 @@ export const WithEntries = {
     await userEvent.click(
       within(journalRow).getByRole("button", { name: /^open options for journal$/i }),
     );
-    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^delete folder$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^delete$/i }));
     await expect(args.onDeleteFolder).toHaveBeenCalledWith(
       expect.objectContaining({
         id: "folder-journal",

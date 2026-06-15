@@ -294,7 +294,18 @@ export const JournalGroup = {
     </SidebarFrame>
   ),
   play: async ({ args, canvas }) => {
-    await expect(canvas.getByRole("button", { name: /^journal$/i })).toBeInTheDocument();
+    const folderButton = canvas.getByRole("button", { name: /^journal$/i });
+    const addButton = canvas.getByRole("button", { name: /^add journal$/i });
+    const optionsButton = canvas.getByRole("button", { name: /^open options for journal$/i });
+    const folderRect = folderButton.getBoundingClientRect();
+    const addRect = addButton.getBoundingClientRect();
+    const optionsRect = optionsButton.getBoundingClientRect();
+
+    await expect(folderButton).toBeInTheDocument();
+    expect(addRect.left).toBeGreaterThanOrEqual(folderRect.left);
+    expect(addRect.right).toBeLessThanOrEqual(folderRect.right + 1);
+    expect(optionsRect.left).toBeGreaterThanOrEqual(folderRect.left);
+    expect(optionsRect.right).toBeLessThanOrEqual(folderRect.right + 1);
     await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
     await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^new file$/i }));
     await expect(args.onNewNote).toHaveBeenCalledWith("folder-journal");
@@ -307,7 +318,7 @@ export const JournalGroup = {
       parentFolderId: "folder-journal",
     });
     await userEvent.click(canvas.getByRole("button", { name: /^open options for journal$/i }));
-    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename folder$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename$/i }));
     await userEvent.clear(canvas.getByRole("textbox", { name: /^rename$/i }));
     await userEvent.type(canvas.getByRole("textbox", { name: /^rename$/i }), "Private");
     await userEvent.tab();
@@ -362,7 +373,7 @@ export const EntryRow = {
     await userEvent.click(canvas.getByRole("button", { name: /^therapy question$/i }));
     await expect(args.onSelectEntry).toHaveBeenCalledWith(entries[2]);
     await userEvent.click(canvas.getByRole("button", { name: /open options for therapy question/i }));
-    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename file$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename$/i }));
     await userEvent.clear(canvas.getByRole("textbox", { name: /^rename$/i }));
     await userEvent.type(canvas.getByRole("textbox", { name: /^rename$/i }), "Renamed therapy");
     await userEvent.tab();
