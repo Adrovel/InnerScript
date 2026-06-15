@@ -79,3 +79,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-15 | Prithvi+Codex | sidebar UI | separator between header controls and file tree is explicit and visible | open: none
 2026-06-15 | Prithvi+Codex | sidebar UI | folder add/options controls now sit inside the folder row hover surface | open: none
 2026-06-15 | Prithvi+Codex | sidebar UI | file and folder option menus share one rename/delete menu and use generic labels | open: none
+2026-06-15 | Prithvi+Codex | sidebar UI | empty folders no longer render an empty expanded subtree | open: none

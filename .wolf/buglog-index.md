@@ -29,6 +29,7 @@ Source log: `buglog.jsonl`
 | innerscript-bug-020 | 2026-06-15 | folders, delete, api, sidebar, database | `lib/folders.js`; `components/journal/use-journal-workspace.js` | `DELETE /api/folders/:id` returned 500 when the folder had entries or child folders. | Fixed folder delete to cascade through child folders and entries in one transaction; client removes the deleted subtree from local state. |
 | innerscript-bug-021 | 2026-06-15 | journal, editor, focus, title, ui | `components/journal/entry-editor.jsx`; `components/journal/entry-editor.stories.jsx` | New file title kept reselecting all text after each typed character. | Made focus placement run once per focus target and added controlled Storybook coverage that types over `Untitled 1`. |
 | innerscript-bug-022 | 2026-06-15 | sidebar, folders, actions, hover, ui | `components/sidebar/sidebar-entry-group.jsx`; `components/sidebar/sidebar-components.stories.jsx` | Folder row add/options buttons sat outside the row hover highlight while file options stayed inside. | Moved folder actions into an absolute slot inside the full-width folder row and added Storybook geometry coverage. |
+| innerscript-bug-023 | 2026-06-15 | sidebar, folders, empty-state, collapsible, ui | `components/sidebar/sidebar-entry-group.jsx`; `components/sidebar/sidebar-components.stories.jsx` | Empty folders rendered an empty collapsible subtree when expanded. | Render the nested subtree only when a folder has entries, child folders, draft, or active creation; empty folders only toggle chevron state. |
 
 ## Logging Rule
 

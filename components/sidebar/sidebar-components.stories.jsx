@@ -352,6 +352,14 @@ export const EmptyGroup = {
       </SidebarContent>
     </SidebarFrame>
   ),
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByRole("button", { name: /^journal$/i })).toBeInTheDocument();
+    expect(canvasElement.querySelector("[data-sidebar='menu-sub']")).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole("button", { name: /^journal$/i }));
+
+    expect(canvasElement.querySelector("[data-sidebar='menu-sub']")).not.toBeInTheDocument();
+  },
 };
 
 export const EntryRow = {

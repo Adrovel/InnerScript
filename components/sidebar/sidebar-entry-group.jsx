@@ -51,6 +51,8 @@ export function SidebarEntryGroup({
   const isCreatingFolderHere = creatingFolderParentId === group.id;
   const isRenamingFolder = renameTarget?.type === "folder" && renameTarget.id === group.id;
   const childFolders = group.folders ?? [];
+  const hasVisibleChildren =
+    hasFolderDraft || isCreatingFolderHere || childFolders.length > 0 || group.entries.length > 0;
 
   return (
     <Collapsible defaultOpen render={itemRender}>
@@ -108,75 +110,77 @@ export function SidebarEntryGroup({
         )}
       </div>
 
-      <CollapsibleContent className="h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] duration-150 ease-out data-ending-style:h-0 data-starting-style:h-0">
-        <SidebarMenuSub className="ml-4 mr-0 gap-1 border-sidebar-border/55 py-1 pl-2 pr-0">
-          {hasFolderDraft ? (
-            <SidebarFolderDraftRow
-              key={folderDraft.id}
-              parentFolderId={group.id}
-              nested
-              onCreateFolder={onCreateFolder}
-              onCancel={onCancelNewFolder}
-            />
-          ) : null}
+      {hasVisibleChildren ? (
+        <CollapsibleContent className="h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] duration-150 ease-out data-ending-style:h-0 data-starting-style:h-0">
+          <SidebarMenuSub className="ml-4 mr-0 gap-1 border-sidebar-border/55 py-1 pl-2 pr-0">
+            {hasFolderDraft ? (
+              <SidebarFolderDraftRow
+                key={folderDraft.id}
+                parentFolderId={group.id}
+                nested
+                onCreateFolder={onCreateFolder}
+                onCancel={onCancelNewFolder}
+              />
+            ) : null}
 
-          {childFolders.map((folder) => (
-            <SidebarEntryGroup
-              key={folder.id}
-              group={folder}
-              nested
-              folderDraft={folderDraft}
-              selectedEntryId={selectedEntryId}
-              onSelectEntry={onSelectEntry}
-              onDeleteEntry={onDeleteEntry}
-              onRenameEntry={onRenameEntry}
-              onStartEntryRename={onStartEntryRename}
-              onCancelRename={onCancelRename}
-              onNewNote={onNewNote}
-              onStartNewFolder={onStartNewFolder}
-              onCreateFolder={onCreateFolder}
-              onDeleteFolder={onDeleteFolder}
-              onRenameFolder={onRenameFolder}
-              onStartFolderRename={onStartFolderRename}
-              onCancelNewFolder={onCancelNewFolder}
-              onMobileClose={onMobileClose}
-              creatingNote={creatingNote}
-              creatingFolderParentId={creatingFolderParentId}
-              deletingEntryId={deletingEntryId}
-              deletingFolderId={deletingFolderId}
-              renamingEntryId={renamingEntryId}
-              renamingFolderId={renamingFolderId}
-              renameTarget={renameTarget}
-            />
-          ))}
+            {childFolders.map((folder) => (
+              <SidebarEntryGroup
+                key={folder.id}
+                group={folder}
+                nested
+                folderDraft={folderDraft}
+                selectedEntryId={selectedEntryId}
+                onSelectEntry={onSelectEntry}
+                onDeleteEntry={onDeleteEntry}
+                onRenameEntry={onRenameEntry}
+                onStartEntryRename={onStartEntryRename}
+                onCancelRename={onCancelRename}
+                onNewNote={onNewNote}
+                onStartNewFolder={onStartNewFolder}
+                onCreateFolder={onCreateFolder}
+                onDeleteFolder={onDeleteFolder}
+                onRenameFolder={onRenameFolder}
+                onStartFolderRename={onStartFolderRename}
+                onCancelNewFolder={onCancelNewFolder}
+                onMobileClose={onMobileClose}
+                creatingNote={creatingNote}
+                creatingFolderParentId={creatingFolderParentId}
+                deletingEntryId={deletingEntryId}
+                deletingFolderId={deletingFolderId}
+                renamingEntryId={renamingEntryId}
+                renamingFolderId={renamingFolderId}
+                renameTarget={renameTarget}
+              />
+            ))}
 
-          {group.entries.map((entry) => (
-            <SidebarEntryRow
-              key={entry.id}
-              entry={entry}
-              selected={selectedEntryId === entry.id}
-              onSelectEntry={onSelectEntry}
-              onDeleteEntry={onDeleteEntry}
-              onRenameEntry={onRenameEntry}
-              onStartRename={onStartEntryRename}
-              onCancelRename={onCancelRename}
-              onMobileClose={onMobileClose}
-              deletingEntryId={deletingEntryId}
-              renaming={renameTarget?.type === "entry" && renameTarget.id === entry.id}
-              renamingEntryId={renamingEntryId}
-            />
-          ))}
+            {group.entries.map((entry) => (
+              <SidebarEntryRow
+                key={entry.id}
+                entry={entry}
+                selected={selectedEntryId === entry.id}
+                onSelectEntry={onSelectEntry}
+                onDeleteEntry={onDeleteEntry}
+                onRenameEntry={onRenameEntry}
+                onStartRename={onStartEntryRename}
+                onCancelRename={onCancelRename}
+                onMobileClose={onMobileClose}
+                deletingEntryId={deletingEntryId}
+                renaming={renameTarget?.type === "entry" && renameTarget.id === entry.id}
+                renamingEntryId={renamingEntryId}
+              />
+            ))}
 
-          {isCreatingFolderHere && !hasFolderDraft ? (
-            <SidebarFolderDraftRow
-              parentFolderId={group.id}
-              nested
-              onCreateFolder={onCreateFolder}
-              onCancel={onCancelNewFolder}
-            />
-          ) : null}
-        </SidebarMenuSub>
-      </CollapsibleContent>
+            {isCreatingFolderHere && !hasFolderDraft ? (
+              <SidebarFolderDraftRow
+                parentFolderId={group.id}
+                nested
+                onCreateFolder={onCreateFolder}
+                onCancel={onCancelNewFolder}
+              />
+            ) : null}
+          </SidebarMenuSub>
+        </CollapsibleContent>
+      ) : null}
     </Collapsible>
   );
 }
