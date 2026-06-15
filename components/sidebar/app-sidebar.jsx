@@ -106,7 +106,7 @@ export function AppSidebar({
         collapsible="offcanvas"
         className="border-sidebar-border/70 bg-sidebar"
       >
-        <SidebarHeader className="gap-4 border-b border-sidebar-border/70 px-3 pb-4 pt-4">
+        <SidebarHeader className="gap-4 px-3 pb-4 pt-4">
           <h2 className="sr-only">InnerScript navigation</h2>
 
           <SidebarBrand />
@@ -142,6 +142,8 @@ export function AppSidebar({
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
+
+        <div aria-hidden="true" className="mx-3 h-px shrink-0 bg-sidebar-border" />
 
         <SidebarContent className="px-2 py-3">
           <SidebarGroup className="p-0">
