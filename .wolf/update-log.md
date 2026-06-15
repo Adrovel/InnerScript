@@ -68,3 +68,9 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-12 | Prithvi+Codex | UI | sidebar empty no-entries message removed; search no-results kept | open: folder tree wiring
 2026-06-12 | Prithvi+Codex | setup | worktree .env.local points runtime to local Postgres; entries API loads empty list | open: none
 2026-06-12 | Prithvi+Codex | folders | Journal is a seeded default folder; sidebar grouping and journal creation use folder_id plus journal_date | open: nested folder tree wiring
+2026-06-12 | Prithvi+Codex | architecture | journal page uses initial data helper, renders server-composed client app, and DB helpers are server-only | open: none
+2026-06-13 | Prithvi+Codex | UI | sidebar can create root folders inline; folder plus menu creates files or nested folders | open: none
+2026-06-15 | Prithvi+Codex | UI | folder rows now show options menu after plus button | open: folder rename/delete API
+2026-06-15 | Prithvi+Codex | sidebar CRUD | file and folder rename use inline editing; empty folders can be deleted | open: non-empty folder delete messaging
+2026-06-15 | Prithvi+Codex | cleanup | journal app duplicated rename/list/skeleton code reduced | open: none
+2026-06-15 | Prithvi+Codex | cleanup | journal-app split into shell, workspace hook, autosave hook, state helpers; files under 500 lines | open: none

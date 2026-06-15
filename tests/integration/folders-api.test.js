@@ -1,7 +1,11 @@
 import { NextRequest } from "next/server";
 import { describe, expect, test } from "vitest";
 import { GET, POST } from "../../app/api/folders/route.js";
-import { GET as GET_FOLDER } from "../../app/api/folders/[id]/route.js";
+import {
+  DELETE as DELETE_FOLDER,
+  GET as GET_FOLDER,
+  PUT as UPDATE_FOLDER,
+} from "../../app/api/folders/[id]/route.js";
 
 function jsonRequest(url, body, method = "POST") {
   return new NextRequest(url, {
@@ -110,5 +114,59 @@ describe("folders API", () => {
     );
 
     expect(response.status).toBe(400);
+  });
+
+  test("renames a folder", async () => {
+    const createdResponse = await POST(
+      jsonRequest("http://localhost/api/folders", {
+        name: "Drafts",
+      }),
+    );
+    const { folder } = await createdResponse.json();
+
+    const renamedResponse = await UPDATE_FOLDER(
+      jsonRequest(
+        `http://localhost/api/folders/${folder.id}`,
+        {
+          name: "Archive",
+        },
+        "PUT",
+      ),
+      params(folder.id),
+    );
+    const renamedPayload = await renamedResponse.json();
+
+    expect(renamedResponse.status).toBe(200);
+    expect(renamedPayload.folder).toMatchObject({
+      id: folder.id,
+      name: "Archive",
+    });
+
+    const badResponse = await UPDATE_FOLDER(
+      jsonRequest(`http://localhost/api/folders/${folder.id}`, { name: "   " }, "PUT"),
+      params(folder.id),
+    );
+    expect(badResponse.status).toBe(400);
+  });
+
+  test("deletes an empty folder", async () => {
+    const createdResponse = await POST(
+      jsonRequest("http://localhost/api/folders", {
+        name: "Temporary",
+      }),
+    );
+    const { folder } = await createdResponse.json();
+
+    const deletedResponse = await DELETE_FOLDER(
+      new NextRequest(`http://localhost/api/folders/${folder.id}`, { method: "DELETE" }),
+      params(folder.id),
+    );
+    expect(deletedResponse.status).toBe(204);
+
+    const missingResponse = await GET_FOLDER(
+      new NextRequest(`http://localhost/api/folders/${folder.id}`),
+      params(folder.id),
+    );
+    expect(missingResponse.status).toBe(404);
   });
 });

@@ -9,18 +9,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getEntryLabel } from "@/lib/journal";
 import { cn } from "@/lib/utils";
 
-export function SidebarEntryMenu({
-  entry,
-  onDeleteEntry,
-  onStartRename,
+export function SidebarFolderMenu({
+  folder,
+  folderLabel,
   disabled = false,
+  onStartRename,
+  onDeleteFolder,
   className,
 }) {
-  const entryLabel = getEntryLabel(entry);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -30,7 +28,7 @@ export function SidebarEntryMenu({
             variant="ghost"
             size="icon-xs"
             disabled={disabled}
-            aria-label={`Open options for ${entryLabel}`}
+            aria-label={`Open options for ${folderLabel}`}
             className={cn(
               "interactive-element rounded-md text-sidebar-foreground/58 hover:bg-sidebar-accent hover:text-sidebar-primary data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-primary",
               className,
@@ -46,22 +44,22 @@ export function SidebarEntryMenu({
             disabled={disabled}
             onClick={(event) => {
               event.stopPropagation();
-              onStartRename?.(entry);
+              onStartRename?.(folder);
             }}
           >
             <Pencil aria-hidden="true" />
-            Rename File
+            Rename Folder
           </DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
             disabled={disabled}
             onClick={(event) => {
               event.stopPropagation();
-              onDeleteEntry?.(entry);
+              onDeleteFolder?.(folder);
             }}
           >
             <Trash2 aria-hidden="true" />
-            Delete
+            Delete Folder
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

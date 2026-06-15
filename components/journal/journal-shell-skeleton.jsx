@@ -1,5 +1,25 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+export function JournalEditorSkeleton() {
+  return (
+    <div className="mx-auto flex min-h-0 w-full max-w-[840px] flex-1 flex-col px-6 py-12 md:px-10">
+      <div className="mb-10 flex items-center gap-3">
+        <Skeleton className="h-8 w-4 rounded-sm bg-surface-container-high/70" />
+        <Skeleton className="h-9 w-56 rounded bg-surface-container-high/70" />
+      </div>
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-5 w-full rounded bg-surface-container-high/55" />
+        <Skeleton className="h-5 w-11/12 rounded bg-surface-container-high/50" />
+        <Skeleton className="h-5 w-4/5 rounded bg-surface-container-high/45" />
+      </div>
+      <div className="mt-auto flex justify-between pt-10">
+        <Skeleton className="h-4 w-44 rounded bg-surface-container-high/40" />
+        <Skeleton className="h-6 w-32 rounded-full bg-surface-container-high/45" />
+      </div>
+    </div>
+  );
+}
+
 export function JournalShellSkeleton() {
   return (
     <div className="flex h-svh w-full overflow-hidden bg-background">
@@ -42,21 +62,7 @@ export function JournalShellSkeleton() {
         <div className="flex h-16 items-center justify-end border-b border-surface-variant/20 px-xl">
           <Skeleton className="h-6 w-32 rounded-full bg-surface-container-high/55" />
         </div>
-        <div className="mx-auto flex min-h-0 w-full max-w-[840px] flex-1 flex-col px-6 py-12 md:px-10">
-          <div className="mb-10 flex items-center gap-3">
-            <Skeleton className="h-8 w-4 rounded-sm bg-surface-container-high/70" />
-            <Skeleton className="h-9 w-56 rounded bg-surface-container-high/70" />
-          </div>
-          <div className="flex flex-col gap-3">
-            <Skeleton className="h-5 w-full rounded bg-surface-container-high/55" />
-            <Skeleton className="h-5 w-11/12 rounded bg-surface-container-high/50" />
-            <Skeleton className="h-5 w-4/5 rounded bg-surface-container-high/45" />
-          </div>
-          <div className="mt-auto flex justify-between pt-10">
-            <Skeleton className="h-4 w-44 rounded bg-surface-container-high/40" />
-            <Skeleton className="h-6 w-32 rounded-full bg-surface-container-high/45" />
-          </div>
-        </div>
+        <JournalEditorSkeleton />
       </div>
     </div>
   );

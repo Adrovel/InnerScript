@@ -1,6 +1,6 @@
 "use client";
 
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { FileText, FolderPlus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,18 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getEntryLabel } from "@/lib/journal";
 import { cn } from "@/lib/utils";
 
-export function SidebarEntryMenu({
-  entry,
-  onDeleteEntry,
-  onStartRename,
+export function SidebarFolderCreateMenu({
+  folderLabel,
   disabled = false,
-  className,
+  onNewFile,
+  onNewFolder,
 }) {
-  const entryLabel = getEntryLabel(entry);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -30,15 +26,14 @@ export function SidebarEntryMenu({
             variant="ghost"
             size="icon-xs"
             disabled={disabled}
-            aria-label={`Open options for ${entryLabel}`}
+            aria-label={`Add ${folderLabel}`}
             className={cn(
-              "interactive-element rounded-md text-sidebar-foreground/58 hover:bg-sidebar-accent hover:text-sidebar-primary data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-primary",
-              className,
+              "interactive-element rounded-md text-sidebar-foreground/58 hover:bg-sidebar-accent hover:text-sidebar-primary disabled:cursor-wait data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-primary",
             )}
           />
         }
       >
-        <MoreHorizontal aria-hidden="true" />
+        <Plus aria-hidden="true" />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start" sideOffset={6} className="w-auto min-w-40">
         <DropdownMenuGroup>
@@ -46,22 +41,20 @@ export function SidebarEntryMenu({
             disabled={disabled}
             onClick={(event) => {
               event.stopPropagation();
-              onStartRename?.(entry);
+              onNewFile?.();
             }}
           >
-            <Pencil aria-hidden="true" />
-            Rename File
+            <FileText aria-hidden="true" />
+            New File
           </DropdownMenuItem>
           <DropdownMenuItem
-            variant="destructive"
-            disabled={disabled}
             onClick={(event) => {
               event.stopPropagation();
-              onDeleteEntry?.(entry);
+              onNewFolder?.();
             }}
           >
-            <Trash2 aria-hidden="true" />
-            Delete
+            <FolderPlus aria-hidden="true" />
+            New Folder
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

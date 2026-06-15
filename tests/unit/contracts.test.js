@@ -6,6 +6,7 @@ import {
   entryTypeSchema,
   sourceTypeSchema,
   updateEntryInputSchema,
+  updateFolderInputSchema,
 } from "../../lib/contracts.js";
 
 describe("entry contracts", () => {
@@ -98,6 +99,14 @@ describe("folder contracts", () => {
   test("trims folder names and rejects empty names", () => {
     expect(createFolderInputSchema.parse({ name: "  Roots  " }).name).toBe("Roots");
     expect(() => createFolderInputSchema.parse({ name: "   " })).toThrow();
+  });
+
+  test("validates folder rename payloads", () => {
+    expect(updateFolderInputSchema.parse({ name: "  Archive  " })).toEqual({
+      name: "Archive",
+    });
+    expect(() => updateFolderInputSchema.parse({})).toThrow();
+    expect(() => updateFolderInputSchema.parse({ name: "   " })).toThrow();
   });
 });
 

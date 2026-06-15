@@ -1,4 +1,4 @@
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
 
@@ -62,7 +62,11 @@ export const WithEntries = {
     selectedEntryId: "entry-journal-1",
     onSelectEntry: fn(),
     onDeleteEntry: fn(),
+    onRenameEntry: fn(),
     onNewNote: fn(),
+    onCreateFolder: fn(),
+    onDeleteFolder: fn(),
+    onRenameFolder: fn(),
     onMobileClose: () => {},
   },
   play: async ({ args, canvas }) => {
@@ -70,11 +74,16 @@ export const WithEntries = {
     await expect(canvas.getByText("Username")).toBeInTheDocument();
     await expect(canvas.queryByText("Private journal")).not.toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
+    await expect(canvas.getByRole("button", { name: /^new folder$/i })).toHaveClass(/h-9/);
     await expect(
       canvas.getByRole("searchbox", { name: /^search entries$/i }).closest("[data-sidebar='menu-button']"),
     ).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(/h-7/);
     await expect(canvas.getByRole("button", { name: /^add journal$/i })).toBeInTheDocument();
+    const journalRow = canvas.getByRole("button", { name: /^journal$/i }).parentElement;
+    await expect(
+      within(journalRow).getByRole("button", { name: /^open options for journal$/i }),
+    ).toBeInTheDocument();
     await expect(canvas.queryByRole("button", { name: /^add note$/i })).not.toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).not.toHaveClass(
       /border-outline-variant/,
@@ -82,6 +91,9 @@ export const WithEntries = {
     await expect(canvas.getByRole("button", { name: /^new note$/i })).not.toHaveClass(/shadow-sm/);
     await expect(
       canvas.getByRole("button", { name: /^new note$/i }).querySelectorAll("svg"),
+    ).toHaveLength(1);
+    await expect(
+      canvas.getByRole("button", { name: /^new folder$/i }).querySelectorAll("svg"),
     ).toHaveLength(1);
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toHaveClass(
       /text-sidebar-foreground\/76/,
@@ -100,14 +112,50 @@ export const WithEntries = {
     await expect(
       canvas.getByRole("button", { name: /open options for friday reflection/i }),
     ).toHaveClass(/right-0/);
+    await userEvent.click(
+      within(journalRow).getByRole("button", { name: /^open options for journal$/i }),
+    );
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename folder$/i }));
+    await userEvent.clear(canvas.getByRole("textbox", { name: /^rename$/i }));
+    await userEvent.type(canvas.getByRole("textbox", { name: /^rename$/i }), "Journal Archive");
+    await userEvent.tab();
+    await expect(args.onRenameFolder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: "folder-journal",
+      }),
+      "Journal Archive",
+    );
+    await userEvent.click(
+      within(journalRow).getByRole("button", { name: /^open options for journal$/i }),
+    );
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^delete folder$/i }));
+    await expect(args.onDeleteFolder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: "folder-journal",
+      }),
+    );
+    await waitFor(() => {
+      expect(document.body.querySelector("[data-slot='dropdown-menu-content']")).not.toBeInTheDocument();
+      expect(canvas.queryByRole("textbox", { name: /^rename$/i })).not.toBeInTheDocument();
+    });
     await userEvent.click(canvas.getByRole("button", { name: /open options for friday reflection/i }));
     await expect(args.onSelectEntry).not.toHaveBeenCalled();
-    await userEvent.click(
-      await within(document.body).findByRole("menuitem", { name: /^delete$/i }),
-    );
+    const entryDeleteItem = await within(document.body).findByRole("menuitem", {
+      name: /^delete$/i,
+    });
+    await userEvent.click(entryDeleteItem);
     await expect(args.onDeleteEntry).toHaveBeenCalledWith(entries[0]);
     await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^new file$/i }));
     await expect(args.onNewNote).toHaveBeenCalledWith("folder-journal");
+    await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^new folder$/i }));
+    await userEvent.type(canvas.getByRole("textbox", { name: /^folder name$/i }), "Archive");
+    await userEvent.tab();
+    await expect(args.onCreateFolder).toHaveBeenCalledWith({
+      name: "Archive",
+      parentFolderId: "folder-journal",
+    });
   },
 };
 
@@ -118,13 +166,28 @@ export const Empty = {
     selectedEntryId: null,
     onSelectEntry: () => {},
     onDeleteEntry: () => {},
+    onRenameEntry: () => {},
     onNewNote: () => {},
+    onCreateFolder: fn(),
+    onDeleteFolder: () => {},
+    onRenameFolder: () => {},
     onMobileClose: () => {},
   },
-  play: async ({ canvas }) => {
+  play: async ({ args, canvas }) => {
     await expect(canvas.getByRole("button", { name: /^journal$/i })).toBeInTheDocument();
     await expect(canvas.queryByText(/no entries yet/i)).not.toBeInTheDocument();
     await expect(canvas.queryByText(/start with one honest page/i)).not.toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button", { name: /^new folder$/i }));
+    await expect(canvas.getByRole("textbox", { name: /^folder name$/i })).toHaveFocus();
+    await userEvent.keyboard("{Escape}");
+    await expect(args.onCreateFolder).not.toHaveBeenCalled();
+    await userEvent.click(canvas.getByRole("button", { name: /^new folder$/i }));
+    await userEvent.type(canvas.getByRole("textbox", { name: /^folder name$/i }), "Root ideas");
+    await userEvent.tab();
+    await expect(args.onCreateFolder).toHaveBeenCalledWith({
+      name: "Root ideas",
+      parentFolderId: null,
+    });
   },
 };
 
@@ -136,7 +199,11 @@ export const CreatingNote = {
     creatingNote: true,
     onSelectEntry: () => {},
     onDeleteEntry: () => {},
+    onRenameEntry: () => {},
     onNewNote: () => {},
+    onCreateFolder: () => {},
+    onDeleteFolder: () => {},
+    onRenameFolder: () => {},
     onMobileClose: () => {},
   },
 };

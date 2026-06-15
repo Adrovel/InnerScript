@@ -4,9 +4,16 @@ import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+const serverOnlyStub = path.join(dirname, 'node_modules/server-only/empty.js');
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': dirname,
+      'server-only': serverOnlyStub
+    }
+  },
   test: {
     projects: [{
       extends: true,
