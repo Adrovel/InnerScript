@@ -284,7 +284,17 @@ export function useJournalWorkspace({
         setDeletingEntryId(null);
       }
     },
-    [deletingEntryId, entries, flushPendingSave, journalFolder, selectedEntryId],
+    [
+      deletedEntryIdsRef,
+      deletingEntryId,
+      entries,
+      flushPendingSave,
+      journalFolder,
+      pendingSaveRef,
+      runSaveRef,
+      saveTimerRef,
+      selectedEntryId,
+    ],
   );
 
   const handleDeleteFolder = useCallback(async (folder) => {
