@@ -60,3 +60,9 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-12 | loaded: README, DB docs, docker state | changed: dev DB migrated to 0002 and entries/sources/folders cleared | running: postgres 5433/5434 | open: none
 2026-06-12 | loaded: sidebar data/stories | changed: removed default Note group, root notes still visible | running: none | open: folder tree wiring
 2026-06-12 | loaded: sidebar app/message/stories | changed: removed sidebar no-entries message, kept search no-results | running: none | open: folder tree wiring
+2026-06-12 | loaded: Next data/security docs, app/data layer | changed: initial data helper, no no-SSR journal wrapper, DB helpers server-only | running: next 3000 existing | open: none
+2026-06-13 | loaded: sidebar/folder docs, Next client docs | changed: root and nested inline folder create, folder plus menu | running: next 3000, postgres 5433/5434 | open: none
+2026-06-15 | loaded: sidebar folder controls | changed: folder options menu after plus | running: none | open: folder rename/delete API
+2026-06-15 | loaded: folder/file CRUD | changed: inline rename for files/folders, empty folder delete | running: none | open: non-empty folder delete message
+2026-06-15 | loaded: journal app | changed: reduced duplicate rename/list/skeleton code | running: none | open: none
+2026-06-15 | loaded: journal app split | changed: app shell, workspace hook, autosave hook, state helpers | running: none | open: none

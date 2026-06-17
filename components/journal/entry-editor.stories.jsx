@@ -1,4 +1,5 @@
-import { expect } from "storybook/test";
+import { useState } from "react";
+import { expect, userEvent, waitFor } from "storybook/test";
 import { EntryEditor } from "./entry-editor";
 
 const meta = {
@@ -7,6 +8,21 @@ const meta = {
 };
 
 export default meta;
+
+function ControlledEntryEditor(args) {
+  const [title, setTitle] = useState(args.title);
+  const [body, setBody] = useState(args.body);
+
+  return (
+    <EntryEditor
+      {...args}
+      title={title}
+      body={body}
+      onTitleChange={setTitle}
+      onBodyChange={setBody}
+    />
+  );
+}
 
 export const WrittenEntry = {
   args: {
@@ -28,5 +44,30 @@ export const EmptyDraft = {
     occurredAt: "2026-06-05T12:00:00.000Z",
     onTitleChange: () => {},
     onBodyChange: () => {},
+  },
+};
+
+export const NewEntryTitleSelected = {
+  args: {
+    title: "Untitled 1",
+    body: "",
+    occurredAt: "2026-06-05T12:00:00.000Z",
+    focusTarget: "title-all",
+  },
+  render: (args) => <ControlledEntryEditor {...args} />,
+  play: async ({ canvas }) => {
+    const titleInput = canvas.getByDisplayValue("Untitled 1");
+
+    await waitFor(() => {
+      expect(titleInput).toHaveFocus();
+      expect(titleInput.selectionStart).toBe(0);
+      expect(titleInput.selectionEnd).toBe("Untitled 1".length);
+    });
+
+    await userEvent.keyboard("Dream notes");
+
+    await expect(canvas.getByDisplayValue("Dream notes")).toBeVisible();
+    expect(titleInput.selectionStart).toBe("Dream notes".length);
+    expect(titleInput.selectionEnd).toBe("Dream notes".length);
   },
 };

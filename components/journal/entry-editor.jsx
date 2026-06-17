@@ -23,25 +23,42 @@ export function EntryEditor({
   const characterCount = body.length;
   const titleRef = useRef(null);
   const bodyRef = useRef(null);
+  const titleValueRef = useRef(title);
+  const bodyValueRef = useRef(body);
+
+  titleValueRef.current = title;
+  bodyValueRef.current = body;
 
   useEffect(() => {
+    const currentTitle = titleValueRef.current;
+    const currentBody = bodyValueRef.current;
+
+    if (focusTarget === "title-all") {
+      const titleInput = titleRef.current;
+
+      titleInput?.focus();
+      titleInput?.setSelectionRange(0, currentTitle.length);
+      return;
+    }
+
     if (focusTarget === "entry-end") {
-      if (body.length > 0) {
+      if (currentBody.length > 0) {
         bodyRef.current?.focus();
-        bodyRef.current?.setSelectionRange(body.length, body.length);
+        bodyRef.current?.setSelectionRange(currentBody.length, currentBody.length);
         return;
       }
 
       const titleInput = titleRef.current;
 
       titleInput?.focus();
-      titleInput?.setSelectionRange(title.length, title.length);
+      titleInput?.setSelectionRange(currentTitle.length, currentTitle.length);
+      return;
     }
 
     if (focusTarget === "body") {
       bodyRef.current?.focus();
     }
-  }, [body, focusTarget, title]);
+  }, [focusTarget]);
 
   function handleTitleKeyDown(event) {
     if (event.key !== "Enter") {

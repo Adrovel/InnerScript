@@ -113,6 +113,72 @@ function SearchDemo({ initialQuery = "" }) {
   );
 }
 
+function EntryGroupDemo({ group, selectedEntryId, ...args }) {
+  const [folderDraft, setFolderDraft] = useState(null);
+  const [renameTarget, setRenameTarget] = useState(null);
+
+  const startFolderDraft = (parentFolderId) => {
+    setFolderDraft({
+      id: `${parentFolderId}-${Date.now()}`,
+      parentFolderId,
+    });
+  };
+
+  const createFolder = async (payload) => {
+    await args.onCreateFolder?.(payload);
+    setFolderDraft(null);
+  };
+
+  const renameEntry = async (entry, name) => {
+    await args.onRenameEntry?.(entry, name);
+    setRenameTarget(null);
+  };
+
+  const renameFolder = async (folder, name) => {
+    await args.onRenameFolder?.(folder, name);
+    setRenameTarget(null);
+  };
+
+  return (
+    <SidebarEntryGroup
+      {...args}
+      group={group}
+      selectedEntryId={selectedEntryId}
+      folderDraft={folderDraft}
+      renameTarget={renameTarget}
+      onStartNewFolder={startFolderDraft}
+      onCreateFolder={createFolder}
+      onRenameEntry={renameEntry}
+      onStartEntryRename={(entry) => setRenameTarget({ type: "entry", id: entry.id })}
+      onRenameFolder={renameFolder}
+      onStartFolderRename={(folder) => setRenameTarget({ type: "folder", id: folder.id })}
+      onCancelRename={() => setRenameTarget(null)}
+      onCancelNewFolder={() => setFolderDraft(null)}
+    />
+  );
+}
+
+function EntryRowDemo({ entry, selected, ...args }) {
+  const [renameTarget, setRenameTarget] = useState(null);
+
+  const renameEntry = async (nextEntry, name) => {
+    await args.onRenameEntry?.(nextEntry, name);
+    setRenameTarget(null);
+  };
+
+  return (
+    <SidebarEntryRow
+      {...args}
+      entry={entry}
+      selected={selected}
+      renaming={renameTarget === entry.id}
+      onRenameEntry={renameEntry}
+      onStartRename={(nextEntry) => setRenameTarget(nextEntry.id)}
+      onCancelRename={() => setRenameTarget(null)}
+    />
+  );
+}
+
 export const CollapsedButton = {
   render: () => (
     <SidebarProvider defaultOpen={false} style={{ "--sidebar-width": "280px" }}>
@@ -211,22 +277,57 @@ export const JournalGroup = {
   args: {
     onSelectEntry: fn(),
     onDeleteEntry: fn(),
+    onRenameEntry: fn(),
     onNewNote: fn(),
+    onCreateFolder: fn(),
+    onDeleteFolder: fn(),
+    onRenameFolder: fn(),
     onMobileClose: fn(),
   },
   render: (args) => (
     <SidebarFrame>
       <SidebarContent className="px-2 py-3">
         <SidebarMenu className="gap-1">
-          <SidebarEntryGroup group={journalGroup} selectedEntryId="entry-journal-1" {...args} />
+          <EntryGroupDemo group={journalGroup} selectedEntryId="entry-journal-1" {...args} />
         </SidebarMenu>
       </SidebarContent>
     </SidebarFrame>
   ),
   play: async ({ args, canvas }) => {
-    await expect(canvas.getByRole("button", { name: /^journal$/i })).toBeInTheDocument();
+    const folderButton = canvas.getByRole("button", { name: /^journal$/i });
+    const addButton = canvas.getByRole("button", { name: /^add journal$/i });
+    const optionsButton = canvas.getByRole("button", { name: /^open options for journal$/i });
+    const folderRect = folderButton.getBoundingClientRect();
+    const addRect = addButton.getBoundingClientRect();
+    const optionsRect = optionsButton.getBoundingClientRect();
+
+    await expect(folderButton).toBeInTheDocument();
+    expect(addRect.left).toBeGreaterThanOrEqual(folderRect.left);
+    expect(addRect.right).toBeLessThanOrEqual(folderRect.right + 1);
+    expect(optionsRect.left).toBeGreaterThanOrEqual(folderRect.left);
+    expect(optionsRect.right).toBeLessThanOrEqual(folderRect.right + 1);
     await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^new file$/i }));
     await expect(args.onNewNote).toHaveBeenCalledWith("folder-journal");
+    await userEvent.click(canvas.getByRole("button", { name: /^add journal$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^new folder$/i }));
+    await userEvent.type(canvas.getByRole("textbox", { name: /^folder name$/i }), "Dreams");
+    await userEvent.tab();
+    await expect(args.onCreateFolder).toHaveBeenCalledWith({
+      name: "Dreams",
+      parentFolderId: "folder-journal",
+    });
+    await userEvent.click(canvas.getByRole("button", { name: /^open options for journal$/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename$/i }));
+    await userEvent.clear(canvas.getByRole("textbox", { name: /^rename$/i }));
+    await userEvent.type(canvas.getByRole("textbox", { name: /^rename$/i }), "Private");
+    await userEvent.tab();
+    await expect(args.onRenameFolder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: "folder-journal",
+      }),
+      "Private",
+    );
     await userEvent.click(canvas.getByRole("button", { name: /^friday reflection$/i }));
     await expect(args.onSelectEntry).toHaveBeenCalledWith(entries[0]);
   },
@@ -236,29 +337,42 @@ export const EmptyGroup = {
   args: {
     onSelectEntry: fn(),
     onDeleteEntry: fn(),
+    onRenameEntry: fn(),
     onNewNote: fn(),
+    onCreateFolder: fn(),
+    onDeleteFolder: fn(),
+    onRenameFolder: fn(),
   },
   render: (args) => (
     <SidebarFrame>
       <SidebarContent className="px-2 py-3">
         <SidebarMenu className="gap-1">
-          <SidebarEntryGroup group={{ ...journalGroup, entries: [] }} selectedEntryId={null} {...args} />
+          <EntryGroupDemo group={{ ...journalGroup, entries: [] }} selectedEntryId={null} {...args} />
         </SidebarMenu>
       </SidebarContent>
     </SidebarFrame>
   ),
+  play: async ({ canvas, canvasElement }) => {
+    await expect(canvas.getByRole("button", { name: /^journal$/i })).toBeInTheDocument();
+    expect(canvasElement.querySelector("[data-sidebar='menu-sub']")).not.toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole("button", { name: /^journal$/i }));
+
+    expect(canvasElement.querySelector("[data-sidebar='menu-sub']")).not.toBeInTheDocument();
+  },
 };
 
 export const EntryRow = {
   args: {
     onSelectEntry: fn(),
     onDeleteEntry: fn(),
+    onRenameEntry: fn(),
   },
   render: (args) => (
     <SidebarFrame>
       <SidebarContent className="px-2 py-3">
         <SidebarMenuSub className="ml-4 mr-0 gap-1 border-sidebar-border/55 py-1 pl-2 pr-0">
-          <SidebarEntryRow entry={entries[2]} selected {...args} />
+          <EntryRowDemo entry={entries[2]} selected {...args} />
         </SidebarMenuSub>
       </SidebarContent>
     </SidebarFrame>
@@ -266,6 +380,12 @@ export const EntryRow = {
   play: async ({ args, canvas }) => {
     await userEvent.click(canvas.getByRole("button", { name: /^therapy question$/i }));
     await expect(args.onSelectEntry).toHaveBeenCalledWith(entries[2]);
+    await userEvent.click(canvas.getByRole("button", { name: /open options for therapy question/i }));
+    await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^rename$/i }));
+    await userEvent.clear(canvas.getByRole("textbox", { name: /^rename$/i }));
+    await userEvent.type(canvas.getByRole("textbox", { name: /^rename$/i }), "Renamed therapy");
+    await userEvent.tab();
+    await expect(args.onRenameEntry).toHaveBeenCalledWith(entries[2], "Renamed therapy");
     await userEvent.click(canvas.getByRole("button", { name: /open options for therapy question/i }));
     await userEvent.click(await within(document.body).findByRole("menuitem", { name: /^delete$/i }));
     await expect(args.onDeleteEntry).toHaveBeenCalledWith(entries[2]);

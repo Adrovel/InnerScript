@@ -1,28 +1,17 @@
-import { listEntries } from "@/lib/entries.js";
-import { listFolders } from "@/lib/folders.js";
-import { JournalPageClient } from "@/components/journal/journal-page-client";
+import { getJournalPageInitialData } from "@/lib/journal-page-data.js";
+import { JournalApp } from "@/components/journal/journal-app";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  let initialEntries = [];
-  let initialFolders = [];
-  let initialError = null;
-
-  try {
-    [initialEntries, initialFolders] = await Promise.all([
-      listEntries(),
-      listFolders({ ensureDefaults: true }),
-    ]);
-  } catch {
-    initialError = "Failed to load entries. Check that Postgres is running.";
-  }
+  const initialData = await getJournalPageInitialData();
 
   return (
-    <JournalPageClient
-      initialEntries={initialEntries}
-      initialFolders={initialFolders}
-      initialError={initialError}
+    <JournalApp
+      initialEntries={initialData.initialEntries}
+      initialFolders={initialData.initialFolders}
+      initialError={initialData.initialError}
+      initialDraftOccurredAt={initialData.initialDraftOccurredAt}
     />
   );
 }
