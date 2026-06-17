@@ -80,3 +80,6 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-15 | Prithvi+Codex | sidebar UI | folder add/options controls now sit inside the folder row hover surface | open: none
 2026-06-15 | Prithvi+Codex | sidebar UI | file and folder option menus share one rename/delete menu and use generic labels | open: none
 2026-06-15 | Prithvi+Codex | sidebar UI | empty folders no longer render an empty expanded subtree | open: none
+2026-06-17 | Prithvi+Codex | editor UX | journal body uses CodeMirror live Markdown editing with inactive heading/list marker polish, raw Markdown autosave, and react-markdown renderer helper | open: export route wiring later
+2026-06-17 | Codex | markdown/build | guarded CodeMirror prop sync from autosave echo, fixed hook warning, and made build use Webpack | open: browser stress review
+2026-06-17 | Codex | local dev | allowed 127.0.0.1 as a Next dev origin for browser verification | open: none

@@ -66,3 +66,5 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-15 | loaded: folder/file CRUD | changed: inline rename for files/folders, empty folder delete | running: none | open: non-empty folder delete message
 2026-06-15 | loaded: journal app | changed: reduced duplicate rename/list/skeleton code | running: none | open: none
 2026-06-15 | loaded: journal app split | changed: app shell, workspace hook, autosave hook, state helpers | running: none | open: none
+2026-06-17 | loaded: Markdown editor plan, Next docs | changed: CodeMirror live Markdown editor, inactive heading/list marker polish, react-markdown renderer helper, autosave clear fix, local entries/sources cleared | running: next 3000 existing | open: export route later
+2026-06-17 | loaded: Markdown editor, Next dev docs | changed: autosave echo guard, Webpack build script, 127 dev origin, buglogs | running: next 3000 existing | open: none
