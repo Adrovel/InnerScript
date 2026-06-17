@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { getAutosaveTitle, resolveSavedEntryState } from "@/lib/autosave";
+import { buildAutosavePayload, resolveSavedEntryState } from "@/lib/autosave";
 import { createEntry, updateEntry } from "@/lib/journal";
 import {
   createJournalDraft,
@@ -20,32 +20,21 @@ async function persistEntry({
   occurredAt,
   entryId,
 }) {
-  const trimmedBody = body.trim();
+  const payload = buildAutosavePayload({
+    title,
+    body,
+    entryType,
+    folderId,
+    journalDate,
+    occurredAt,
+    entryId,
+  });
 
-  if (!entryId) {
-    if (trimmedBody.length === 0) {
-      return null;
-    }
-
-    return createEntry({
-      title: getAutosaveTitle(title),
-      body,
-      entry_type: entryType,
-      folder_id: folderId,
-      journal_date: journalDate,
-      occurred_at: occurredAt,
-    });
+  if (!payload) {
+    return null;
   }
 
-  const payload = {
-    title: getAutosaveTitle(title),
-  };
-
-  if (trimmedBody.length > 0) {
-    payload.body = body;
-  }
-
-  return updateEntry(entryId, payload);
+  return entryId ? updateEntry(entryId, payload) : createEntry(payload);
 }
 
 export function useJournalAutosave({
