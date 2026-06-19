@@ -72,3 +72,6 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-18 | loaded: wolf docs | changed: removed browser tool name refs from wolf docs | running: stale 3000 listener only | open: none
 2026-06-18 | loaded: markdown editor screenshot | changed: inactive inline markdown markers hidden, bug logged | running: stale 3000 listener only | open: none
 2026-06-18 | loaded: markdown editor heading bug | changed: heading markers replaced, token sizes added, bug logged | running: stale 3000 listener only | open: none
+2026-06-19 | loaded: markdown editor, Next CSS docs | changed: moved editor styling into editorTheme.css import | running: next 3000 existing | open: none
+2026-06-19 | loaded: markdown renderer refs | changed: removed unused react-markdown renderer and packages | running: next 3000 existing | open: none
+2026-06-19 | loaded: markdown editor helper | changed: heading prefix hide keeps extra spaces as text | running: none | open: none

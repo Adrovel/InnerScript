@@ -85,3 +85,6 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-17 | Codex | local dev | allowed 127.0.0.1 as a Next dev origin for browser verification | open: none
 2026-06-18 | Codex | editor UX | inactive Markdown headings/lists now hide full marker prefixes and spacing is tighter | open: browser visual smoke blocked by local browser setup
 2026-06-18 | Codex | editor UX | Markdown heading prefixes now disappear and H1/H2/H3 render at heading sizes | open: none
+2026-06-19 | Codex | editor UX | CodeMirror editor styling moved from globals.css into components/journal/editorTheme.css and imported by the editor | open: none
+2026-06-19 | Codex | editor cleanup | removed unused react-markdown renderer, renderer test, and renderer-only packages | open: none
+2026-06-19 | Codex | editor UX | heading marker hiding now removes only the marker plus one following space, and empty heading guard was removed | open: none
