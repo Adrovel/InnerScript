@@ -13,6 +13,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 | `research/` | Semantic meaning research and Google-signal benchmarks |
 | `guardrails/` | Direction-change rules and external data integration rules |
 | `engineering-standards/` | InnerScript-local engineering rules for git workflow, branches, commits, PRs, and merges |
+| `education/` | Code explanations and learning notes tied directly to InnerScript behavior |
 | `product-knowledge/` | Product knowledge, priority changes, and structure/convention decisions learned while building |
 | `team/` | Team communication, product decisions, open questions, and identity/ownership notes |
 | `technical-scrutiny/` | Joel's deep code-review map for heavy technical areas he must be able to explain |
@@ -44,6 +45,7 @@ Purpose: canonical implementation, planning, research, and guardrail docs for In
 - [Direction Guardrails](./guardrails/Direction-Guardrails.md)
 - [External Data Integrations](./guardrails/External-Data-Integrations.md)
 - [Git Workflow Standard](./engineering-standards/Git-Workflow-Standard.md)
+- [Deferred Promise Autosave Race Test](./education/Deferred-Promise-Autosave-Race-Test.md)
 - [Product Knowledge](./product-knowledge/README.md)
 - [Priority Change Log](./product-knowledge/Priority-Change-Log.md)
 - [Structure and Conventions Plan](./product-knowledge/Structure-and-Conventions-Plan.md)
