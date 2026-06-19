@@ -2,7 +2,7 @@
 
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { Annotation, EditorState } from "@codemirror/state";
-import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import { HighlightStyle, syntaxHighlighting, syntaxTree } from "@codemirror/language";
 import { markdown } from "@codemirror/lang-markdown";
 import { minimalSetup } from "codemirror";
 import {
@@ -56,15 +56,15 @@ const markdownEditorTheme = EditorView.theme({
   },
 });
 
-const markdownLineDecorations = ViewPlugin.fromClass(
+const markdownTreeDecorations = ViewPlugin.fromClass(
   class {
     constructor(view) {
-      this.decorations = buildLineDecorations(view);
+      this.decorations = buildTreeDecorations(view);
     }
 
     update(update) {
       if (update.docChanged || update.selectionSet || update.viewportChanged) {
-        this.decorations = buildLineDecorations(update.view);
+        this.decorations = buildTreeDecorations(update.view);
       }
     }
   },
@@ -94,150 +94,256 @@ class MarkdownSyntaxWidget extends WidgetType {
   }
 }
 
-function buildLineDecorations(view) {
-  const ranges = [];
-  const doc = view.state.doc;
-  let inCodeFence = false;
+const HEADING_LEVEL_PATTERN = /^(?:ATX|Setext)Heading(\d)$/;
 
-  function isActiveLine(line) {
-    return view.state.selection.ranges.some(
-      (range) => range.from <= line.to && range.to >= line.from,
+const INLINE_SYNTAX_MARKS = new Set([
+  "EmphasisMark",
+  "CodeMark",
+  "StrikethroughMark",
+  "LinkMark",
+]);
+
+function headingLevel(nodeName) {
+  const match = HEADING_LEVEL_PATTERN.exec(nodeName);
+
+  return match ? Number(match[1]) : null;
+}
+
+function isActiveLine(view, line) {
+  return view.state.selection.ranges.some(
+    (range) => range.from <= line.to && range.to >= line.from,
+  );
+}
+
+function addLineDecoration(ranges, position, className) {
+  ranges.push(Decoration.line({ class: className }).range(position));
+}
+
+function addLineDecorationsForRange(doc, ranges, from, to, className) {
+  const startLine = doc.lineAt(from).number;
+  const endLine = doc.lineAt(to).number;
+
+  for (let lineNumber = startLine; lineNumber <= endLine; lineNumber += 1) {
+    addLineDecoration(ranges, doc.line(lineNumber).from, className);
+  }
+}
+
+function addMarkDecoration(ranges, from, to, className = "cm-markdown-syntax-marker") {
+  if (to > from) {
+    ranges.push(Decoration.mark({ class: className }).range(from, to));
+  }
+}
+
+function addInlineSyntaxDecoration(view, ranges, from, to) {
+  const line = view.state.doc.lineAt(from);
+  const className = isActiveLine(view, line)
+    ? "cm-markdown-syntax-marker"
+    : "cm-markdown-hidden-syntax-marker";
+
+  addMarkDecoration(ranges, from, to, className);
+}
+
+function addReplaceDecoration(ranges, from, to, text, className) {
+  if (to > from) {
+    ranges.push(
+      Decoration.replace({
+        widget: new MarkdownSyntaxWidget(text, className),
+      }).range(from, to),
     );
   }
+}
 
-  function addLineClass(position, classes) {
-    ranges.push(Decoration.line({ class: classes.join(" ") }).range(position));
+function addHiddenReplaceDecoration(ranges, from, to) {
+  if (to > from) {
+    ranges.push(Decoration.replace({}).range(from, to));
+  }
+}
+
+function markerPrefixEnd(line, markerEnd) {
+  let end = Math.min(markerEnd, line.to);
+
+  while (end < line.to) {
+    const char = line.text[end - line.from];
+
+    if (char !== " " && char !== "\t") {
+      break;
+    }
+
+    end += 1;
   }
 
-  function addMarker(from, to, className = "cm-markdown-syntax-marker") {
-    if (to > from) {
-      ranges.push(Decoration.mark({ class: className }).range(from, to));
+  return end;
+}
+
+function headingHasVisibleContent(state, nodeRef) {
+  if (!nodeRef.name.startsWith("ATXHeading")) {
+    return true;
+  }
+
+  const headingNode = nodeRef.node;
+
+  if (!headingNode) {
+    return true;
+  }
+
+  for (let child = headingNode.firstChild; child; child = child.nextSibling) {
+    if (child.name === "HeaderMark") {
+      continue;
+    }
+
+    if (state.sliceDoc(child.from, child.to).trim().length > 0) {
+      return true;
     }
   }
 
-  function replaceMarker(from, to, text, className) {
-    if (to > from) {
-      ranges.push(
-        Decoration.replace({
-          widget: new MarkdownSyntaxWidget(text, className),
-        }).range(from, to),
-      );
+  return false;
+}
+
+function decorateMarkerPrefix(
+  ranges,
+  {
+    from,
+    markerEnd,
+    line,
+    isActive,
+    activeClass = "cm-markdown-syntax-marker",
+    inactiveWidget,
+    inactiveWidgetClass,
+  },
+) {
+  const prefixEnd = markerPrefixEnd(line, markerEnd);
+
+  if (isActive) {
+    addMarkDecoration(ranges, from, prefixEnd, activeClass);
+    return;
+  }
+
+  if (inactiveWidget !== undefined) {
+    addReplaceDecoration(ranges, from, prefixEnd, inactiveWidget, inactiveWidgetClass);
+    return;
+  }
+
+  addHiddenReplaceDecoration(ranges, from, prefixEnd);
+}
+
+function listItemContainsTask(nodeRef) {
+  const listItem = nodeRef.node.parent;
+
+  if (!listItem || listItem.name !== "ListItem") {
+    return false;
+  }
+
+  for (let child = listItem.firstChild; child; child = child.nextSibling) {
+    if (child.name === "Task") {
+      return true;
     }
   }
 
-  function addDelimitedMarkers(line, pattern, delimiterIndex = 1) {
-    for (const match of line.text.matchAll(pattern)) {
-      const delimiter = match[delimiterIndex];
+  return false;
+}
 
-      if (!delimiter) {
-        continue;
-      }
+function decorateListMark(view, ranges, node) {
+  const line = view.state.doc.lineAt(node.from);
+  const isActive = isActiveLine(view, line);
+  const markerText = view.state.doc.sliceString(node.from, node.to);
 
-      const start = line.from + match.index;
-      const endMarkerStart = start + match[0].length - delimiter.length;
-
-      addMarker(start, start + delimiter.length);
-      addMarker(endMarkerStart, endMarkerStart + delimiter.length);
-    }
+  if (!listItemContainsTask(node)) {
+    addLineDecoration(ranges, line.from, "cm-markdown-list-line");
   }
 
-  for (let lineNumber = 1; lineNumber <= doc.lines; lineNumber += 1) {
-    const line = doc.line(lineNumber);
-    const trimmed = line.text.trimStart();
-    const contentStart = line.from + line.text.length - trimmed.length;
-    const isFence = /^(```|~~~)/.test(trimmed);
-    const isActive = isActiveLine(line);
-    const classes = [];
+  if (node.matchContext(["OrderedList", "ListItem"])) {
+    decorateMarkerPrefix(ranges, {
+      from: node.from,
+      markerEnd: node.to,
+      line,
+      isActive,
+      activeClass: "cm-markdown-list-marker",
+      inactiveWidget: markerText,
+      inactiveWidgetClass: "cm-markdown-ordered-widget",
+    });
+    return;
+  }
 
-    if (inCodeFence || isFence) {
-      classes.push("cm-markdown-code-line");
-    }
+  if (node.matchContext(["BulletList", "ListItem"])) {
+    decorateMarkerPrefix(ranges, {
+      from: node.from,
+      markerEnd: node.to,
+      line,
+      isActive,
+      activeClass: "cm-markdown-list-marker",
+      inactiveWidget: "•",
+      inactiveWidgetClass: "cm-markdown-bullet-widget",
+    });
+  }
+}
 
-    if (!inCodeFence) {
-      const headingMatch = /^(#{1,6})(\s+|$)/.exec(trimmed);
-      const taskMatch = /^([-*+]\s+)(\[[ xX]\])(\s*)/.exec(trimmed);
-      const unorderedListMatch = /^([-*+]\s+)/.exec(trimmed);
-      const orderedListMatch = /^(\d+\.\s+)/.exec(trimmed);
-      const quoteMatch = /^(>\s*)/.exec(trimmed);
+function buildTreeDecorations(view) {
+  const ranges = [];
+  const doc = view.state.doc;
 
-      if (headingMatch) {
-        classes.push(
-          "cm-markdown-heading-line",
-          `cm-markdown-heading-line-${headingMatch[1].length}`,
-        );
+  for (const { from, to } of view.visibleRanges) {
+    syntaxTree(view.state).iterate({
+      from,
+      to,
+      enter(node) {
+        const level = headingLevel(node.name);
 
-        const markerEnd = contentStart + headingMatch[1].length + headingMatch[2].length;
+        if (level !== null) {
+          const line = doc.lineAt(node.from);
 
-        if (isActive) {
-          addMarker(contentStart, markerEnd);
-        } else {
-          addMarker(contentStart, markerEnd, "cm-markdown-hidden-syntax-marker");
-        }
-      } else if (trimmed.startsWith(">")) {
-        classes.push("cm-markdown-quote-line");
-
-        if (quoteMatch) {
-          addMarker(contentStart, contentStart + quoteMatch[1].length);
-        }
-      } else if (taskMatch) {
-        classes.push("cm-markdown-task-line");
-
-        if (isActive) {
-          addMarker(contentStart, contentStart + taskMatch[1].length, "cm-markdown-list-marker");
-        } else {
-          replaceMarker(
-            contentStart,
-            contentStart + taskMatch[1].length,
-            "• ",
-            "cm-markdown-bullet-widget",
-          );
+          if (headingHasVisibleContent(view.state, node)) {
+            addLineDecoration(
+              ranges,
+              line.from,
+              `cm-markdown-heading-line cm-markdown-heading-line-${level}`,
+            );
+          }
         }
 
-        addMarker(
-          contentStart + taskMatch[1].length,
-          contentStart + taskMatch[1].length + taskMatch[2].length,
-          "cm-markdown-task-marker",
-        );
-      } else if (unorderedListMatch) {
-        classes.push("cm-markdown-list-line");
-
-        if (isActive) {
-          addMarker(
-            contentStart,
-            contentStart + unorderedListMatch[1].length,
-            "cm-markdown-list-marker",
-          );
-        } else {
-          replaceMarker(
-            contentStart,
-            contentStart + unorderedListMatch[1].length,
-            "• ",
-            "cm-markdown-bullet-widget",
-          );
+        if (node.name === "Blockquote") {
+          addLineDecorationsForRange(doc, ranges, node.from, node.to, "cm-markdown-quote-line");
         }
-      } else if (orderedListMatch) {
-        classes.push("cm-markdown-list-line");
-        addMarker(
-          contentStart,
-          contentStart + orderedListMatch[1].length,
-          "cm-markdown-list-marker",
-        );
-      } else if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
-        classes.push("cm-markdown-rule-line");
-      }
 
-      addDelimitedMarkers(line, /(\*\*|__)(?=\S)(.*?\S)\1/g);
-      addDelimitedMarkers(line, /(`+)([^`]+)\1/g);
-      addDelimitedMarkers(line, /(~~)(?=\S)(.*?\S)\1/g);
-    }
+        if (node.name === "FencedCode") {
+          addLineDecorationsForRange(doc, ranges, node.from, node.to, "cm-markdown-code-line");
+        }
 
-    if (classes.length > 0) {
-      addLineClass(line.from, classes);
-    }
+        if (node.name === "HorizontalRule") {
+          addLineDecoration(ranges, doc.lineAt(node.from).from, "cm-markdown-rule-line");
+        }
 
-    if (isFence) {
-      inCodeFence = !inCodeFence;
-    }
+        if (node.name === "Task") {
+          addLineDecoration(ranges, doc.lineAt(node.from).from, "cm-markdown-task-line");
+        }
+
+        if (node.name === "HeaderMark") {
+          const line = doc.lineAt(node.from);
+
+          decorateMarkerPrefix(ranges, {
+            from: node.from,
+            markerEnd: node.to,
+            line,
+            isActive: isActiveLine(view, line),
+          });
+        }
+
+        if (node.name === "QuoteMark") {
+          addMarkDecoration(ranges, node.from, node.to);
+        }
+
+        if (node.name === "ListMark") {
+          decorateListMark(view, ranges, node);
+        }
+
+        if (node.name === "TaskMarker") {
+          addMarkDecoration(ranges, node.from, node.to, "cm-markdown-task-marker");
+        }
+
+        if (INLINE_SYNTAX_MARKS.has(node.name) && !node.matchContext(["FencedCode"])) {
+          addInlineSyntaxDecoration(view, ranges, node.from, node.to);
+        }
+      },
+    });
   }
 
   return Decoration.set(ranges, true);
@@ -302,7 +408,7 @@ export const MarkdownEditor = forwardRef(function MarkdownEditor(
         minimalSetup,
         markdown({ completeHTMLTags: false }),
         syntaxHighlighting(markdownHighlightStyle),
-        markdownLineDecorations,
+        markdownTreeDecorations,
         placeholderExtension(initialConfig.placeholder),
         EditorView.lineWrapping,
         EditorView.contentAttributes.of({

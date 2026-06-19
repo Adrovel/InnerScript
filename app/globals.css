@@ -344,30 +344,52 @@
   }
 
   .innerscript-markdown-editor .cm-markdown-heading-line-1 {
-    padding-bottom: 0.6rem;
+    padding-bottom: 0.35rem;
     font-size: 1.875rem;
   }
 
   .innerscript-markdown-editor .cm-markdown-heading-line-2 {
-    padding-bottom: 0.45rem;
+    padding-bottom: 0.25rem;
     font-size: 1.5rem;
   }
 
   .innerscript-markdown-editor .cm-markdown-heading-line-3 {
-    padding-bottom: 0.35rem;
+    padding-bottom: 0.18rem;
     font-size: 1.25rem;
   }
 
   .innerscript-markdown-editor .cm-markdown-heading-line-4,
   .innerscript-markdown-editor .cm-markdown-heading-line-5,
   .innerscript-markdown-editor .cm-markdown-heading-line-6 {
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.12rem;
     font-size: 1.05rem;
   }
 
   .innerscript-markdown-editor .cm-markdown-heading-token {
     color: var(--color-on-background);
     font-weight: 650;
+  }
+
+  .innerscript-markdown-editor .cm-markdown-heading-token-1 {
+    font-size: 1.875rem;
+    line-height: 1.25;
+  }
+
+  .innerscript-markdown-editor .cm-markdown-heading-token-2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .innerscript-markdown-editor .cm-markdown-heading-token-3 {
+    font-size: 1.25rem;
+    line-height: 1.35;
+  }
+
+  .innerscript-markdown-editor .cm-markdown-heading-token-4,
+  .innerscript-markdown-editor .cm-markdown-heading-token-5,
+  .innerscript-markdown-editor .cm-markdown-heading-token-6 {
+    font-size: 1.05rem;
+    line-height: 1.45;
   }
 
   .innerscript-markdown-editor .cm-markdown-syntax-marker,
@@ -383,9 +405,17 @@
 
   .innerscript-markdown-editor .cm-markdown-bullet-widget {
     display: inline-block;
-    min-width: 1.1em;
+    width: 1.05em;
     color: color-mix(in srgb, var(--color-on-surface-variant) 78%, transparent);
     font-weight: 650;
+  }
+
+  .innerscript-markdown-editor .cm-markdown-ordered-widget {
+    display: inline-block;
+    padding-right: 0.3em;
+    color: color-mix(in srgb, var(--color-on-surface-variant) 58%, transparent);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
 
   .innerscript-markdown-editor .cm-markdown-hidden-syntax-marker {
@@ -428,7 +458,7 @@
 
   .innerscript-markdown-editor .cm-markdown-task-line,
   .innerscript-markdown-editor .cm-markdown-list-line {
-    padding-left: 0.125rem;
+    padding-left: 0;
   }
 
   .innerscript-markdown-editor .cm-markdown-code-line {

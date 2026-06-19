@@ -83,3 +83,5 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-17 | Prithvi+Codex | editor UX | journal body uses CodeMirror live Markdown editing with inactive heading/list marker polish, raw Markdown autosave, and react-markdown renderer helper | open: export route wiring later
 2026-06-17 | Codex | markdown/build | guarded CodeMirror prop sync from autosave echo, fixed hook warning, and made build use Webpack | open: browser stress review
 2026-06-17 | Codex | local dev | allowed 127.0.0.1 as a Next dev origin for browser verification | open: none
+2026-06-18 | Codex | editor UX | inactive Markdown headings/lists now hide full marker prefixes and spacing is tighter | open: browser visual smoke blocked by local browser setup
+2026-06-18 | Codex | editor UX | Markdown heading prefixes now disappear and H1/H2/H3 render at heading sizes | open: none
