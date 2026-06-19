@@ -1,5 +1,6 @@
 "use client";
 
+import "./editorTheme.css";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { Annotation, EditorState } from "@codemirror/state";
 import { HighlightStyle, syntaxHighlighting, syntaxTree } from "@codemirror/language";
@@ -26,35 +27,9 @@ const markdownHighlightStyle = HighlightStyle.define([
   { tag: tags.monospace, class: "cm-markdown-code-token" },
   { tag: tags.link, class: "cm-markdown-link-token" },
   { tag: tags.quote, class: "cm-markdown-quote-token" },
-  { tag: tags.strikethrough, class: "cm-markdown-strike-token" },
 ]);
 
 const reactSyncAnnotation = Annotation.define();
-
-const markdownEditorTheme = EditorView.theme({
-  "&": {
-    backgroundColor: "transparent",
-    color: "var(--color-on-background)",
-  },
-  "&.cm-focused": {
-    outline: "none",
-  },
-  ".cm-scroller": {
-    overflow: "visible",
-  },
-  ".cm-content": {
-    caretColor: "var(--color-primary)",
-  },
-  ".cm-cursor": {
-    borderLeftColor: "var(--color-primary)",
-  },
-  ".cm-selectionBackground": {
-    backgroundColor: "color-mix(in srgb, var(--color-secondary-container) 55%, transparent)",
-  },
-  "&.cm-focused .cm-selectionBackground": {
-    backgroundColor: "color-mix(in srgb, var(--color-secondary-container) 70%, transparent)",
-  },
-});
 
 const markdownTreeDecorations = ViewPlugin.fromClass(
   class {
@@ -99,7 +74,6 @@ const HEADING_LEVEL_PATTERN = /^(?:ATX|Setext)Heading(\d)$/;
 const INLINE_SYNTAX_MARKS = new Set([
   "EmphasisMark",
   "CodeMark",
-  "StrikethroughMark",
   "LinkMark",
 ]);
 
@@ -226,30 +200,12 @@ function decorateMarkerPrefix(
   addHiddenReplaceDecoration(ranges, from, prefixEnd);
 }
 
-function listItemContainsTask(nodeRef) {
-  const listItem = nodeRef.node.parent;
-
-  if (!listItem || listItem.name !== "ListItem") {
-    return false;
-  }
-
-  for (let child = listItem.firstChild; child; child = child.nextSibling) {
-    if (child.name === "Task") {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 function decorateListMark(view, ranges, node) {
   const line = view.state.doc.lineAt(node.from);
   const isActive = isActiveLine(view, line);
   const markerText = view.state.doc.sliceString(node.from, node.to);
 
-  if (!listItemContainsTask(node)) {
-    addLineDecoration(ranges, line.from, "cm-markdown-list-line");
-  }
+  addLineDecoration(ranges, line.from, "cm-markdown-list-line");
 
   if (node.matchContext(["OrderedList", "ListItem"])) {
     decorateMarkerPrefix(ranges, {
@@ -312,10 +268,6 @@ function buildTreeDecorations(view) {
           addLineDecoration(ranges, doc.lineAt(node.from).from, "cm-markdown-rule-line");
         }
 
-        if (node.name === "Task") {
-          addLineDecoration(ranges, doc.lineAt(node.from).from, "cm-markdown-task-line");
-        }
-
         if (node.name === "HeaderMark") {
           const line = doc.lineAt(node.from);
 
@@ -333,10 +285,6 @@ function buildTreeDecorations(view) {
 
         if (node.name === "ListMark") {
           decorateListMark(view, ranges, node);
-        }
-
-        if (node.name === "TaskMarker") {
-          addMarkDecoration(ranges, node.from, node.to, "cm-markdown-task-marker");
         }
 
         if (INLINE_SYNTAX_MARKS.has(node.name) && !node.matchContext(["FencedCode"])) {
@@ -417,7 +365,6 @@ export const MarkdownEditor = forwardRef(function MarkdownEditor(
           spellcheck: "true",
         }),
         updateListener,
-        markdownEditorTheme,
       ],
     });
 
