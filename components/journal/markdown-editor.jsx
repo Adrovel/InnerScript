@@ -136,41 +136,15 @@ function addHiddenReplaceDecoration(ranges, from, to) {
 function markerPrefixEnd(line, markerEnd) {
   let end = Math.min(markerEnd, line.to);
 
-  while (end < line.to) {
+  if (end < line.to) {
     const char = line.text[end - line.from];
 
-    if (char !== " " && char !== "\t") {
-      break;
+    if (char === " " || char === "\t") {
+      end += 1;
     }
-
-    end += 1;
   }
 
   return end;
-}
-
-function headingHasVisibleContent(state, nodeRef) {
-  if (!nodeRef.name.startsWith("ATXHeading")) {
-    return true;
-  }
-
-  const headingNode = nodeRef.node;
-
-  if (!headingNode) {
-    return true;
-  }
-
-  for (let child = headingNode.firstChild; child; child = child.nextSibling) {
-    if (child.name === "HeaderMark") {
-      continue;
-    }
-
-    if (state.sliceDoc(child.from, child.to).trim().length > 0) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 function decorateMarkerPrefix(
@@ -247,13 +221,11 @@ function buildTreeDecorations(view) {
         if (level !== null) {
           const line = doc.lineAt(node.from);
 
-          if (headingHasVisibleContent(view.state, node)) {
-            addLineDecoration(
-              ranges,
-              line.from,
-              `cm-markdown-heading-line cm-markdown-heading-line-${level}`,
-            );
-          }
+          addLineDecoration(
+            ranges,
+            line.from,
+            `cm-markdown-heading-line cm-markdown-heading-line-${level}`,
+          );
         }
 
         if (node.name === "Blockquote") {
