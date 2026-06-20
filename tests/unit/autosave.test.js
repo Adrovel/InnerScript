@@ -1,5 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { getAutosaveTitle, resolveSavedEntryState } from "../../lib/autosave.js";
+import {
+  buildAutosavePayload,
+  getAutosaveTitle,
+  resolveSavedEntryState,
+} from "../../lib/autosave.js";
 
 const savedEntry = {
   id: "entry-1",
@@ -17,6 +21,29 @@ describe("autosave helpers", () => {
     expect(getAutosaveTitle("")).toBeNull();
     expect(getAutosaveTitle("   ")).toBeNull();
     expect(getAutosaveTitle("  Real title  ")).toBe("Real title");
+  });
+
+  test("skips blank draft creates but allows existing entries to be cleared", () => {
+    expect(
+      buildAutosavePayload({
+        title: "",
+        body: "",
+        entryType: "document",
+        entryId: null,
+      }),
+    ).toBeNull();
+
+    expect(
+      buildAutosavePayload({
+        title: "  Cleared  ",
+        body: "",
+        entryType: "document",
+        entryId: savedEntry.id,
+      }),
+    ).toEqual({
+      title: "Cleared",
+      body: "",
+    });
   });
 
   test("keeps newer local body when an older save response returns late", () => {

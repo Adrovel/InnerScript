@@ -17,6 +17,7 @@ import {
 } from "@/lib/journal";
 import {
   createJournalDraft,
+  getEditorBreadcrumbItems,
   getEditorKey,
   getEditorState,
   getFolderSubtreeIds,
@@ -61,6 +62,7 @@ export function useJournalWorkspace({
   const journalFolder = useMemo(() => findDefaultJournalFolder(folders), [folders]);
   const isDraft = !selectedEntryId;
   const editorState = getEditorState({ selectedEntry, draft });
+  const breadcrumbItems = getEditorBreadcrumbItems({ folders, editorState });
 
   const {
     deletedEntryIdsRef,
@@ -284,7 +286,17 @@ export function useJournalWorkspace({
         setDeletingEntryId(null);
       }
     },
-    [deletingEntryId, entries, flushPendingSave, journalFolder, selectedEntryId],
+    [
+      deletedEntryIdsRef,
+      deletingEntryId,
+      entries,
+      flushPendingSave,
+      journalFolder,
+      pendingSaveRef,
+      runSaveRef,
+      saveTimerRef,
+      selectedEntryId,
+    ],
   );
 
   const handleDeleteFolder = useCallback(async (folder) => {
@@ -360,6 +372,7 @@ export function useJournalWorkspace({
       renamingFolderId,
     },
     topAppBarProps: {
+      breadcrumbItems,
       saveStatus,
       saveActivityId,
       onRetrySave: runSave,

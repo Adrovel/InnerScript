@@ -85,6 +85,45 @@ export function getFolderSubtreeIds(folders, rootFolderId) {
   return folderIds;
 }
 
+export function getFolderPath(folders, folderId) {
+  if (!folderId) {
+    return [];
+  }
+
+  const foldersById = new Map(folders.map((folder) => [folder.id, folder]));
+  const path = [];
+  let currentFolderId = folderId;
+
+  while (currentFolderId) {
+    const folder = foldersById.get(currentFolderId);
+
+    if (!folder) {
+      break;
+    }
+
+    path.push({
+      id: folder.id,
+      label: folder.name?.trim() || "Untitled folder",
+    });
+    currentFolderId = folder.parent_folder_id ?? null;
+  }
+
+  return path.reverse();
+}
+
+export function getEditorBreadcrumbItems({ folders, editorState }) {
+  const folderPath = getFolderPath(folders, editorState.folderId);
+  const parentItems = folderPath.length > 0
+    ? folderPath
+    : [{ id: "root", label: "Notes" }];
+  const entryLabel = editorState.title?.trim() || "Untitled";
+
+  return [
+    ...parentItems.map((item) => ({ label: item.label })),
+    { label: entryLabel, current: true },
+  ];
+}
+
 export function replaceById(items, nextItem) {
   return items.map((item) => (item.id === nextItem.id ? nextItem : item));
 }

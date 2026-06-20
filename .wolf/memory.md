@@ -66,3 +66,15 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-15 | loaded: folder/file CRUD | changed: inline rename for files/folders, empty folder delete | running: none | open: non-empty folder delete message
 2026-06-15 | loaded: journal app | changed: reduced duplicate rename/list/skeleton code | running: none | open: none
 2026-06-15 | loaded: journal app split | changed: app shell, workspace hook, autosave hook, state helpers | running: none | open: none
+2026-06-17 | loaded: Markdown editor plan, Next docs | changed: CodeMirror live Markdown editor, inactive heading/list marker polish, react-markdown renderer helper, autosave clear fix, local entries/sources cleared | running: next 3000 existing | open: export route later
+2026-06-17 | loaded: Markdown editor, Next dev docs | changed: autosave echo guard, Webpack build script, 127 dev origin, buglogs | running: next 3000 existing | open: none
+2026-06-18 | loaded: markdown editor, user screenshot | changed: fixed inactive heading/list prefix spacing and logged bugs | running: stale 3000 listener only | open: browser smoke blocked by local browser setup
+2026-06-18 | loaded: wolf docs | changed: removed browser tool name refs from wolf docs | running: stale 3000 listener only | open: none
+2026-06-18 | loaded: markdown editor screenshot | changed: inactive inline markdown markers hidden, bug logged | running: stale 3000 listener only | open: none
+2026-06-18 | loaded: markdown editor heading bug | changed: heading markers replaced, token sizes added, bug logged | running: stale 3000 listener only | open: none
+2026-06-19 | loaded: markdown editor, Next CSS docs | changed: moved editor styling into editorTheme.css import | running: next 3000 existing | open: none
+2026-06-19 | loaded: markdown renderer refs | changed: removed unused react-markdown renderer and packages | running: next 3000 existing | open: none
+2026-06-19 | loaded: markdown editor helper | changed: heading prefix hide keeps extra spaces as text | running: none | open: none
+2026-06-19 | loaded: editor layout | changed: editor column narrowed | running: next 3000 existing | open: none
+2026-06-19 | loaded: top bar and shadcn breadcrumb | changed: navbar breadcrumb left, save state right | running: next 3000 existing | open: none
+2026-06-20 | loaded: sidebar/top bar context | changed: inline sidebar expand in top bar, no breadcrumb overlap | running: next 3001, existing 3000 occupied | open: none

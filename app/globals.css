@@ -293,6 +293,7 @@
     line-height: var(--text-body-ui--line-height);
     font-weight: var(--text-body-ui--font-weight);
   }
+
 }
 
 ::-webkit-scrollbar {

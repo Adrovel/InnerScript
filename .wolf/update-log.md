@@ -80,3 +80,14 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-15 | Prithvi+Codex | sidebar UI | folder add/options controls now sit inside the folder row hover surface | open: none
 2026-06-15 | Prithvi+Codex | sidebar UI | file and folder option menus share one rename/delete menu and use generic labels | open: none
 2026-06-15 | Prithvi+Codex | sidebar UI | empty folders no longer render an empty expanded subtree | open: none
+2026-06-17 | Prithvi+Codex | editor UX | journal body uses CodeMirror live Markdown editing with inactive heading/list marker polish, raw Markdown autosave, and react-markdown renderer helper | open: export route wiring later
+2026-06-17 | Codex | markdown/build | guarded CodeMirror prop sync from autosave echo, fixed hook warning, and made build use Webpack | open: browser stress review
+2026-06-17 | Codex | local dev | allowed 127.0.0.1 as a Next dev origin for browser verification | open: none
+2026-06-18 | Codex | editor UX | inactive Markdown headings/lists now hide full marker prefixes and spacing is tighter | open: browser visual smoke blocked by local browser setup
+2026-06-18 | Codex | editor UX | Markdown heading prefixes now disappear and H1/H2/H3 render at heading sizes | open: none
+2026-06-19 | Codex | editor UX | CodeMirror editor styling moved from globals.css into components/journal/editorTheme.css and imported by the editor | open: none
+2026-06-19 | Codex | editor cleanup | removed unused react-markdown renderer, renderer test, and renderer-only packages | open: none
+2026-06-19 | Codex | editor UX | heading marker hiding now removes only the marker plus one following space, and empty heading guard was removed | open: none
+2026-06-19 | Codex | editor layout | journal editor column narrowed for calmer writing width | open: none
+2026-06-19 | Codex | top bar | shadcn breadcrumb added to left side of journal navbar, save state kept on right | open: none
+2026-06-20 | Codex | top bar | collapsed sidebar expand control moved inline into header row, preventing breadcrumb overlap | open: none

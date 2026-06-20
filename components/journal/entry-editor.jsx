@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { MarkdownEditor } from "./markdown-editor";
 import {
   countWords,
   formatEntryCreated,
@@ -26,8 +27,10 @@ export function EntryEditor({
   const titleValueRef = useRef(title);
   const bodyValueRef = useRef(body);
 
-  titleValueRef.current = title;
-  bodyValueRef.current = body;
+  useEffect(() => {
+    titleValueRef.current = title;
+    bodyValueRef.current = body;
+  }, [body, title]);
 
   useEffect(() => {
     const currentTitle = titleValueRef.current;
@@ -43,8 +46,7 @@ export function EntryEditor({
 
     if (focusTarget === "entry-end") {
       if (currentBody.length > 0) {
-        bodyRef.current?.focus();
-        bodyRef.current?.setSelectionRange(currentBody.length, currentBody.length);
+        bodyRef.current?.focusEnd();
         return;
       }
 
@@ -71,7 +73,7 @@ export function EntryEditor({
 
   return (
     <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto scroll-smooth bg-surface">
-      <div className="mx-auto flex min-h-full w-full max-w-[680px] flex-1 flex-col px-6 pb-6 pt-2xl md:max-w-[760px] md:px-10 lg:max-w-[840px] xl:max-w-[920px] xl:px-12 2xl:max-w-[1040px]">
+      <div className="mx-auto flex min-h-full w-full max-w-[640px] flex-1 flex-col px-6 pb-6 pt-2xl md:max-w-[700px] md:px-10 lg:max-w-[760px] xl:max-w-[820px] xl:px-12 2xl:max-w-[880px]">
         <div className="mb-xl">
           <div className="flex items-baseline">
             <input
@@ -85,12 +87,11 @@ export function EntryEditor({
           </div>
         </div>
 
-        <textarea
+        <MarkdownEditor
           ref={bodyRef}
           value={body}
-          onChange={(event) => onBodyChange(event.target.value)}
+          onChange={onBodyChange}
           placeholder="How was your day?"
-          className="min-h-[512px] w-full flex-1 resize-none bg-transparent font-sans text-base leading-7 text-on-background outline-none placeholder:text-on-surface-variant/50 md:text-lg md:leading-8"
         />
 
         <div className="mt-auto flex flex-col gap-2 pt-6 text-[11px] text-on-surface-variant/55 sm:flex-row sm:items-center sm:justify-between">
