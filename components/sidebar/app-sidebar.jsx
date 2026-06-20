@@ -14,7 +14,6 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { CollapsedSidebarButton } from "./collapsed-sidebar-button";
 import {
   filterSidebarEntries,
   getRootSidebarEntries,
@@ -97,10 +96,7 @@ export function AppSidebar({
   };
 
   return (
-    <>
-      <CollapsedSidebarButton />
-
-      <Sidebar
+    <Sidebar
         role="navigation"
         aria-label="InnerScript navigation"
         collapsible="offcanvas"
@@ -216,6 +212,5 @@ export function AppSidebar({
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>
-    </>
   );
 }

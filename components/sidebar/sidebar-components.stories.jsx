@@ -182,10 +182,12 @@ function EntryRowDemo({ entry, selected, ...args }) {
 export const CollapsedButton = {
   render: () => (
     <SidebarProvider defaultOpen={false} style={{ "--sidebar-width": "280px" }}>
-      <div className="min-h-32 rounded-2xl border border-sidebar-border bg-sidebar/40 p-4 text-sm text-sidebar-foreground/62">
-        Sidebar is collapsed. Use the floating button to expand it.
-        <CollapsedSidebarButton />
-      </div>
+      <header className="flex h-16 items-center border-b border-sidebar-border/70 bg-surface px-4">
+        <div className="flex min-w-0 items-center gap-2">
+          <CollapsedSidebarButton />
+          <span className="truncate text-sm text-on-surface">Journal / Morning notes</span>
+        </div>
+      </header>
     </SidebarProvider>
   ),
 };
