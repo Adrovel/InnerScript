@@ -88,3 +88,6 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-19 | Codex | editor UX | CodeMirror editor styling moved from globals.css into components/journal/editorTheme.css and imported by the editor | open: none
 2026-06-19 | Codex | editor cleanup | removed unused react-markdown renderer, renderer test, and renderer-only packages | open: none
 2026-06-19 | Codex | editor UX | heading marker hiding now removes only the marker plus one following space, and empty heading guard was removed | open: none
+2026-06-19 | Codex | editor layout | journal editor column narrowed for calmer writing width | open: none
+2026-06-19 | Codex | top bar | shadcn breadcrumb added to left side of journal navbar, save state kept on right | open: none
+2026-06-20 | Codex | top bar | collapsed sidebar expand control moved inline into header row, preventing breadcrumb overlap | open: none
