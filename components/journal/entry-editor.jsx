@@ -73,7 +73,7 @@ export function EntryEditor({
 
   return (
     <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto scroll-smooth bg-surface">
-      <div className="mx-auto flex min-h-full w-full max-w-[680px] flex-1 flex-col px-6 pb-6 pt-2xl md:max-w-[760px] md:px-10 lg:max-w-[840px] xl:max-w-[920px] xl:px-12 2xl:max-w-[1040px]">
+      <div className="mx-auto flex min-h-full w-full max-w-[640px] flex-1 flex-col px-6 pb-6 pt-2xl md:max-w-[700px] md:px-10 lg:max-w-[760px] xl:max-w-[820px] xl:px-12 2xl:max-w-[880px]">
         <div className="mb-xl">
           <div className="flex items-baseline">
             <input
