@@ -1,11 +1,12 @@
 .innerscript-markdown-editor {
-  min-height: 512px;
+  min-height: 0;
+  height: 100%;
   width: 100%;
   flex: 1;
 }
 
 .innerscript-markdown-editor .cm-editor {
-  min-height: 512px;
+  min-height: 100%;
   background: transparent;
   color: var(--color-on-background);
   font-family: var(--font-inter), sans-serif;
@@ -24,7 +25,7 @@
 }
 
 .innerscript-markdown-editor .cm-content {
-  min-height: 512px;
+  min-height: 100%;
   padding: 0;
   caret-color: var(--color-primary);
   font-family: var(--font-inter), sans-serif;
