@@ -78,4 +78,8 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-19 | loaded: editor layout | changed: editor column narrowed | running: next 3000 existing | open: none
 2026-06-19 | loaded: top bar and shadcn breadcrumb | changed: navbar breadcrumb left, save state right | running: next 3000 existing | open: none
 2026-06-20 | loaded: sidebar/top bar context | changed: inline sidebar expand in top bar, no breadcrumb overlap | running: next 3001, existing 3000 occupied | open: none
+2026-06-22 | loaded: Next SWC install state | changed: restored native darwin-arm64 SWC package, bug logged | running: existing next 3000 occupied, temp 3001 stopped | open: npm cache ownership still damaged
+2026-06-22 | loaded: schema docs and planning docs | changed: docs say entry types are note and conversation; journal uses journal_date | running: unknown | open: implement document-to-note schema rename
+2026-06-22 | loaded: roadmap docs | changed: active roadmap trimmed for fast ideation | running: unknown | open: schema rename, export, reflection question
+2026-06-22 | loaded: wolf docs rules | changed: update-log compaction rule added | running: unknown | open: none
 2026-06-22 | loaded: editor layout | changed: footer below full-height scrollable editor, Storybook frame fixed, bug logged | running: none | open: none

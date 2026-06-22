@@ -16,7 +16,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Before making code, config, dependency, or setup updates, map the request to `README.md` and the relevant `dev-docs/` notes, then load only the necessary context.
 - When an agent answers using information found in project files, include the source files it used. Prefer concise references like `dev-docs/planning/Plan.md` or `AGENTS.md`; include line numbers when useful. This is required because agents may search many files, and the reader needs to know where the answer came from.
 - Treat `dev-docs/` as guidance for implementation direction, ownership, guardrails, and Google-worthiness, not as files to automatically update.
-- Use `.wolf/update-log.md` for compact tracking of notable project updates: who changed what and what remains open.
+- Use `.wolf/update-log.md` for compact tracking of notable project updates: who changed what and what remains open. Before adding a line, check nearby recent lines. If consecutive updates are the same kind of work, summarize them into one newer line. If a nearby earlier line is made redundant by a later change, such as a feature being removed or a direction being replaced, edit or remove the redundant nearby line instead of appending noise.
 - If implementation needs conflict with `dev-docs/`, state the mismatch and ask before changing canonical docs.
 - For setup/runtime work, check `README.md`, `dev-docs/architecture/Stack-and-Tools.md`, and `dev-docs/architecture/Architecture.md`.
 - For feature/API/schema work, check `dev-docs/planning/Features.md`, `dev-docs/planning/Plan.md`, `dev-docs/planning/Atomic-Action-Plan.md`, and `.wolf/update-log.md` when update history matters.

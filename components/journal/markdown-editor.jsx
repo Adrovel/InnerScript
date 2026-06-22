@@ -2,7 +2,7 @@
 
 import "./editorTheme.css";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { Annotation, EditorState } from "@codemirror/state";
+import { Annotation, EditorState, Prec } from "@codemirror/state";
 import { HighlightStyle, syntaxHighlighting, syntaxTree } from "@codemirror/language";
 import { markdown } from "@codemirror/lang-markdown";
 import { minimalSetup } from "codemirror";
@@ -11,6 +11,7 @@ import {
   EditorView,
   ViewPlugin,
   WidgetType,
+  keymap,
   placeholder as placeholderExtension,
 } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
@@ -30,6 +31,7 @@ const markdownHighlightStyle = HighlightStyle.define([
 ]);
 
 const reactSyncAnnotation = Annotation.define();
+const EMPTY_QUOTE_LINE_PATTERN = /^\s*>\s*$/;
 
 const markdownTreeDecorations = ViewPlugin.fromClass(
   class {
@@ -70,6 +72,8 @@ class MarkdownSyntaxWidget extends WidgetType {
 }
 
 const HEADING_LEVEL_PATTERN = /^(?:ATX|Setext)Heading(\d)$/;
+const QUOTE_ATTRIBUTION_PATTERN = /^\s*>\s*(?:—|--)\s+\S/;
+const DOUBLE_HYPHEN_QUOTE_ATTRIBUTION_PATTERN = /^(\s*>\s*)--(?=\s+\S)/;
 
 const INLINE_SYNTAX_MARKS = new Set([
   "EmphasisMark",
@@ -99,6 +103,33 @@ function addLineDecorationsForRange(doc, ranges, from, to, className) {
 
   for (let lineNumber = startLine; lineNumber <= endLine; lineNumber += 1) {
     addLineDecoration(ranges, doc.line(lineNumber).from, className);
+  }
+}
+
+function decorateBlockquoteLines(doc, ranges, from, to) {
+  const startLine = doc.lineAt(from).number;
+  const endLine = doc.lineAt(to).number;
+
+  for (let lineNumber = startLine; lineNumber <= endLine; lineNumber += 1) {
+    const line = doc.line(lineNumber);
+    const doubleHyphenAttribution = DOUBLE_HYPHEN_QUOTE_ATTRIBUTION_PATTERN.exec(line.text);
+    const className = QUOTE_ATTRIBUTION_PATTERN.test(line.text)
+      ? "cm-markdown-quote-line cm-markdown-quote-attribution-line"
+      : "cm-markdown-quote-line";
+
+    addLineDecoration(ranges, line.from, className);
+
+    if (doubleHyphenAttribution) {
+      const markerFrom = line.from + doubleHyphenAttribution[1].length;
+
+      addReplaceDecoration(
+        ranges,
+        markerFrom,
+        markerFrom + 2,
+        "—",
+        "cm-markdown-syntax-marker",
+      );
+    }
   }
 }
 
@@ -132,6 +163,37 @@ function addHiddenReplaceDecoration(ranges, from, to) {
     ranges.push(Decoration.replace({}).range(from, to));
   }
 }
+
+function removeEmptyQuoteMarkerOnEnter(view) {
+  const selection = view.state.selection.main;
+
+  if (!selection.empty) {
+    return false;
+  }
+
+  const line = view.state.doc.lineAt(selection.from);
+
+  if (!EMPTY_QUOTE_LINE_PATTERN.test(line.text)) {
+    return false;
+  }
+
+  view.dispatch({
+    changes: { from: line.from, to: line.to, insert: "\n" },
+    selection: { anchor: line.from + 1 },
+    scrollIntoView: true,
+  });
+
+  return true;
+}
+
+const markdownKeymap = Prec.highest(
+  keymap.of([
+    {
+      key: "Enter",
+      run: removeEmptyQuoteMarkerOnEnter,
+    },
+  ]),
+);
 
 function markerPrefixEnd(line, markerEnd) {
   let end = Math.min(markerEnd, line.to);
@@ -229,7 +291,7 @@ function buildTreeDecorations(view) {
         }
 
         if (node.name === "Blockquote") {
-          addLineDecorationsForRange(doc, ranges, node.from, node.to, "cm-markdown-quote-line");
+          decorateBlockquoteLines(doc, ranges, node.from, node.to);
         }
 
         if (node.name === "FencedCode") {
@@ -252,7 +314,14 @@ function buildTreeDecorations(view) {
         }
 
         if (node.name === "QuoteMark") {
-          addMarkDecoration(ranges, node.from, node.to);
+          const line = doc.lineAt(node.from);
+
+          decorateMarkerPrefix(ranges, {
+            from: node.from,
+            markerEnd: node.to,
+            line,
+            isActive: isActiveLine(view, line),
+          });
         }
 
         if (node.name === "ListMark") {
@@ -326,6 +395,7 @@ export const MarkdownEditor = forwardRef(function MarkdownEditor(
       doc: initialConfig.value,
       extensions: [
         minimalSetup,
+        markdownKeymap,
         markdown({ completeHTMLTags: false }),
         syntaxHighlighting(markdownHighlightStyle),
         markdownTreeDecorations,

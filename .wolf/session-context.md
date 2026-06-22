@@ -59,7 +59,7 @@ Expected file changes:
   - `dev-docs/architecture/Architecture.md`
   - `dev-docs/planning/Future-Plan.md`
   - `dev-docs/guardrails/Direction-Guardrails.md`
-- `.wolf/update-log.md` for a notable compact update
+- `.wolf/update-log.md` for a notable compact update. Summarize consecutive similar updates into one nearby line when possible.
 - `.wolf/memory.md` at session end or half-context checkpoint
 
 ## If Joel Gives UI/Product Review While Using The App
@@ -112,7 +112,7 @@ Expected file changes:
 
 For each durable change, make authorship clear in the relevant file:
 
-- `.wolf/update-log.md`: use compact `date | who | area | changed | open` lines.
+- `.wolf/update-log.md`: use compact `date | who | area | changed | open` lines. Before adding a line, check nearby recent lines. If the new update continues the same work, update the existing nearby line to summarize the final state. If a nearby line is made obsolete by a removal, reversal, or replacement, remove or rewrite that nearby line instead of keeping both.
 - `Product-Decisions.md`: product decisions are Joel decisions unless noted otherwise.
 - `Team-Communication.md`: question entries include `Asked by` and `Asked to`.
 - `.wolf/buglog.jsonl`: the `fix` field should say what was changed, not hide the actor.

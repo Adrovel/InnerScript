@@ -1,49 +1,41 @@
 # InnerScript Plan
 
-Purpose: phase the work so Joel and Prithvi can build in parallel while keeping the project aligned with Google SWE L3 signal.
+Purpose: keep the active roadmap small enough for fast ideation while preserving the long-term direction as optional depth.
 
-Update tracking: use `.wolf/update-log.md` for compact project updates. Use this plan for phase roadmap and deliverables.
+Update tracking: use `.wolf/update-log.md` for compact project updates. Summarize nearby similar updates instead of appending noisy repeated lines. Use this plan for current phase roadmap and deliverables.
 
 ## Progress
 
-Overall: [###-------] 26%
+Overall active roadmap: [#######---] 70%
 
 Notification rule: when overall roadmap progress reaches or crosses 40%, tell Joel explicitly in the same session before moving on.
 
+Roadmap crossed 40% on 2026-06-22 because redundant deferred phases were removed from the active denominator.
+
 | Phase | Progress | Notes |
 |---|---:|---|
-| Phase 0 - Direction Lock | [#######---] 70% | thesis, docs, feature ranking, and schema direction are mostly clear; Drizzle rationale and a few architecture choices remain |
-| Phase 1 - Local Journal Core | [######----] 65% | entries/sources schema, CRUD APIs, editor, autosave, visible save state, and focused autosave tests exist; export/today/delete polish remain |
-| Phase 1.5 - Product Clarity And Local UI Review | [########--] 85% | local server review captured, UI feedback stored in `.wolf/user-review.md`, sidebar/editor polish mostly confirmed; autosave browser stress remains |
-| Phase 2 - Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
-| Phase 3 - Semantic Core | [----------] 0% | deferred until journal loop is reliable |
-| Phase 4 - Imports | [----------] 0% | deferred |
-| Phase 5 - Freeform People Notes | [----------] 0% | deferred |
-| Phase 6 - Source-Backed Insights | [----------] 0% | deferred |
-| Phase 7 - Systems/Hosted | [----------] 0% | deferred |
+| Phase 0 - Direction Lock | [########--] 80% | thesis, product guardrails, and schema direction are clear; Drizzle rationale remains open |
+| Phase 1 - Local Journal Workspace | [########--] 82% | CRUD, folders, nested sidebar, Markdown editor, autosave, save state, rename/delete, and focused tests exist |
+| Phase 1.5 - Product Clarity And UI Review | [#########-] 90% | local review feedback is captured; sidebar/editor/top-bar polish is mostly complete |
+| Phase 2 - One Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
+| Phase 3 - Semantic Search Seed | [----------] 0% | next AI-systems layer after reflection and export; keep it small |
+| Later - Optional Integrations And Systems | [----------] 0% | imports, people analytics, dashboards, hosted auth, and Go/Redis are not active fast-ideation work |
 
-## Priority Order
+## Fast Ideation Rule
 
-1. Keep the development-phase app simple enough to build and run locally.
-2. Build a useful therapy/reflection-first journaling loop.
-3. Preserve the Google-signal project path without forcing every later system into the MVP.
-4. Learn agentic AI and AI systems.
-5. Prepare for eventual consumer monetization.
+If a feature does not help a person write, organize, reflect, export, or search their own text quickly, it is not active roadmap work.
 
-## Development Simplicity Rule
-
-The long-term vision can stay ambitious, but the development app should stay small.
+Keep long-range ideas in planning notes or `Future-Plan.md`; do not count them as unfinished MVP work.
 
 Prefer:
 
-- manual entries before imports
-- one journal-first home screen before dashboards
-- one reflection question after writing before multi-mode AI
-- local Postgres before hosted infrastructure
-- export before advanced analytics
-- simple freeform people notes before people graphs
+- manual writing before imports
+- folders and notes before dashboards
+- one reflection question before modes or broad analysis
+- export before hosted features
+- small semantic search before graph systems
 
-Defer:
+Defer out of the active roadmap:
 
 - AI people conversation UI
 - relationship analytics
@@ -51,394 +43,145 @@ Defer:
 - OCR and note-app imports
 - Go/Redis rate limiter
 - hosted auth, billing, quotas, and consumer infrastructure
+- weekly digest and challenge mode
 
-## Development Phase Roadmap
+## Current Implementation
 
-### Phase 1 - Simple Local Journal
+Already implemented:
 
-Goal: write, save, list, open, and edit entries without friction.
+- entries and sources schema
+- folder schema and folder APIs
+- Journal seeded as default folder
+- daily journals represented by `journal_date`
+- entry CRUD APIs
+- folder CRUD APIs, including nested folder deletion
+- sidebar with nested folders, root notes, create, rename, delete, and selected-file highlight
+- shadcn sidebar primitives and cleaner top/sidebar structure
+- CodeMirror live Markdown editor
+- raw Markdown autosave
+- visible save state
+- stale-save protection tests
+- Storybook coverage for sidebar and journal surfaces
+- top-bar breadcrumb
+- collapsed sidebar expand control inside the header row
 
-### Phase 1.5 - Local UI Review And Friction Removal
+Known mismatch:
 
-Goal: use Joel's local feedback to remove friction before adding intelligence.
+- docs now say entry types are `note` and `conversation`, but implementation still uses `document` and `conversation`.
 
-Current UI rules from review:
+## Active Roadmap
 
-- no dead Share or More buttons
-- Refresh means reload entries from the database
-- left notes sidebar should be simple and calm
-- New Note should create/select a real note immediately
-- created/edited metadata must not sit between title and body
+### Phase 0 - Direction Lock
+
+Goal: keep the product thesis and schema direction clear enough for fast implementation.
+
+Done:
+
+- product thesis captured
+- product decisions captured
+- open questions file exists
+- active roadmap favors local journal and reflection over broad systems
+- schema direction says daily journal is `journal_date`, not a separate entry type
+
+Open:
+
+- get Prithvi's Drizzle rationale
+- finish schema rename from `document` to `note`
+- keep product decisions updated when direction changes
+
+### Phase 1 - Local Journal Workspace
+
+Goal: make InnerScript useful as a plain local journal before AI.
+
+Done:
+
+- write, save, list, open, edit, rename, and delete entries
+- create, rename, nest, and delete folders
+- create journal entries in the Journal folder
+- show folder/file structure in the sidebar
+- edit Markdown directly with polished inactive marker behavior
+- protect autosave from stale-save text loss
+
+Open:
+
+- add Markdown export
+- finish `document` to `note` schema rename
+- keep local setup reliable
+- keep tests aligned with entry/folder behavior
+
+Exit criteria:
+
+- a user can write and save locally without AI
+- a user can export their text
+- tests cover CRUD, autosave, folders, and export
+- no AI key is required for core journaling
+
+### Phase 1.5 - Product Clarity And UI Review
+
+Goal: remove writing friction before adding intelligence.
+
+Done:
+
+- local UI feedback captured in `.wolf/user-review.md`
+- dead top-bar controls removed
+- metadata moved away from title/body flow
+- sidebar simplified and polished
+- editor width, Markdown marker behavior, and breadcrumb placement improved
+
+Open:
+
+- decide whether the Alexandria style is permanent or temporary
+- continue only UI polish that makes writing easier
 
 ### Phase 2 - One Reflection Question
 
-Goal: after writing, ask one grounded reflection question from the current entry.
+Goal: add the first AI moment without turning the app into broad analysis.
 
-Do not add broad analysis yet. One entry means entry-specific reflection only.
+Rules:
 
-### Phase 3 - Semantic Core
+- use only the current entry
+- ask one grounded reflection question
+- do not summarize the user's life
+- do not diagnose
+- hide or disable the flow when AI is unavailable
 
-Goal: chunk, embed, search, and cite entries after the journal loop is stable.
+Open:
 
-### Phase 4 - Imports
+- write the reflection-question tone
+- define the current-entry-only prompt contract
+- add the smallest API path
+- add a subtle UI trigger after writing
+- test current-entry-only prompt input and AI-unavailable behavior
 
-Goal: bring in Markdown/text/OCR/external-tool exports/chats with provenance after manual entries are reliable.
+### Phase 3 - Semantic Search Seed
 
-### Phase 5 - Freeform People Notes
+Goal: add the smallest useful source-backed search path after reflection and export.
 
-Goal: support freeform relationship notes before structured people analytics.
+Open:
 
-### Phase 6 - Source-Backed Insights
+- define chunk shape
+- add chunks table
+- add chunking after entry save
+- add embedding adapter or mocked local path
+- return source snippets
+- add a tiny evaluation set
 
-Goal: weekly digest, patterns, assumptions, and challenge mode with citations.
+Do not expand this into dashboards, graph systems, people analytics, or broad life analysis during fast ideation.
 
-### Phase 7 - Systems And Hosted Profile
+## Later Ideas
 
-Goal: Go/Redis limiter and hosted consumer mode after the local product has value.
+These are useful later, but not active roadmap blockers:
 
-## Phase 0 - Reset and Contracts
-
-Goal: make the project direction unambiguous.
-
-Deliverables:
-
-- `planning/Features.md`
-- `architecture/Architecture.md`
-- `architecture/Stack-and-Tools.md`
-- `research/Semantic-Meaning-Research.md`
-- schema draft
-- API contract draft
-
-Owner:
-
-- Joel owns direction and final architecture.
-- Prithvi reviews for implementation clarity.
-
-## Phase 1 - Local Journal Core
-
-Goal: a clean local journaling app that feels like therapy/reflection software first and does not depend on AI.
-
-Deliverables:
-
-- entries schema
-- sources schema
-- minimal editor
-- autosave
-- daily entry
-- Markdown export
-- `.env.example`
-- local setup doc
-- AI-off mode
-- reflection-first UI language and empty states
-- no dashboard, import, or AI people work in Phase 1
-
-Joel:
-
-- define UX rules and data model
-- define therapy/reflection tone for the write-first loop
-- review schema and privacy behavior
-
-Prithvi:
-
-- implement entry CRUD
-- implement export endpoint
-- write setup docs
-- add tests for create/save/export
-
-Google signal:
-
-- component ownership
-- clean data model
-- product judgment
-
-Simplicity rule:
-
-- If a Phase 1 task makes local setup, writing, saving, or export harder, defer it unless it is required for data safety.
-
-## Phase 2 - Reflection Question
-
-Goal: add the first AI moment without making the app feel heavy.
-
-Deliverables:
-
-- reflection-question button or subtle prompt after writing
-- current-entry-only prompt contract
-- no broad user analysis from one entry
-- hidden or disabled if AI is unavailable
-
-Joel:
-
-- define the first reflection-question tone
-- approve safe language
-
-Prithvi:
-
-- implement the smallest UI/API path after contract is clear
-
-Google signal:
-
-- responsible AI behavior
-- product restraint
-
-## Phase 3 - Semantic Core
-
-Goal: convert text into searchable semantic memory.
-
-Deliverables:
-
-- chunking engine
-- embedding adapter
-- `chunks` table
-- pgvector search endpoint
-- search UI with source snippets
-- evaluation seed set for search quality
-
-Joel:
-
-- define chunking rules
-- define search evaluation queries
-- review retrieval behavior
-
-Prithvi:
-
-- implement chunking
-- implement embedding jobs
-- implement search API/UI
-- add tests for chunking and retrieval
-
-Google signal:
-
-- dense retrieval
-- vector indexing
-- evaluation discipline
-- lexical vs semantic search tradeoffs
-
-## Phase 4 - Voice and Imports
-
-Goal: support real personal data beyond typed journal entries.
-
-Deliverables:
-
-- browser voice capture
-- transcription endpoint
-- transcript review screen
-- Markdown importer
-- `.txt` importer
-- OCR-normalized physical note import path
-- Obsidian / Google Keep / note-app export import path
-- external tools export/import agent for user-owned exports from tools such as WhatsApp, Telegram, Docs, Notion, email, and SMS
-- import preview and confirm flow
-- source provenance in UI
-
-Joel:
-
-- define privacy rules for audio and imported chats
-- define import UX
-- define first external-tool export targets and parser assumptions
-
-Prithvi:
-
-- implement import parsers through the external-tools import agent shape
-- implement import preview
-- implement voice capture UI
-- wire transcription endpoint
-- test parser edge cases
-
-Google signal:
-
-- ingestion pipeline
-- parser design
-- privacy-sensitive engineering
-- async processing
-
-## Phase 5 - Freeform People Notes
-
-Goal: start relationship memory as freeform notes before structured people analytics.
-
-Deliverables:
-
-- people schema
-- `/people`
-- `/people/[id]`
-- aliases
-- relationship type and description fields
-
-Sentence-level people mentions, interaction timelines, and generated people insights are deferred to `dev-docs/planning/Future-Plan.md`.
-
-Joel:
-
-- define person-page language and safety rules
-- define profile field rules
-
-Prithvi:
-
-- implement people CRUD
-- implement person pages
-- add tests for people APIs
-
-Google signal:
-
-- entity modeling
-- privacy and product judgment
-
-## Phase 6 - Insight Layer
-
-Goal: turn stored text into source-backed patterns.
-
-Deliverables:
-
-- mood/topic metadata extraction
+- imports from Markdown/text/OCR/external tools
+- voice journaling
+- people pages
+- relationship timelines
 - weekly digest
 - assumption extraction
-- challenge-this flow
-- reflection mode switcher
-- thinker/personality perspective mode prototype
-- contradiction/change detector
-- insight dashboard
+- challenge mode
+- thinker/personality perspective modes
+- Graph RAG
+- Go/Redis rate limiter
+- hosted auth, billing, quotas, backups, and multi-user infrastructure
 
-Joel:
-
-- own prompts and insight taxonomy
-- own assumption extraction contract
-- own challenge-mode behavior
-- own mode contracts for gentle coach, brutally honest analyst, therapist-like reflector, philosopher/debater, and writing/thinking coach
-- define safe labeling for thinker/personality perspective modes
-
-Prithvi:
-
-- implement metadata storage
-- implement dashboard components
-- implement digest persistence
-- write tests for API contracts and empty states
-
-Google signal:
-
-- structured LLM extraction
-- RAG with provenance
-- responsible AI design
-
-Thinker/personality perspective modes are visible in the MVP roadmap but should not replace journal, source, search, and provenance foundations. They must be labeled as simulations or lenses, not the real person.
-
-## Phase 7 - Go Distributed Rate Limiter
-
-Goal: build the explicit systems component that strengthens the Google signal.
-
-Deliverables:
-
-- Go service
-- gRPC or HTTP API
-- Redis Lua token bucket
-- sliding window counter
-- feature quota config
-- Prometheus metrics
-- load test
-- failure-mode tests
-- integration with Next.js hosted profile
-
-Protected features:
-
-- transcription
-- embeddings
-- note analysis
-- semantic search
-- weekly digest
-- challenge chat
-
-Joel:
-
-- own Go architecture
-- implement core limiter algorithm
-- write system design explanation
-- write load-test interpretation
-
-Prithvi:
-
-- help with integration client in Next.js
-- implement config UI or config file support
-- write integration tests
-- help produce benchmark data
-
-Google signal:
-
-- Go proficiency
-- Redis atomicity
-- concurrency
-- distributed consistency tradeoffs
-- observability
-
-## Phase 8 - Hosted Consumer Mode
-
-Goal: turn the local project into a possible product without corrupting local-first trust.
-
-Deliverables:
-
-- auth
-- user ownership columns
-- hosted database isolation
-- billing gates
-- account export/delete
-- backups
-- background jobs
-- quota enforcement with Go limiter
-
-Joel:
-
-- product/business boundaries
-- privacy and billing decisions
-
-Prithvi:
-
-- implementation slices after architecture is frozen
-
-Google signal:
-
-- production readiness
-- multi-tenant data isolation
-- cost controls
-
-## Immediate Work Split
-
-### Joel - Next 5 Tasks
-
-1. Finalize schema for `entries`, `sources`, `chunks`, `people`, `interactions`.
-2. Write prompt contracts for metadata, assumptions, weekly digest.
-3. Define semantic search evaluation queries.
-4. Specify Go rate limiter API contract.
-5. Review every feature for Google interview explanation.
-
-### Prithvi - Next 5 Tasks
-
-1. Add `.env.example` and local setup doc.
-2. Implement entry/source CRUD around the new model.
-3. Implement Markdown and text import parser.
-4. Implement Markdown export.
-5. Add tests for entry CRUD, import parsing, and export.
-
-## Resume Target
-
-The finished project should support a resume bullet like:
-
-> Built InnerScript, a local-first AI journaling and semantic memory system that ingests typed notes, voice transcripts, and external-tool exports, chunks and indexes text with pgvector for semantic search, generates source-backed personal insights with LLMs, and protects hosted AI endpoints with a Go/Redis distributed rate limiter.
-
-## Google Signal
-
-Source: `Personal Repo/04-Career/Organised/Projects/Google-Project-Googliness-Algorithm.md`
-
-| Dimension | Score |
-|---|---:|
-| Role Skill Alignment | 22/25 |
-| Engineering Depth | 18/20 |
-| Current Standing / Proof | 14/20 |
-| Technical + Business Prospect | 13/15 |
-| Googleyness Story | 7/10 |
-| Level Fit | 8/10 |
-| **Total** | **82/100** |
-
-Read: InnerScript is the strongest Google technical signal: AI/RAG, semantic search, local-first data ownership, pgvector, retrieval quality, and database-backed product design.
-
-Upgrade path:
-
-- Add a standalone RAG backend/service with measurable p95/p99 latency.
-- Add evaluation cases for retrieval quality.
-- Add import/export and source-backed answer citations.
-- Write one architecture doc covering chunking, embeddings, indexing, privacy, and failure modes.
+Move a later idea into the active roadmap only when it directly supports fast writing, reflection, export, or search.

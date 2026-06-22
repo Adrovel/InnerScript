@@ -113,13 +113,17 @@ user_id nullable in local mode
 title
 body
 entry_type
+folder_id
+journal_date
 source_id
 occurred_at
 created_at
 updated_at
 ```
 
-Current `entry_type` values are defined in `db/schema.js`: `journal`, `note`, and `conversation`.
+Canonical `entry_type` values should be `note` and `conversation`.
+
+Use `note` for user-authored writing, imported note-like text, and daily journal pages. A daily journal is a note with `journal_date` set, not a separate entry type. Use `conversation` only when the text shape is chat/conversation-like, usually through an import or ingestion flow.
 
 ### `sources`
 

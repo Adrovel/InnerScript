@@ -203,7 +203,7 @@ Reasoning:
 
 Docs updated:
 - `dev-docs/guardrails/Direction-Guardrails.md`
-- `.wolf/update-log.md`
+- `.wolf/update-log.md` as a compact summary, merging nearby similar updates when useful
 
 When a decision is made, add it in this format:
 
