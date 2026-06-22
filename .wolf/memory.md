@@ -78,3 +78,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-19 | loaded: editor layout | changed: editor column narrowed | running: next 3000 existing | open: none
 2026-06-19 | loaded: top bar and shadcn breadcrumb | changed: navbar breadcrumb left, save state right | running: next 3000 existing | open: none
 2026-06-20 | loaded: sidebar/top bar context | changed: inline sidebar expand in top bar, no breadcrumb overlap | running: next 3001, existing 3000 occupied | open: none
+2026-06-22 | loaded: Next SWC install state | changed: restored native darwin-arm64 SWC package, bug logged | running: existing next 3000 occupied, temp 3001 stopped | open: npm cache ownership still damaged

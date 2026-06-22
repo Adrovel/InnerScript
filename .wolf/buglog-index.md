@@ -36,6 +36,7 @@ Source log: `buglog.jsonl`
 | innerscript-bug-028 | 2026-06-18 | journal, markdown, codemirror, editor, ui | `components/journal/markdown-editor.jsx` | Inactive inline Markdown formatting still showed raw delimiter marks such as `**bold**`. | Inline syntax markers are hidden on inactive lines and visible only on the active line; browser smoke confirmed `**` markers compute to `display: none`. |
 | innerscript-bug-029 | 2026-06-18 | journal, markdown, codemirror, editor, ui, headings | `components/journal/markdown-editor.jsx`; `app/globals.css` | Markdown headings still showed raw `#` marker text and heading content stayed body-sized. | Heading prefixes now use replace decorations and heading token classes carry their own sizes; browser smoke confirmed `H1/H2/H3` render without `#` at 30/24/20px. |
 | innerscript-bug-030 | 2026-06-20 | journal, sidebar, breadcrumb, top-bar, ui | `components/journal/top-app-bar.jsx`; `components/sidebar/collapsed-sidebar-button.jsx` | Closed desktop sidebar expand button could overlap the breadcrumb. | Collapsed expand control now renders inline in the top app bar header row instead of as a fixed overlay. |
+| innerscript-bug-031 | 2026-06-22 | nextjs, swc, wasm, dependencies, local-setup, npm-cache | `node_modules/@next/swc-darwin-arm64`; npm cache | Next dev warned native `@next/swc-darwin-arm64` was not installed and fell back to WASM bindings. | Removed broken generated SWC folders and reinstalled with a writable npm cache; native SWC now loads. `~/.npm` still has ownership damage. |
 
 ## Logging Rule
 
