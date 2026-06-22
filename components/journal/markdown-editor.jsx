@@ -72,7 +72,8 @@ class MarkdownSyntaxWidget extends WidgetType {
 }
 
 const HEADING_LEVEL_PATTERN = /^(?:ATX|Setext)Heading(\d)$/;
-const QUOTE_ATTRIBUTION_PATTERN = /^\s*>\s*(?:—|--|-)\s+\S/;
+const QUOTE_ATTRIBUTION_PATTERN = /^\s*>\s*(?:—|--)\s+\S/;
+const DOUBLE_HYPHEN_QUOTE_ATTRIBUTION_PATTERN = /^(\s*>\s*)--(?=\s+\S)/;
 
 const INLINE_SYNTAX_MARKS = new Set([
   "EmphasisMark",
@@ -111,11 +112,24 @@ function decorateBlockquoteLines(doc, ranges, from, to) {
 
   for (let lineNumber = startLine; lineNumber <= endLine; lineNumber += 1) {
     const line = doc.line(lineNumber);
+    const doubleHyphenAttribution = DOUBLE_HYPHEN_QUOTE_ATTRIBUTION_PATTERN.exec(line.text);
     const className = QUOTE_ATTRIBUTION_PATTERN.test(line.text)
       ? "cm-markdown-quote-line cm-markdown-quote-attribution-line"
       : "cm-markdown-quote-line";
 
     addLineDecoration(ranges, line.from, className);
+
+    if (doubleHyphenAttribution) {
+      const markerFrom = line.from + doubleHyphenAttribution[1].length;
+
+      addReplaceDecoration(
+        ranges,
+        markerFrom,
+        markerFrom + 2,
+        "—",
+        "cm-markdown-syntax-marker",
+      );
+    }
   }
 }
 
