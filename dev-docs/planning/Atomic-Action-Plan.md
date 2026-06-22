@@ -8,7 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall active checkbox progress: [#######---] 70% - 38/54 visible tasks
+Overall active checkbox progress: [########--] 76% - 41/54 visible tasks
 
 Notification rule: when overall checkbox progress reaches or crosses 40%, tell Joel explicitly in the same session before moving on.
 
@@ -16,8 +16,8 @@ The active checklist crossed 40% on 2026-06-22 because deferred long-range work 
 
 | Phase | Checkbox progress |
 |---|---|
-| Phase 0 - Direction Lock | [########--] 8/10 tasks |
-| Phase 1 - Local Journal Workspace | [########--] 26/31 tasks |
+| Phase 0 - Direction Lock | [#########-] 9/10 tasks |
+| Phase 1 - Local Journal Workspace | [#########-] 28/31 tasks |
 | Phase 1.5 - Product Clarity And UI Review | [########--] 4/5 tasks |
 | Phase 2 - One Reflection Question | [----------] 0/5 tasks |
 | Phase 3 - Semantic Search Seed | [----------] 0/3 tasks |
@@ -65,7 +65,7 @@ Goal: keep the product direction clear enough for fast implementation.
 - [X] Capture open product questions in `dev-docs/team/Open-Questions.md`.
 - [X] Keep product decisions in `dev-docs/team/Product-Decisions.md`.
 - [ ] Get Prithvi's Drizzle rationale.
-- [ ] Finish implementation schema rename from `document` to `note`.
+- [X] Finish implementation schema rename from `document` to `note`.
 
 ## Phase 1 - Local Journal Workspace
 
@@ -82,8 +82,8 @@ Goal: make InnerScript useful as a local Markdown journal without AI.
 - [X] Store daily journals with `journal_date`.
 - [X] Add entry CRUD tests.
 - [X] Add folder API tests.
-- [ ] Rename manual entry type from `document` to `note`.
-- [ ] Update tests after the entry type rename.
+- [X] Rename manual entry type from `document` to `note`.
+- [X] Update tests after the entry type rename.
 
 ### Writing Surface
 

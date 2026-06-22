@@ -29,6 +29,13 @@
       "when": 1781248767267,
       "tag": "0003_seed_journal_folder",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1782162202640,
+      "tag": "0004_abandoned_kat_farrell",
+      "breakpoints": true
     }
   ]
 }

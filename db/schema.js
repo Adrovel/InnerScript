@@ -12,7 +12,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-export const ENTRY_TYPES = ["document", "conversation"];
+export const ENTRY_TYPES = ["note", "conversation"];
 export const SOURCE_TYPES = ["manual", "voice", "markdown", "text_file", "whatsapp_export"];
 
 export const entryTypeEnum = pgEnum("entry_type", ENTRY_TYPES);
@@ -72,7 +72,7 @@ export const entries = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     title: text("title"),
     body: text("body").notNull(),
-    entryType: entryTypeEnum("entry_type").notNull().default("document"),
+    entryType: entryTypeEnum("entry_type").notNull().default("note"),
     folderId: uuid("folder_id").references(() => folders.id, {
       onDelete: "restrict",
       onUpdate: "cascade",

@@ -19,7 +19,7 @@ function params(id) {
 }
 
 describe("entries API", () => {
-  test("creates and reads a manual document with no source or folder", async () => {
+  test("creates and reads a manual note with no source or folder", async () => {
     const createdResponse = await POST(
       jsonRequest("http://localhost/api/entries", {
         title: "Today",
@@ -32,7 +32,7 @@ describe("entries API", () => {
     expect(created.entry).toMatchObject({
       title: "Today",
       body: "A manually written entry.",
-      entry_type: "document",
+      entry_type: "note",
       folder_id: null,
       journal_date: null,
       source_id: null,
@@ -80,7 +80,7 @@ describe("entries API", () => {
     expect(response.status).toBe(201);
     expect(payload.entry).toMatchObject({
       title: "Interview notes",
-      entry_type: "document",
+      entry_type: "note",
       folder_id: folder.id,
       journal_date: "2026-06-11",
     });
@@ -110,7 +110,7 @@ describe("entries API", () => {
 
     expect(journalResponse.status).toBe(201);
     expect(journalPayload.entry).toMatchObject({
-      entry_type: "document",
+      entry_type: "note",
       journal_date: "2026-06-11",
     });
 
@@ -125,7 +125,7 @@ describe("entries API", () => {
 
     expect(noteResponse.status).toBe(201);
     expect(notePayload.entry).toMatchObject({
-      entry_type: "document",
+      entry_type: "note",
       journal_date: null,
     });
   });

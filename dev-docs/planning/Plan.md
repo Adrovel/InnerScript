@@ -14,8 +14,8 @@ Roadmap crossed 40% on 2026-06-22 because redundant deferred phases were removed
 
 | Phase | Progress | Notes |
 |---|---:|---|
-| Phase 0 - Direction Lock | [########--] 80% | thesis, product guardrails, and schema direction are clear; Drizzle rationale remains open |
-| Phase 1 - Local Journal Workspace | [########--] 82% | CRUD, folders, nested sidebar, Markdown editor, autosave, save state, rename/delete, and focused tests exist |
+| Phase 0 - Direction Lock | [#########-] 90% | thesis, product guardrails, and schema direction are clear; Drizzle rationale remains open |
+| Phase 1 - Local Journal Workspace | [#########-] 90% | CRUD, folders, nested sidebar, Markdown editor, autosave, save state, rename/delete, note schema, and focused tests exist |
 | Phase 1.5 - Product Clarity And UI Review | [#########-] 90% | local review feedback is captured; sidebar/editor/top-bar polish is mostly complete |
 | Phase 2 - One Reflection Question | [#---------] 15% | direction chosen: one current-entry-dependent reflection question; implementation not started |
 | Phase 3 - Semantic Search Seed | [----------] 0% | next AI-systems layer after reflection and export; keep it small |
@@ -67,7 +67,7 @@ Already implemented:
 
 Known mismatch:
 
-- docs now say entry types are `note` and `conversation`, but implementation still uses `document` and `conversation`.
+- none for entry types; implementation now uses `note` and `conversation`.
 
 ## Active Roadmap
 
@@ -86,7 +86,7 @@ Done:
 Open:
 
 - get Prithvi's Drizzle rationale
-- finish schema rename from `document` to `note`
+- keep schema naming aligned as new entry types are added
 - keep product decisions updated when direction changes
 
 ### Phase 1 - Local Journal Workspace
@@ -105,7 +105,7 @@ Done:
 Open:
 
 - add Markdown export
-- finish `document` to `note` schema rename
+- keep local setup reliable after schema migrations
 - keep local setup reliable
 - keep tests aligned with entry/folder behavior
 

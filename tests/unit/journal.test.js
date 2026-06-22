@@ -13,7 +13,7 @@ describe("journal helpers", () => {
     const todayDocument = {
       id: "entry-today",
       title: "Today",
-      entry_type: "document",
+      entry_type: "note",
       journal_date: "2026-06-12",
       occurred_at: "2026-06-12T08:00:00.000Z",
       created_at: "2026-06-12T08:00:00.000Z",

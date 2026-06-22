@@ -103,3 +103,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-22 | Prithvi+Codex | docs rules | update-log rules now require summarizing nearby similar updates and removing redundant nearby lines | open: none
 2026-06-22 | Codex | editor layout | editor footer now sits below a full-height scrollable CodeMirror body; Storybook editor story uses a full-screen frame | open: none
 2026-06-22 | Prithvi+Codex | editor UX | blockquote attribution lines align right, inactive `>` markers hide, and Enter on an empty quote line exits the quote; slash commands deferred | open: discuss slash-command system
+2026-06-22 | Codex | schema | canonical manual entry type renamed from document to note with migration, tests, stories, and roadmap checklist updated | open: Markdown export

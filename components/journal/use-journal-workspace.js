@@ -130,7 +130,7 @@ export function useJournalWorkspace({
       const entry = await createEntry({
         title: getNextUntitledEntryTitle(entries),
         body: "",
-        entry_type: "document",
+        entry_type: "note",
         folder_id: folderId,
         journal_date: isJournalFolder ? getLocalDayKey(new Date(occurredAt)) : null,
         occurred_at: occurredAt,

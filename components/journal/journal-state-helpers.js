@@ -9,7 +9,7 @@ export function createDraft({
     id: null,
     title: "",
     body: "",
-    entry_type: "document",
+    entry_type: "note",
     folder_id: folderId,
     journal_date: journalDate,
     occurred_at: occurredAt,
@@ -51,7 +51,7 @@ export function getEditorState({ selectedEntry, draft }) {
 export function getEditorKey({ selectedEntryId, draft }) {
   return (
     selectedEntryId ??
-    `${draft.folder_id ?? "root"}-${draft.journal_date ?? "document"}-${draft.occurred_at}`
+    `${draft.folder_id ?? "root"}-${draft.journal_date ?? "note"}-${draft.occurred_at}`
   );
 }
 
