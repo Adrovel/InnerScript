@@ -101,3 +101,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-22 | Prithvi+Codex | docs/schema | entry type direction updated to note plus conversation; daily journal uses journal_date | open: implement schema rename from document to note
 2026-06-22 | Prithvi+Codex | roadmap | active roadmap trimmed for fast ideation around write, organize, reflect, export, search | open: schema rename and export
 2026-06-22 | Prithvi+Codex | docs rules | update-log rules now require summarizing nearby similar updates and removing redundant nearby lines | open: none
+2026-06-22 | Codex | editor layout | editor footer now sits below a full-height scrollable CodeMirror body; Storybook editor story uses a full-screen frame | open: none

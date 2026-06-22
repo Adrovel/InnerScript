@@ -82,3 +82,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-22 | loaded: schema docs and planning docs | changed: docs say entry types are note and conversation; journal uses journal_date | running: unknown | open: implement document-to-note schema rename
 2026-06-22 | loaded: roadmap docs | changed: active roadmap trimmed for fast ideation | running: unknown | open: schema rename, export, reflection question
 2026-06-22 | loaded: wolf docs rules | changed: update-log compaction rule added | running: unknown | open: none
+2026-06-22 | loaded: editor layout | changed: footer below full-height scrollable editor, Storybook frame fixed, bug logged | running: none | open: none
