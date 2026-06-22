@@ -83,3 +83,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-22 | loaded: roadmap docs | changed: active roadmap trimmed for fast ideation | running: unknown | open: schema rename, export, reflection question
 2026-06-22 | loaded: wolf docs rules | changed: update-log compaction rule added | running: unknown | open: none
 2026-06-22 | loaded: editor layout | changed: footer below full-height scrollable editor, Storybook frame fixed, bug logged | running: none | open: none
+2026-06-22 | loaded: atomic and future plan | changed: UI customization deferred to future plan | running: unknown | open: schema rename, export

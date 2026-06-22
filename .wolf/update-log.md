@@ -99,6 +99,7 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-19 | Codex | top bar | shadcn breadcrumb added to left side of journal navbar, save state kept on right | open: none
 2026-06-20 | Codex | top bar | collapsed sidebar expand control moved inline into header row, preventing breadcrumb overlap | open: none
 2026-06-22 | Prithvi+Codex | docs/schema | entry type direction updated to note plus conversation; daily journal uses journal_date | open: implement schema rename from document to note
-2026-06-22 | Prithvi+Codex | roadmap | active roadmap trimmed for fast ideation around write, organize, reflect, export, search | open: schema rename and export
+2026-06-22 | Prithvi+Codex | roadmap | active roadmap trimmed for fast ideation; UI customization deferred to future plan | open: schema rename and export
 2026-06-22 | Prithvi+Codex | docs rules | update-log rules now require summarizing nearby similar updates and removing redundant nearby lines | open: none
 2026-06-22 | Codex | editor layout | editor footer now sits below a full-height scrollable CodeMirror body; Storybook editor story uses a full-screen frame | open: none
+2026-06-22 | Prithvi+Codex | editor UX | blockquote attribution lines align right, inactive `>` markers hide, and Enter on an empty quote line exits the quote; slash commands deferred | open: discuss slash-command system

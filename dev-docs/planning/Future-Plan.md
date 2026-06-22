@@ -155,6 +155,24 @@ Guardrails:
 - Do not create shame-based empty states or broken-streak pressure.
 - Do not prioritize gamification over exportability, search quality, or privacy.
 
+## UI Customization
+
+Status: deferred from the active MVP plan.
+
+Reason:
+
+- Customization is useful, but it should not slow down the core write, organize, reflect, export, and search loop.
+- The first version should prove the journal workspace is reliable before adding preference surfaces.
+
+Future scope:
+
+- Basic UI customization options for the journal workspace.
+
+Guardrails:
+
+- Keep customization simple and reversible.
+- Do not let themes or layout preferences break writing focus.
+
 ## Floating AI Insight Panel (Editor)
 
 Status: deferred from Phase 1 UI. Prototype existed in the journal editor and was removed to keep Phase 1 writing-only.

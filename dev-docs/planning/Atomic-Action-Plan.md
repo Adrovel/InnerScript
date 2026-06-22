@@ -155,5 +155,6 @@ These are intentionally not active tasks:
 - Graph RAG prototype
 - Go/Redis limiter
 - hosted consumer mode
+- UI customization options
 
 Move one item from this list only when it directly supports the active write/organize/reflect/export/search loop.
