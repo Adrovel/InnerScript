@@ -5,6 +5,16 @@ import { EntryEditor } from "./entry-editor";
 const meta = {
   component: EntryEditor,
   tags: ["ai-generated"],
+  parameters: {
+    layout: "fullscreen",
+  },
+  decorators: [
+    (Story) => (
+      <div className="flex h-svh min-h-0 overflow-hidden bg-background text-on-background">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;

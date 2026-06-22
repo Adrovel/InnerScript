@@ -91,3 +91,4 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-19 | Codex | editor layout | journal editor column narrowed for calmer writing width | open: none
 2026-06-19 | Codex | top bar | shadcn breadcrumb added to left side of journal navbar, save state kept on right | open: none
 2026-06-20 | Codex | top bar | collapsed sidebar expand control moved inline into header row, preventing breadcrumb overlap | open: none
+2026-06-22 | Codex | editor layout | editor footer now sits below a full-height scrollable CodeMirror body; Storybook editor story uses a full-screen frame | open: none

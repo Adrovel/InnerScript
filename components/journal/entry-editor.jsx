@@ -72,9 +72,9 @@ export function EntryEditor({
   }
 
   return (
-    <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto scroll-smooth bg-surface">
-      <div className="mx-auto flex min-h-full w-full max-w-[640px] flex-1 flex-col px-6 pb-6 pt-2xl md:max-w-[700px] md:px-10 lg:max-w-[760px] xl:max-w-[820px] xl:px-12 2xl:max-w-[880px]">
-        <div className="mb-xl">
+    <main className="relative flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-surface">
+      <div className="mx-auto flex min-h-0 w-full max-w-[640px] flex-1 flex-col px-6 pb-4 pt-2xl md:max-w-[700px] md:px-10 lg:max-w-[760px] xl:max-w-[820px] xl:px-12 2xl:max-w-[880px]">
+        <div className="mb-xl shrink-0">
           <div className="flex items-baseline">
             <input
               ref={titleRef}
@@ -87,14 +87,16 @@ export function EntryEditor({
           </div>
         </div>
 
-        <MarkdownEditor
-          ref={bodyRef}
-          value={body}
-          onChange={onBodyChange}
-          placeholder="How was your day?"
-        />
+        <div className="min-h-0 flex-1 overflow-y-auto scroll-smooth">
+          <MarkdownEditor
+            ref={bodyRef}
+            value={body}
+            onChange={onBodyChange}
+            placeholder="How was your day?"
+          />
+        </div>
 
-        <div className="mt-auto flex flex-col gap-2 pt-6 text-[11px] text-on-surface-variant/55 sm:flex-row sm:items-center sm:justify-between">
+        <footer className="flex shrink-0 flex-col gap-2 border-t border-surface-variant/20 pt-3 text-[11px] text-on-surface-variant/55 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span suppressHydrationWarning>
               Created {formatEntryCreated(createdIso)}
@@ -112,7 +114,7 @@ export function EntryEditor({
             {wordCount} {wordCount === 1 ? "word" : "words"} · {characterCount}{" "}
             {characterCount === 1 ? "character" : "characters"}
           </div>
-        </div>
+        </footer>
       </div>
     </main>
   );
