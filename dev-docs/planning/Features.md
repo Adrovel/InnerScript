@@ -129,11 +129,10 @@ Every piece of text must have provenance.
 
 Entry types:
 
-- `journal`
 - `note`
 - `conversation`
 
-These values must match `ENTRY_TYPES` in `db/schema.js`. Keep `entry_type` broad: it describes the shape of the user text, while `source_type` records where imported or captured text came from. Person interaction linking is deferred to `dev-docs/planning/Future-Plan.md`.
+These values must match `ENTRY_TYPES` in `db/schema.js`. Keep `entry_type` broad: it describes the shape of the text, while `source_type` records where imported or captured text came from. Daily journals are notes with `journal_date` set, not a separate entry type. Person interaction linking is deferred to `dev-docs/planning/Future-Plan.md`.
 
 Source types:
 
