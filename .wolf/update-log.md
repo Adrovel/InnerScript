@@ -1,6 +1,13 @@
 # InnerScript Update Log
 
-Purpose: compact app-local update log. One line per notable change.
+Purpose: compact app-local update log. Track notable project state without keeping noisy step-by-step history.
+
+Compaction rule:
+
+- Before adding a new line, check nearby recent lines.
+- If consecutive updates are for the same work area, summarize them into one line with the latest state.
+- If a nearby earlier line is made redundant by a later removal, reversal, or replacement, remove or rewrite the redundant line.
+- Keep separate lines only when the updates are meaningfully different or useful for future debugging.
 
 Format:
 
@@ -91,3 +98,6 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-19 | Codex | editor layout | journal editor column narrowed for calmer writing width | open: none
 2026-06-19 | Codex | top bar | shadcn breadcrumb added to left side of journal navbar, save state kept on right | open: none
 2026-06-20 | Codex | top bar | collapsed sidebar expand control moved inline into header row, preventing breadcrumb overlap | open: none
+2026-06-22 | Prithvi+Codex | docs/schema | entry type direction updated to note plus conversation; daily journal uses journal_date | open: implement schema rename from document to note
+2026-06-22 | Prithvi+Codex | roadmap | active roadmap trimmed for fast ideation around write, organize, reflect, export, search | open: schema rename and export
+2026-06-22 | Prithvi+Codex | docs rules | update-log rules now require summarizing nearby similar updates and removing redundant nearby lines | open: none

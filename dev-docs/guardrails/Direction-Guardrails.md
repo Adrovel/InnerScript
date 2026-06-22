@@ -48,7 +48,7 @@ Use this routing:
 | system/data/source model implication | `architecture/Architecture.md`, `architecture/Stack-and-Tools.md` if tooling changes |
 | deferred but visible product direction | `planning/Future-Plan.md`, plus active plan if it affects MVP sequencing |
 | guardrail or workflow rule | `guardrails/Direction-Guardrails.md` |
-| notable session outcome | `.wolf/update-log.md` |
+| notable session outcome | `.wolf/update-log.md` compact summary; merge nearby similar updates |
 
 ## Terminal Notification Rule
 

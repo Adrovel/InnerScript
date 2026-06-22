@@ -103,3 +103,8 @@ Joel should focus on learning and architecture depth: chunking, embeddings, retr
 
 Answer:
 Do not claim a complete Graph RAG semantic memory platform until graph retrieval actually works. Safe claims are built MVP, built architecture, designed retrieval system, designed Graph RAG layer, implemented local-first journal, implemented reflection system, and implemented semantic memory foundations. Every resume line must survive deep technical discussion.
+
+### Q: What belongs in the active roadmap during fast ideation?
+
+Answer:
+Only work that helps write, organize, reflect, export, or search should stay in the active roadmap. Imports, dashboards, people analytics, AI people, Graph RAG, hosted auth/billing, and Go/Redis systems are later ideas until they directly support the fast journal loop.
