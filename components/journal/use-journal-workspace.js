@@ -10,6 +10,8 @@ import {
   fetchEntries,
   fetchFolders,
   findTodayJournalEntry,
+  buildMarkdownExport,
+  getMarkdownExportFilename,
   getLocalDayKey,
   getNextUntitledEntryTitle,
   updateEntry,
@@ -336,6 +338,30 @@ export function useJournalWorkspace({
     }
   }, [deletingFolderId, entries, flushPendingSave, folders, selectedEntryId]);
 
+  const handleExportMarkdown = useCallback(async () => {
+    await flushPendingSave();
+
+    const markdown = buildMarkdownExport({
+      title: editorState.title,
+      body: editorState.body,
+      occurredAt: editorState.occurredAt,
+    });
+    const filename = getMarkdownExportFilename({
+      title: editorState.title,
+      occurredAt: editorState.occurredAt,
+    });
+    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }, [editorState.body, editorState.occurredAt, editorState.title, flushPendingSave]);
+
   return {
     editorKey: getEditorKey({ selectedEntryId, draft }),
     editorProps: {
@@ -376,6 +402,7 @@ export function useJournalWorkspace({
       saveStatus,
       saveActivityId,
       onRetrySave: runSave,
+      onExportMarkdown: handleExportMarkdown,
     },
   };
 }

@@ -46,3 +46,7 @@ npm run build
 ## Dev Docs
 
 Canonical planning, architecture, research, and guardrail docs live in `dev-docs/`.
+
+## Videos to view
+
+- https://www.youtube.com/watch?v=AF3XJT9YKpM

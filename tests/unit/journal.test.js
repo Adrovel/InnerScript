@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, test } from "vitest";
 import MockDate from "mockdate";
-import { findTodayJournalEntry, getNextUntitledEntryTitle } from "../../lib/journal.js";
+import {
+  buildMarkdownExport,
+  findTodayJournalEntry,
+  getMarkdownExportFilename,
+  getNextUntitledEntryTitle,
+} from "../../lib/journal.js";
 
 describe("journal helpers", () => {
   afterEach(() => {
@@ -54,5 +59,26 @@ describe("journal helpers", () => {
         { title: "Untitled 4" },
       ]),
     ).toBe("Untitled 5");
+  });
+
+  test("builds Markdown export content for the current entry", () => {
+    expect(
+      buildMarkdownExport({
+        title: "  Evening check-in ",
+        body: "Line one\n\nLine two\n\n",
+        occurredAt: "2026-06-23T10:30:00.000Z",
+      }),
+    ).toBe("# Evening check-in\n\nDate: 2026-06-23\n\nLine one\n\nLine two\n");
+  });
+
+  test("uses safe Markdown export filenames", () => {
+    expect(
+      getMarkdownExportFilename({
+        title: "Evening: check-in / plans?",
+        occurredAt: "2026-06-23T10:30:00.000Z",
+      }),
+    ).toBe("2026-06-23-evening-check-in-plans.md");
+
+    expect(getMarkdownExportFilename({ title: "", occurredAt: null })).toBe("untitled.md");
   });
 });

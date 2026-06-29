@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Menu } from "lucide-react";
+import { Download, Menu } from "lucide-react";
 import { Fragment } from "react";
 
 export function TopAppBar({
@@ -17,6 +17,7 @@ export function TopAppBar({
   saveStatus,
   saveActivityId,
   onRetrySave,
+  onExportMarkdown,
   onMenuClick,
 }) {
   return (
@@ -40,11 +41,23 @@ export function TopAppBar({
           <EditorBreadcrumb items={breadcrumbItems} />
         </div>
 
-        <SaveStatus
-          status={saveStatus}
-          activityId={saveActivityId}
-          onRetry={onRetrySave}
-        />
+        <div className="flex shrink-0 items-center gap-sm">
+          <button
+            type="button"
+            aria-label="Export Markdown"
+            title="Export Markdown"
+            onClick={onExportMarkdown}
+            className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary"
+          >
+            <Download className="size-5" aria-hidden="true" />
+          </button>
+
+          <SaveStatus
+            status={saveStatus}
+            activityId={saveActivityId}
+            onRetry={onRetrySave}
+          />
+        </div>
       </nav>
     </header>
   );
