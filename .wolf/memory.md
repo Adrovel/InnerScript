@@ -86,3 +86,4 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-22 | loaded: atomic and future plan | changed: UI customization deferred to future plan | running: unknown | open: schema rename, export
 2026-06-22 | loaded: schema plan, entry tests | changed: entry type renamed document to note with migration and tests | running: none | open: Markdown export, build blocked by .next ownership
 2026-06-24 | loaded: session context, app docs, dev-docs | changed: Added InnerScript README "Videos to view" link (AF3XJT9YKpM) | running: unknown | open: none
+2026-06-29 | loaded: team decisions and plans | changed: core idea reframed as making unconscious conscious; emotions-first Echo extraction direction captured | running: unknown | open: Echo naming, extraction schema details, search/reflection/import order

@@ -4,6 +4,17 @@ Purpose: hold ambiguous or unanswered questions for Joel, Prithvi, and agents. M
 
 ## Product Experience
 
+### Q: What should the first-screen layout be if it is a private writing room with AI presence?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel chose the first-screen direction as both a blank/private writing room and an AI companion presence.
+- Joel did not recognize "file tree" as a product concept, so the app should not assume a knowledge-base-first mental model.
+- Need to decide how notes, folders, memory/search, and AI presence appear without taking focus away from writing.
+
 ### Q: Should the current Alexandria dark editorial style stay?
 
 Asked by: Codex
@@ -22,6 +33,27 @@ Status: open
 Context:
 - The first AI moment is decided: a reflection question after writing.
 - The exact tone still needs testing in the UI.
+
+### Q: What should the quiet AI action be called?
+
+Asked by: Joel
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel wants a cool, non-obvious name rather than plain labels like Reflect, Mirror, Ask, Reveal, or Understand.
+- The action opens AI help without interrupting writing.
+- `Echo` is a strong candidate, with language like "listen to your echo."
+
+### Q: Should InnerScript be renamed to Echo?
+
+Asked by: Joel
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel raised `Echo` as a possible name for the side panel/action and possibly the whole app.
+- Need to decide whether Echo is a feature name, AI surface name, or full product rename.
 
 ### Q: Should mode switching be visible on the first screen or only after the user asks AI?
 
@@ -159,3 +191,63 @@ Status: open
 Context:
 - Current direction: physical-note OCR, Obsidian, Google Keep, other notes, docs, chats.
 - Need to choose the first import source when implementation starts.
+
+### Q: Should imports be built early or only after manual journaling feels excellent?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel needs time to decide.
+- Manual writing remains the first customer loop, but imported text may become important for long-term memory.
+
+### Q: Should semantic search come before reflection AI or after?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel has not decided the order.
+- The product direction now includes background extraction of assumptions, emotions, people, themes, and patterns, but the sequence between reflection, extraction, and search is not locked.
+
+### Q: Should the database stay Postgres/pgvector or move simpler first?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel is unsure.
+- Current implementation uses Postgres and planning mentions pgvector, but the product decision is not yet locked as a permanent technical direction.
+
+### Q: Is Graph RAG a real product target or later architecture/resume exploration?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: open
+
+Context:
+- Joel is unsure.
+- Current product direction supports source-backed personal memory and structured extraction; Graph RAG should not be treated as committed MVP scope until decided.
+
+### Q: What is the first background extraction schema?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: answered
+
+Context:
+- Joel decided AI should extract structured data in the background while the user mainly writes.
+- Answered on 2026-06-29: emotions first. Assumptions, people, themes, avoidance signals, and behavior patterns come later.
+
+### Q: Should users be able to correct extracted emotions?
+
+Asked by: Codex
+Date: 2026-06-29
+Status: open
+
+Context:
+- First version emotion chips are not directly editable.
+- Joel said correction/teaching is worth considering later.
