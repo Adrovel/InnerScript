@@ -5,8 +5,8 @@ import {
 } from "../../lib/reflection-question.js";
 
 describe("reflection question", () => {
-  test("returns a current-entry-only question with source metadata", () => {
-    const reflection = buildReflectionQuestion({
+  test("returns a current-entry-only question with source metadata", async () => {
+    const reflection = await buildReflectionQuestion({
       id: "entry-1",
       title: "Google anxiety",
       body: "I feel anxious about Google interviews and I keep worrying that I am behind.",
@@ -23,9 +23,9 @@ describe("reflection question", () => {
     expect(reflection.question).toContain("risk");
   });
 
-  test("does not produce a question for thin entries", () => {
+  test("does not produce a question for thin entries", async () => {
     expect(
-      buildReflectionQuestion({
+      await buildReflectionQuestion({
         id: "entry-1",
         title: "",
         body: "too short",

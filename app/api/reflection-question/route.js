@@ -14,7 +14,7 @@ export async function POST(request) {
       return jsonError("Entry not found", 404);
     }
 
-    const reflection = buildReflectionQuestion(entry);
+    const reflection = await buildReflectionQuestion(entry);
 
     if (!reflection) {
       return jsonError("Write a little more before asking Echo.", 422);

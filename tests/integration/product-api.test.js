@@ -11,6 +11,7 @@ import { POST as PRIVACY_DELETE } from "../../app/api/privacy/delete-account/rou
 import { POST as SEARCH } from "../../app/api/search/route.js";
 import { POST as TRANSCRIBE } from "../../app/api/voice/transcribe/route.js";
 import { POST as RATE_LIMIT } from "../../app/api/rate-limit/check/route.js";
+import { GET as READINESS } from "../../app/api/system/readiness/route.js";
 
 function jsonRequest(url, body, method = "POST") {
   return new NextRequest(url, {
@@ -212,5 +213,14 @@ describe("product APIs", () => {
     expect(response.status).toBe(200);
     expect(payload.token_bucket.allowed).toBe(false);
     expect(payload.sliding_window.allowed).toBe(false);
+  });
+
+  test("reports readiness actions for remaining deployment configuration", async () => {
+    const response = await READINESS();
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.readiness).toHaveProperty("ready_for_local_use");
+    expect(payload.readiness.actions_for_joel).toBeInstanceOf(Array);
   });
 });
