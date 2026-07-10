@@ -56,6 +56,9 @@ export function useJournalWorkspace({
   const [renamingEntryId, setRenamingEntryId] = useState(null);
   const [renamingFolderId, setRenamingFolderId] = useState(null);
   const [editorFocusRequest, setEditorFocusRequest] = useState(null);
+  const [reflectionStatus, setReflectionStatus] = useState("idle");
+  const [reflection, setReflection] = useState(null);
+  const [reflectionError, setReflectionError] = useState(null);
 
   const selectedEntry = useMemo(
     () => entries.find((entry) => entry.id === selectedEntryId) ?? null,
@@ -362,6 +365,71 @@ export function useJournalWorkspace({
     URL.revokeObjectURL(url);
   }, [editorState.body, editorState.occurredAt, editorState.title, flushPendingSave]);
 
+  const handleExportAllMarkdown = useCallback(async () => {
+    await flushPendingSave();
+
+    const response = await fetch("/api/export/markdown");
+
+    if (!response.ok) {
+      setSaveStatus("error");
+      return;
+    }
+
+    const markdown = await response.text();
+    const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "innerscript-export.md";
+    document.body.append(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }, [flushPendingSave]);
+
+  const handleRequestReflection = useCallback(async () => {
+    setReflectionStatus("loading");
+    setReflectionError(null);
+    setReflection(null);
+    await flushPendingSave();
+
+    const entryId = selectedEntryId;
+
+    if (!entryId) {
+      setReflectionStatus("error");
+      setReflectionError("Write a little more before asking Echo.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/reflection-question", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ entry_id: entryId }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "Echo is unavailable");
+      }
+
+      setReflection(data.reflection);
+      setReflectionStatus("ready");
+    } catch (error) {
+      setReflectionStatus("error");
+      setReflectionError(error instanceof Error ? error.message : "Echo is unavailable");
+    }
+  }, [flushPendingSave, selectedEntryId]);
+
+  const handleDismissReflection = useCallback(() => {
+    setReflection(null);
+    setReflectionError(null);
+    setReflectionStatus("idle");
+  }, []);
+
   return {
     editorKey: getEditorKey({ selectedEntryId, draft }),
     editorProps: {
@@ -370,9 +438,15 @@ export function useJournalWorkspace({
       occurredAt: editorState.occurredAt,
       updatedAt: editorState.updatedAt,
       isDraft,
+      saveStatus,
+      reflectionStatus,
+      reflection,
+      reflectionError,
       focusTarget: getFocusTarget({ editorFocusRequest, selectedEntryId, isDraft }),
       onTitleChange: (title) => updateEditor({ title }),
       onBodyChange: (body) => updateEditor({ body }),
+      onRequestReflection: handleRequestReflection,
+      onDismissReflection: handleDismissReflection,
     },
     loadEntries,
     loadError,
@@ -403,6 +477,7 @@ export function useJournalWorkspace({
       saveActivityId,
       onRetrySave: runSave,
       onExportMarkdown: handleExportMarkdown,
+      onExportAllMarkdown: handleExportAllMarkdown,
     },
   };
 }

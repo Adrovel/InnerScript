@@ -154,6 +154,11 @@ During development, InnerScript should be simpler to build than the full long-te
 Answer:
 No. Local-first privacy remains valuable, but it is not a hard blocker before production hosting. InnerScript may be hosted in production before all local-first privacy questions are fully settled.
 
+### Q: Is personal-data trust a core product requirement?
+
+Answer:
+Yes. InnerScript asks users to write private emotional, relationship, identity, and life-direction material, so trust cannot be treated as a later marketing layer. Before InnerScript is positioned for customers beyond the builders, the product needs a clear privacy, security, export, deletion, breach-response, and data-access story that a serious journaler can understand.
+
 ### Q: What is the current hiring-pipeline build strategy?
 
 Answer:

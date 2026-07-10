@@ -41,6 +41,7 @@ Source log: `buglog.jsonl`
 | innerscript-bug-033 | 2026-06-22 | dependencies, local-setup, integration-tests, server-only | `node_modules/server-only` | Integration tests failed because `server-only` was declared but missing from `node_modules`. | Ran `npm install`; package.json and package-lock.json stayed unchanged. |
 | innerscript-bug-034 | 2026-06-22 | storybook, tests, mechanical-rename, sidebar, dom | `components/sidebar/sidebar-components.stories.jsx`; `components/sidebar/sidebar.stories.jsx` | Full `npm test` failed with `ReferenceError: note is not defined`. | Restored accidental `note.body` Storybook references to `document.body`; full tests pass. |
 | innerscript-bug-035 | 2026-06-22 | nextjs, build, permissions, local-environment | `.next/server/_instrument_lib_db_index_js.js` | `npm run build` failed with `EACCES` unlinking a generated `.next` file, even outside the sandbox. | Not fixed; existing `.next` ownership blocker remains until generated files are removed or ownership is repaired. |
+| innerscript-bug-036 | 2026-07-02 | local-setup, database, drizzle, migrations, journal | local Postgres database; drizzle migrations; journal load | Page showed `Failed to load entries. Check that Postgres is running.` after DB startup, and `npm run db:migrate` exited nonzero after only the spinner. | Audit session manually applied migrations `0002`-`0004`; page loaded. Drizzle migration-history reconciliation still needed. |
 
 ## Logging Rule
 

@@ -37,7 +37,7 @@
 }
 
 .innerscript-markdown-editor .cm-placeholder {
-  color: color-mix(in srgb, var(--color-on-surface-variant) 50%, transparent);
+  color: color-mix(in srgb, var(--color-on-surface-variant) 68%, transparent);
 }
 
 .innerscript-markdown-editor .cm-gutters {

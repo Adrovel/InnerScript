@@ -9,8 +9,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Download, Menu } from "lucide-react";
+import { Download, FileDown, Menu } from "lucide-react";
 import { Fragment } from "react";
+import Link from "next/link";
 
 export function TopAppBar({
   breadcrumbItems = [],
@@ -18,6 +19,7 @@ export function TopAppBar({
   saveActivityId,
   onRetrySave,
   onExportMarkdown,
+  onExportAllMarkdown,
   onMenuClick,
 }) {
   return (
@@ -42,14 +44,32 @@ export function TopAppBar({
         </div>
 
         <div className="flex shrink-0 items-center gap-sm">
+          <div className="hidden items-center gap-1 text-xs text-on-surface-variant md:flex">
+            <Link className="rounded-full px-2 py-1 hover:bg-surface-container-high hover:text-primary" href="/search">Search</Link>
+            <Link className="rounded-full px-2 py-1 hover:bg-surface-container-high hover:text-primary" href="/imports">Imports</Link>
+            <Link className="rounded-full px-2 py-1 hover:bg-surface-container-high hover:text-primary" href="/people">People</Link>
+            <Link className="rounded-full px-2 py-1 hover:bg-surface-container-high hover:text-primary" href="/insights">Insights</Link>
+            <Link className="rounded-full px-2 py-1 hover:bg-surface-container-high hover:text-primary" href="/settings/privacy">Privacy</Link>
+          </div>
+
           <button
             type="button"
-            aria-label="Export Markdown"
-            title="Export Markdown"
+            aria-label="Export current entry as Markdown"
+            title="Export current entry"
             onClick={onExportMarkdown}
             className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary"
           >
             <Download className="size-5" aria-hidden="true" />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Export all entries as Markdown"
+            title="Export all entries"
+            onClick={onExportAllMarkdown}
+            className="interactive-element rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high hover:text-primary"
+          >
+            <FileDown className="size-5" aria-hidden="true" />
           </button>
 
           <SaveStatus

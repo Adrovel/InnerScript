@@ -34,6 +34,7 @@ const config = {
       "@base-ui/react/tooltip",
       "mockdate",
       "msw-storybook-addon",
+      "next/link",
     ];
 
     return config;

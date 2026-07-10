@@ -207,7 +207,7 @@ export function AppSidebar({
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter className="border-t border-sidebar-border/70 px-3 py-3">
+        <SidebarFooter className="hidden border-t border-sidebar-border/70 px-3 py-3 md:flex">
           <SidebarProfile />
         </SidebarFooter>
         <SidebarRail />

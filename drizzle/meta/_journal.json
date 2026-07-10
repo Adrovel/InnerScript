@@ -36,6 +36,20 @@
       "when": 1782162202640,
       "tag": "0004_abandoned_kat_farrell",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1783647361712,
+      "tag": "0005_searchable_chunks",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1783647703937,
+      "tag": "0006_product_memory_foundation",
+      "breakpoints": true
     }
   ]
 }

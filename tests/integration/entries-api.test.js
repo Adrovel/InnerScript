@@ -2,7 +2,10 @@ import { NextRequest } from "next/server";
 import { describe, expect, test } from "vitest";
 import { DELETE, GET, PUT } from "../../app/api/entries/[id]/route.js";
 import { GET as LIST, POST } from "../../app/api/entries/route.js";
+import { GET as EXPORT_MARKDOWN } from "../../app/api/export/markdown/route.js";
 import { POST as CREATE_FOLDER } from "../../app/api/folders/route.js";
+import { POST as SEARCH } from "../../app/api/search/route.js";
+import { POST as REFLECT } from "../../app/api/reflection-question/route.js";
 
 function jsonRequest(url, body, method = "POST") {
   return new NextRequest(url, {
@@ -192,5 +195,92 @@ describe("entries API", () => {
 
     const missingResponse = await GET(new NextRequest(`http://localhost/api/entries/${entry.id}`), params(entry.id));
     expect(missingResponse.status).toBe(404);
+  });
+
+  test("indexes entries for local source-backed search", async () => {
+    await POST(
+      jsonRequest("http://localhost/api/entries", {
+        title: "Google prep",
+        body: "I felt anxious about Google interviews.\n\nI also felt focused after writing.",
+      }),
+    );
+
+    const response = await SEARCH(
+      jsonRequest("http://localhost/api/search", {
+        query: "Google anxious",
+        limit: 5,
+      }),
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.mode).toBe("local-hybrid");
+    expect(payload.results[0]).toMatchObject({
+      entry: {
+        title: "Google prep",
+      },
+      chunk: {
+        text: "I felt anxious about Google interviews.",
+      },
+    });
+  });
+
+  test("exports all entries as one Markdown archive", async () => {
+    await POST(jsonRequest("http://localhost/api/entries", { title: "First", body: "One" }));
+    await POST(jsonRequest("http://localhost/api/entries", { title: "Second", body: "Two" }));
+
+    const response = await EXPORT_MARKDOWN();
+    const markdown = await response.text();
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toContain("text/markdown");
+    expect(markdown).toContain("# First");
+    expect(markdown).toContain("---");
+    expect(markdown).toContain("# Second");
+  });
+
+  test("returns one Echo reflection question for the current entry", async () => {
+    const createdResponse = await POST(
+      jsonRequest("http://localhost/api/entries", {
+        title: "Behind",
+        body: "I feel behind in my career and I am scared that I am wasting time.",
+      }),
+    );
+    const { entry } = await createdResponse.json();
+
+    const response = await REFLECT(
+      jsonRequest("http://localhost/api/reflection-question", {
+        entry_id: entry.id,
+      }),
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.reflection).toMatchObject({
+      mode: "local",
+      source: {
+        entry_id: entry.id,
+        title: "Behind",
+      },
+    });
+    expect(payload.reflection.question).toContain("risk");
+  });
+
+  test("blocks Echo when the entry is too thin", async () => {
+    const createdResponse = await POST(
+      jsonRequest("http://localhost/api/entries", {
+        title: "Thin",
+        body: "small note",
+      }),
+    );
+    const { entry } = await createdResponse.json();
+
+    const response = await REFLECT(
+      jsonRequest("http://localhost/api/reflection-question", {
+        entry_id: entry.id,
+      }),
+    );
+
+    expect(response.status).toBe(422);
   });
 });

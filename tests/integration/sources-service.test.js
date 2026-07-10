@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { describe, expect, test } from "vitest";
 import { getDb } from "../../db/client.js";
 import { sources } from "../../db/schema.js";
+import { searchChunks } from "../../lib/chunks.js";
 import { createSourceWithEntries } from "../../lib/sources.js";
 
 describe("source ingestion service", () => {
@@ -66,6 +67,13 @@ describe("source ingestion service", () => {
     });
     expect(result.entries).toHaveLength(2);
     expect(result.entries.every((entry) => entry.source_id === result.source.id)).toBe(true);
+
+    const results = await searchChunks({ query: "anxious interview" });
+    expect(results[0]).toMatchObject({
+      entry: {
+        title: "2026-05-01",
+      },
+    });
   });
 
   test("allows whatsapp exports to create conversation entries", async () => {

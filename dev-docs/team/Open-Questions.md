@@ -97,6 +97,30 @@ Context:
 - A visible indicator could prevent AI overclaiming.
 - It could also make the app feel too analytical if overdone.
 
+## Privacy, Trust, And Security
+
+### Q: Why should customers trust InnerScript with their personal data?
+
+Asked by: Joel
+Date: 2026-07-07
+Status: open
+
+Context:
+- InnerScript will hold highly sensitive personal writing, including emotions, relationships, identity questions, patterns, and long-term memory.
+- The product needs a plain answer for what data is collected, where it is stored, who can access it, how AI providers are used, how users can export/delete it, and what the company will never do with it.
+- This should be answered before positioning InnerScript for public customers, not after launch copy is written.
+
+### Q: What cybersecurity measures prevent private data from being released?
+
+Asked by: Joel
+Date: 2026-07-07
+Status: open
+
+Context:
+- Joel raised the concrete fear: what if somebody releases user data?
+- Need a real security plan covering access control, encryption, secret management, audit logs, least-privilege admin access, backup handling, vulnerability response, and incident/breach communication.
+- The answer should distinguish prevention, detection, response, and user-facing recovery steps. Do not claim measures are implemented until the code and infrastructure actually prove them.
+
 ### Q: How should citations be shown without making the app feel academic?
 
 Asked by: Codex
