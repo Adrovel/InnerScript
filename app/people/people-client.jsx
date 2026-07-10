@@ -51,7 +51,12 @@ export function PeopleClient() {
         <Link href="/" className="text-sm text-primary">Back to journal</Link>
         <h1 className="mt-6 text-3xl font-semibold">People</h1>
         <form onSubmit={createPerson} className="mt-6 flex gap-3">
-          <Input value={name} onChange={(event) => setName(event.target.value)} placeholder="Name" />
+          <Input
+            aria-label="Person name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Name"
+          />
           <Button type="submit">Add</Button>
         </form>
         <div className="mt-8 divide-y divide-surface-variant/20">

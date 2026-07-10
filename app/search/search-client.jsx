@@ -31,7 +31,12 @@ export function SearchClient() {
         <Link href="/" className="text-sm text-primary">Back to journal</Link>
         <h1 className="mt-6 text-3xl font-semibold">Search</h1>
         <form onSubmit={runSearch} className="mt-6 flex gap-3">
-          <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="times I felt behind" />
+          <Input
+            aria-label="Search query"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="times I felt behind"
+          />
           <Button type="submit">{status === "loading" ? "Searching" : "Search"}</Button>
         </form>
         <div className="mt-8 space-y-4">

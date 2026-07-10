@@ -6,7 +6,7 @@ describe("readiness report", () => {
     vi.unstubAllEnvs();
   });
 
-  test("lists the minimum actions Joel needs before private hosting", () => {
+  test("lists the minimum actions Joel needs before private hosting", async () => {
     vi.stubEnv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5433/innerscript");
     vi.stubEnv("INNERSCRIPT_AUTH_USERNAME", "");
     vi.stubEnv("INNERSCRIPT_AUTH_PASSWORD", "");
@@ -14,7 +14,7 @@ describe("readiness report", () => {
     vi.stubEnv("OPENAI_CHAT_MODEL", "");
     vi.stubEnv("NEXT_PUBLIC_APP_URL", "");
 
-    const report = getReadinessReport();
+    const report = await getReadinessReport({ checkDatabaseSchema: false });
 
     expect(report.ready_for_local_use).toBe(true);
     expect(report.ready_for_private_hosted_use).toBe(false);

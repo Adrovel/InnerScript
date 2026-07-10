@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FolderPlus, Plus } from "lucide-react";
+import Link from "next/link";
+import { ChartNoAxesColumn, FolderPlus, Plus, Search, Shield, Upload, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -10,6 +11,7 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
@@ -27,6 +29,15 @@ import { SidebarFolderDraftRow } from "./sidebar-folder-draft-row";
 import { SidebarMessage } from "./sidebar-message";
 import { SidebarProfile } from "./sidebar-profile";
 import { SidebarSearch } from "./sidebar-search";
+import { sidebarActionRowClass } from "./sidebar-styles";
+
+const PRODUCT_LINKS = [
+  { href: "/search", label: "Search", Icon: Search },
+  { href: "/imports", label: "Imports", Icon: Upload },
+  { href: "/people", label: "People", Icon: Users },
+  { href: "/insights", label: "Insights", Icon: ChartNoAxesColumn },
+  { href: "/settings/privacy", label: "Privacy", Icon: Shield },
+];
 
 export function AppSidebar({
   entries,
@@ -136,6 +147,20 @@ export function AppSidebar({
             <SidebarMenuItem>
               <SidebarSearch query={searchQuery} onQueryChange={setSearchQuery} />
             </SidebarMenuItem>
+          </SidebarMenu>
+
+          <SidebarMenu className="gap-1">
+            {PRODUCT_LINKS.map(({ href, label, Icon }) => (
+              <SidebarMenuItem key={href}>
+                <SidebarMenuButton
+                  render={<Link href={href} onClick={closeMobileSidebar} />}
+                  className={`${sidebarActionRowClass} text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground`}
+                >
+                  <Icon className="text-sidebar-foreground/62" aria-hidden="true" />
+                  <span className="min-w-0 flex-1 truncate">{label}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarHeader>
 

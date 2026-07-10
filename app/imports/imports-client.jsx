@@ -37,7 +37,13 @@ export function ImportsClient() {
       <div className="mx-auto max-w-4xl">
         <Link href="/" className="text-sm text-primary">Back to journal</Link>
         <h1 className="mt-6 text-3xl font-semibold">Imports</h1>
-        <Textarea className="mt-6 min-h-64" value={content} onChange={(event) => setContent(event.target.value)} placeholder="# Old journal&#10;&#10;Paste Markdown or text here." />
+        <Textarea
+          aria-label="Import content"
+          className="mt-6 min-h-64"
+          value={content}
+          onChange={(event) => setContent(event.target.value)}
+          placeholder="# Old journal&#10;&#10;Paste Markdown or text here."
+        />
         <div className="mt-4 flex gap-3">
           <Button onClick={previewImport}>Preview</Button>
           <Button onClick={confirmImport} disabled={!preview}>Confirm</Button>
