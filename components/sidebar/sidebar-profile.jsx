@@ -9,7 +9,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
-export function SidebarProfile() {
+function getInitials(displayName) {
+  return displayName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("") || "H";
+}
+
+export function SidebarProfile({ displayName = "Haulden Vale", handle = "local persona" }) {
+  const initials = getInitials(displayName);
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -26,10 +37,13 @@ export function SidebarProfile() {
           >
             <Avatar size="sm">
               <AvatarFallback>
-                U
+                {initials}
               </AvatarFallback>
             </Avatar>
-            <span className="min-w-0 flex-1 truncate text-sm font-medium">Username</span>
+            <span className="flex min-w-0 flex-1 flex-col">
+              <span className="truncate text-sm font-medium">{displayName}</span>
+              <span className="truncate text-[11px] text-sidebar-foreground/58">{handle}</span>
+            </span>
             <MoreHorizontal
               data-icon="inline-end"
               className="text-sidebar-foreground/58"

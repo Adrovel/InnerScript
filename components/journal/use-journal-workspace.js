@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import { findDefaultJournalFolder } from "@/lib/folder-defaults";
 import {
   createEntry,
+  deleteEntries as deleteEntriesRequest,
   createFolder,
   deleteEntry,
   deleteFolder,
@@ -52,6 +53,8 @@ export function useJournalWorkspace({
   const [creatingNote, setCreatingNote] = useState(false);
   const [creatingFolderParentId, setCreatingFolderParentId] = useState(undefined);
   const [deletingEntryId, setDeletingEntryId] = useState(null);
+  const [selectedEntryIds, setSelectedEntryIds] = useState(() => new Set());
+  const [bulkDeletingEntries, setBulkDeletingEntries] = useState(false);
   const [deletingFolderId, setDeletingFolderId] = useState(null);
   const [renamingEntryId, setRenamingEntryId] = useState(null);
   const [renamingFolderId, setRenamingFolderId] = useState(null);
@@ -100,6 +103,7 @@ export function useJournalWorkspace({
       setEntries(nextEntries);
       setFolders(nextFolders);
       setSelectedEntryId(todayEntry?.id ?? null);
+      setSelectedEntryIds(new Set());
       setDraft(createJournalDraft(findDefaultJournalFolder(nextFolders)));
       setEditorFocusRequest(null);
     } catch (error) {
@@ -274,6 +278,12 @@ export function useJournalWorkspace({
         } else {
           setEntries((current) => removeById(current, entryId));
         }
+
+        setSelectedEntryIds((current) => {
+          const next = new Set(current);
+          next.delete(entryId);
+          return next;
+        });
       } catch {
         deletedEntryIdsRef.current.delete(entryId);
         if (cancelledPendingSave) {
@@ -304,6 +314,116 @@ export function useJournalWorkspace({
     ],
   );
 
+  const handleToggleEntrySelection = useCallback((entry) => {
+    setSelectedEntryIds((current) => {
+      const next = new Set(current);
+
+      if (next.has(entry.id)) {
+        next.delete(entry.id);
+      } else {
+        next.add(entry.id);
+      }
+
+      return next;
+    });
+  }, []);
+
+  const handleClearEntrySelection = useCallback(() => {
+    setSelectedEntryIds(new Set());
+  }, []);
+
+  const handleDeleteSelectedEntries = useCallback(async () => {
+    if (bulkDeletingEntries || selectedEntryIds.size === 0) {
+      return;
+    }
+
+    const existingEntryIds = new Set(entries.map((entry) => entry.id));
+    const entryIds = [...selectedEntryIds].filter((entryId) => existingEntryIds.has(entryId));
+
+    if (entryIds.length === 0) {
+      setSelectedEntryIds(new Set());
+      return;
+    }
+
+    const entryIdSet = new Set(entryIds);
+    const selectedEntryWasDeleted = selectedEntryId ? entryIdSet.has(selectedEntryId) : false;
+    let cancelledPendingSave = null;
+
+    setBulkDeletingEntries(true);
+    for (const entryId of entryIds) {
+      deletedEntryIdsRef.current.add(entryId);
+    }
+
+    if (pendingSaveRef.current?.entryId && entryIdSet.has(pendingSaveRef.current.entryId)) {
+      cancelledPendingSave = pendingSaveRef.current;
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = null;
+      }
+      pendingSaveRef.current = null;
+    } else {
+      await flushPendingSave();
+    }
+
+    if (selectedEntryWasDeleted) {
+      setSaveStatus("saving");
+    }
+
+    try {
+      const deletedIds = await deleteEntriesRequest(entryIds);
+      const deletedIdSet = new Set(deletedIds);
+      const nextEntries = entries.filter((entry) => !deletedIdSet.has(entry.id));
+
+      setEntries(nextEntries);
+      setSelectedEntryIds((current) => {
+        const next = new Set(current);
+        for (const entryId of deletedIds) {
+          next.delete(entryId);
+        }
+        return next;
+      });
+
+      if (selectedEntryWasDeleted && deletedIdSet.has(selectedEntryId)) {
+        const fallbackEntry = findTodayJournalEntry(nextEntries) ?? nextEntries[0] ?? null;
+        setSelectedEntryId(fallbackEntry?.id ?? null);
+        setDraft(createJournalDraft(journalFolder));
+        setEditorFocusRequest(
+          fallbackEntry ? { entryId: fallbackEntry.id, target: "entry-end" } : null,
+        );
+      }
+
+      setSaveStatus(selectedEntryWasDeleted ? "idle" : "saved");
+    } catch {
+      for (const entryId of entryIds) {
+        deletedEntryIdsRef.current.delete(entryId);
+      }
+
+      if (cancelledPendingSave) {
+        pendingSaveRef.current = cancelledPendingSave;
+        saveTimerRef.current = setTimeout(() => {
+          runSaveRef.current?.();
+        }, AUTOSAVE_DELAY_MS);
+        setSaveActivityId((current) => current + 1);
+        setSaveStatus("dirty");
+      } else {
+        setSaveStatus("error");
+      }
+    } finally {
+      setBulkDeletingEntries(false);
+    }
+  }, [
+    bulkDeletingEntries,
+    deletedEntryIdsRef,
+    entries,
+    flushPendingSave,
+    journalFolder,
+    pendingSaveRef,
+    runSaveRef,
+    saveTimerRef,
+    selectedEntryId,
+    selectedEntryIds,
+  ]);
+
   const handleDeleteFolder = useCallback(async (folder) => {
     if (deletingFolderId) {
       return;
@@ -323,6 +443,15 @@ export function useJournalWorkspace({
 
       setFolders(nextFolders);
       setEntries(nextEntries);
+      setSelectedEntryIds((current) => {
+        const next = new Set(current);
+        for (const entry of entries) {
+          if (deletedFolderIds.has(entry.folder_id)) {
+            next.delete(entry.id);
+          }
+        }
+        return next;
+      });
 
       if (selectedEntryWasDeleted) {
         const fallbackEntry = findTodayJournalEntry(nextEntries) ?? nextEntries[0] ?? null;
@@ -460,6 +589,10 @@ export function useJournalWorkspace({
       onSelectEntry: handleSelectEntry,
       onDeleteEntry: handleDeleteEntry,
       onRenameEntry: handleRenameEntry,
+      selectedEntryIds: [...selectedEntryIds],
+      onToggleEntrySelection: handleToggleEntrySelection,
+      onClearEntrySelection: handleClearEntrySelection,
+      onDeleteSelectedEntries: handleDeleteSelectedEntries,
       onNewNote: handleNewNote,
       onCreateFolder: handleCreateFolder,
       onDeleteFolder: handleDeleteFolder,
@@ -467,6 +600,7 @@ export function useJournalWorkspace({
       creatingNote,
       creatingFolderParentId,
       deletingEntryId,
+      bulkDeletingEntries,
       deletingFolderId,
       renamingEntryId,
       renamingFolderId,

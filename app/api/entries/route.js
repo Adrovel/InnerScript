@@ -1,4 +1,4 @@
-import { createManualEntry, listEntries } from "../../../lib/entries.js";
+import { createManualEntry, deleteEntries, listEntries } from "../../../lib/entries.js";
 import { errorResponse, readJson } from "../../../lib/api.js";
 
 export const runtime = "nodejs";
@@ -21,6 +21,17 @@ export async function POST(request) {
     const entry = await createManualEntry(input);
 
     return Response.json({ entry }, { status: 201 });
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const input = await readJson(request);
+    const deletedIds = await deleteEntries(input);
+
+    return Response.json({ deleted_ids: deletedIds });
   } catch (error) {
     return errorResponse(error);
   }

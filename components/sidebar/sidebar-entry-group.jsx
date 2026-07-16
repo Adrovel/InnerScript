@@ -25,9 +25,11 @@ export function SidebarEntryGroup({
   nested = false,
   folderDraft,
   selectedEntryId,
+  selectedEntryIds = new Set(),
   onSelectEntry,
   onDeleteEntry,
   onRenameEntry,
+  onToggleEntrySelection,
   onStartEntryRename,
   onCancelRename,
   onNewNote,
@@ -41,6 +43,7 @@ export function SidebarEntryGroup({
   creatingNote = false,
   creatingFolderParentId = null,
   deletingEntryId = null,
+  bulkDeletingEntries = false,
   deletingFolderId = null,
   renamingEntryId = null,
   renamingFolderId = null,
@@ -130,9 +133,11 @@ export function SidebarEntryGroup({
                 nested
                 folderDraft={folderDraft}
                 selectedEntryId={selectedEntryId}
+                selectedEntryIds={selectedEntryIds}
                 onSelectEntry={onSelectEntry}
                 onDeleteEntry={onDeleteEntry}
                 onRenameEntry={onRenameEntry}
+                onToggleEntrySelection={onToggleEntrySelection}
                 onStartEntryRename={onStartEntryRename}
                 onCancelRename={onCancelRename}
                 onNewNote={onNewNote}
@@ -146,6 +151,7 @@ export function SidebarEntryGroup({
                 creatingNote={creatingNote}
                 creatingFolderParentId={creatingFolderParentId}
                 deletingEntryId={deletingEntryId}
+                bulkDeletingEntries={bulkDeletingEntries}
                 deletingFolderId={deletingFolderId}
                 renamingEntryId={renamingEntryId}
                 renamingFolderId={renamingFolderId}
@@ -158,13 +164,16 @@ export function SidebarEntryGroup({
                 key={entry.id}
                 entry={entry}
                 selected={selectedEntryId === entry.id}
+                selectedForBulk={selectedEntryIds.has(entry.id)}
                 onSelectEntry={onSelectEntry}
                 onDeleteEntry={onDeleteEntry}
                 onRenameEntry={onRenameEntry}
+                onToggleEntrySelection={onToggleEntrySelection}
                 onStartRename={onStartEntryRename}
                 onCancelRename={onCancelRename}
                 onMobileClose={onMobileClose}
                 deletingEntryId={deletingEntryId}
+                bulkDeletingEntries={bulkDeletingEntries}
                 renaming={renameTarget?.type === "entry" && renameTarget.id === entry.id}
                 renamingEntryId={renamingEntryId}
               />

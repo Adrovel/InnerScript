@@ -92,3 +92,5 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-07-07 | loaded: product decisions and open questions | changed: personal-data trust and cybersecurity concerns captured | running: unknown | open: answer privacy/security plan before public customers
 2026-07-10 | loaded: full product plan | changed: fast-forward-V1 product APIs/routes for search, Echo, imports, people, insights, privacy, voice, digest, limiter | running: postgres 5433/5434 | open: Go unavailable, provider adapters later
 2026-07-10 | loaded: production gaps | changed: Basic Auth proxy, readiness API, OpenAI-compatible Echo hook, Vercel config, Go limiter source scaffold | running: postgres 5433/5434 | open: deploy env vars and Go install
+2026-07-10 | loaded: fast-forward-V1 branch and readiness | changed: logged transient Storybook test flake | running: next 3000, postgres 5433/5434 | open: remote fast-forward-V1 branch absent; hosted env vars missing
+2026-07-16 | loaded: fast-forward-V1 docs and dirty patch | changed: fixed stale sidebar profile story tests | running: unknown | open: validate bulk delete and Haulden persona flow in browser

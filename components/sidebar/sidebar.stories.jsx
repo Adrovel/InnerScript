@@ -71,7 +71,8 @@ export const WithEntries = {
   },
   play: async ({ args, canvas }) => {
     await expect(canvas.getByText("Innerscript")).toBeInTheDocument();
-    await expect(canvas.getByText("Username")).toBeInTheDocument();
+    await expect(canvas.getByText("Haulden Vale")).toBeInTheDocument();
+    await expect(canvas.getByText("local persona")).toBeInTheDocument();
     await expect(canvas.queryByText("Private journal")).not.toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^new folder$/i })).toHaveClass(/h-9/);

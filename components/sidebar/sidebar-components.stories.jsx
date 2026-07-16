@@ -216,8 +216,9 @@ export const Profile = {
     </SidebarFrame>
   ),
   play: async ({ canvas }) => {
-    await expect(canvas.getByText("Username")).toBeInTheDocument();
-    await expect(canvas.getByText("U")).toBeInTheDocument();
+    await expect(canvas.getByText("Haulden Vale")).toBeInTheDocument();
+    await expect(canvas.getByText("local persona")).toBeInTheDocument();
+    await expect(canvas.getByText("HV")).toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^open profile menu$/i })).toBeInTheDocument();
   },
 };
