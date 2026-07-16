@@ -2,7 +2,6 @@ import { eq } from "drizzle-orm";
 import { describe, expect, test } from "vitest";
 import { getDb } from "../../db/client.js";
 import { sources } from "../../db/schema.js";
-import { searchChunks } from "../../lib/chunks.js";
 import { createSourceWithEntries } from "../../lib/sources.js";
 
 describe("source ingestion service", () => {
@@ -10,12 +9,12 @@ describe("source ingestion service", () => {
     const result = await createSourceWithEntries({
       source: {
         source_type: "manual",
-        display_name: "Manual note",
+        display_name: "Manual document",
       },
       entries: [
         {
-          body: "A manually written note.",
-          entry_type: "note",
+          body: "A manually written document.",
+          entry_type: "document",
           journal_date: "2026-06-11",
         },
       ],
@@ -23,10 +22,10 @@ describe("source ingestion service", () => {
 
     expect(result.source).toMatchObject({
       source_type: "manual",
-      display_name: "Manual note",
+      display_name: "Manual document",
     });
     expect(result.entries[0]).toMatchObject({
-      entry_type: "note",
+      entry_type: "document",
       journal_date: "2026-06-11",
       source_id: result.source.id,
     });
@@ -46,14 +45,14 @@ describe("source ingestion service", () => {
         {
           title: "2026-05-01",
           body: "Felt anxious before the interview.",
-          entry_type: "note",
+          entry_type: "document",
           journal_date: "2026-05-01",
           occurred_at: "2026-05-01T12:00:00.000Z",
         },
         {
           title: "Project notes",
           body: "InnerScript should preserve source provenance.",
-          entry_type: "note",
+          entry_type: "document",
         },
       ],
     });
@@ -67,13 +66,6 @@ describe("source ingestion service", () => {
     });
     expect(result.entries).toHaveLength(2);
     expect(result.entries.every((entry) => entry.source_id === result.source.id)).toBe(true);
-
-    const results = await searchChunks({ query: "anxious interview" });
-    expect(results[0]).toMatchObject({
-      entry: {
-        title: "2026-05-01",
-      },
-    });
   });
 
   test("allows whatsapp exports to create conversation entries", async () => {
@@ -107,7 +99,7 @@ describe("source ingestion service", () => {
       entries: [
         {
           body: "A parsed text file entry.",
-          entry_type: "note",
+          entry_type: "document",
         },
       ],
     });

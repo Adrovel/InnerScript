@@ -18,7 +18,7 @@ const entries = [
     id: "entry-journal-1",
     title: "Friday reflection",
     body: "A journal entry",
-    entry_type: "note",
+    entry_type: "document",
     folder_id: "folder-journal",
     journal_date: "2026-06-05",
     source_id: null,
@@ -30,7 +30,7 @@ const entries = [
     id: "entry-note-1",
     title: "Therapy question",
     body: "A note",
-    entry_type: "note",
+    entry_type: "document",
     folder_id: null,
     journal_date: null,
     source_id: null,
@@ -71,8 +71,7 @@ export const WithEntries = {
   },
   play: async ({ args, canvas }) => {
     await expect(canvas.getByText("Innerscript")).toBeInTheDocument();
-    await expect(canvas.getByText("Haulden Vale")).toBeInTheDocument();
-    await expect(canvas.getByText("local persona")).toBeInTheDocument();
+    await expect(canvas.getByText("Username")).toBeInTheDocument();
     await expect(canvas.queryByText("Private journal")).not.toBeInTheDocument();
     await expect(canvas.getByRole("button", { name: /^new note$/i })).toHaveClass(/h-9/);
     await expect(canvas.getByRole("button", { name: /^new folder$/i })).toHaveClass(/h-9/);

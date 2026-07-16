@@ -8,9 +8,7 @@ Update tracking: task checkboxes live here; compact updates live in `.wolf/updat
 
 ## Progress
 
-Overall active checkbox progress: [########--] 76% - 41/54 visible tasks
-
-Branch note for `fast-forward-V1`: this branch intentionally expands beyond the old active fast-ideation denominator. Main and other branches keep their atomic plan untouched; this branch adds the full-product execution surface.
+Overall active checkbox progress: [#######---] 70% - 38/54 visible tasks
 
 Notification rule: when overall checkbox progress reaches or crosses 40%, tell Joel explicitly in the same session before moving on.
 
@@ -18,8 +16,8 @@ The active checklist crossed 40% on 2026-06-22 because deferred long-range work 
 
 | Phase | Checkbox progress |
 |---|---|
-| Phase 0 - Direction Lock | [#########-] 9/10 tasks |
-| Phase 1 - Local Journal Workspace | [#########-] 28/31 tasks |
+| Phase 0 - Direction Lock | [########--] 8/10 tasks |
+| Phase 1 - Local Journal Workspace | [########--] 26/31 tasks |
 | Phase 1.5 - Product Clarity And UI Review | [########--] 4/5 tasks |
 | Phase 2 - One Reflection Question | [----------] 0/5 tasks |
 | Phase 3 - Semantic Search Seed | [----------] 0/3 tasks |
@@ -67,7 +65,7 @@ Goal: keep the product direction clear enough for fast implementation.
 - [X] Capture open product questions in `dev-docs/team/Open-Questions.md`.
 - [X] Keep product decisions in `dev-docs/team/Product-Decisions.md`.
 - [ ] Get Prithvi's Drizzle rationale.
-- [X] Finish implementation schema rename from `document` to `note`.
+- [ ] Finish implementation schema rename from `document` to `note`.
 
 ## Phase 1 - Local Journal Workspace
 
@@ -84,8 +82,8 @@ Goal: make InnerScript useful as a local Markdown journal without AI.
 - [X] Store daily journals with `journal_date`.
 - [X] Add entry CRUD tests.
 - [X] Add folder API tests.
-- [X] Rename manual entry type from `document` to `note`.
-- [X] Update tests after the entry type rename.
+- [ ] Rename manual entry type from `document` to `note`.
+- [ ] Update tests after the entry type rename.
 
 ### Writing Surface
 
@@ -160,21 +158,3 @@ These are intentionally not active tasks:
 - UI customization options
 
 Move one item from this list only when it directly supports the active write/organize/reflect/export/search loop.
-
-## `fast-forward-V1` Full Product Execution
-
-Status: branch-local implementation started on 2026-07-10.
-
-- [X] Stabilize baseline checks: lint, unit, integration, Storybook browser tests, and build.
-- [X] Add current-entry and all-entry Markdown export path.
-- [X] Add searchable chunks table, chunking helper, source-backed local search API, and tests.
-- [X] Add Echo current-entry reflection API and quiet editor affordance with local fallback.
-- [X] Add Markdown/text/exported-chat import preview and confirm APIs with provenance.
-- [X] Add manual people CRUD APIs and `/people` route.
-- [X] Add local insights and weekly digest APIs.
-- [X] Add privacy export and explicit-confirmation local data deletion APIs.
-- [X] Add voice transcript-review API with audio-retention default set to false.
-- [X] Add hosted rate-limit algorithm contract in app code.
-- [ ] Compile Go/Redis limiter service; blocked in this environment because `go` is not installed.
-- [ ] Replace local heuristic AI/search fallbacks with provider-backed adapters when keys and provider policy are ready.
-- [ ] Add production auth/account isolation before public hosted customers.

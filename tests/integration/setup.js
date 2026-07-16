@@ -5,17 +5,16 @@ import { closeDb, getDb, getPool } from "../../db/client.js";
 
 loadEnvConfig(process.cwd());
 
-process.env.TEST_DATABASE_URL ??=
-  "postgresql://postgres:postgres@localhost:5434/innerscript_test";
+if (!process.env.TEST_DATABASE_URL) {
+  throw new Error("TEST_DATABASE_URL is required for integration tests");
+}
 
 beforeAll(async () => {
   await migrate(getDb(), { migrationsFolder: "drizzle" });
 });
 
 beforeEach(async () => {
-  await getPool().query(
-    "TRUNCATE TABLE audit_logs, chunks, digests, person_mentions, people, entries, sources, folders RESTART IDENTITY CASCADE",
-  );
+  await getPool().query("TRUNCATE TABLE entries, sources, folders RESTART IDENTITY CASCADE");
 });
 
 afterAll(async () => {

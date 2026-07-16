@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { MarkdownEditor } from "./markdown-editor";
-import { Sparkles, X } from "lucide-react";
 import {
   countWords,
   formatEntryCreated,
@@ -15,29 +14,14 @@ export function EntryEditor({
   occurredAt,
   updatedAt,
   isDraft = false,
-  saveStatus = "idle",
   onTitleChange,
   onBodyChange,
-  onRequestReflection,
-  onDismissReflection,
-  reflectionStatus = "idle",
-  reflection = null,
-  reflectionError = null,
   focusTarget = null,
 }) {
   const createdIso = occurredAt ?? new Date().toISOString();
   const editedIso = updatedAt ?? createdIso;
   const wordCount = countWords(body);
   const characterCount = body.length;
-  const visibleBody = body.trim().length === 0 ? "" : body;
-  const footerSaveLabel =
-    saveStatus === "dirty"
-      ? "Unsaved changes"
-      : saveStatus === "saving"
-        ? "Saving changes"
-        : saveStatus === "error"
-          ? "Save failed"
-          : "Saved";
   const titleRef = useRef(null);
   const bodyRef = useRef(null);
   const titleValueRef = useRef(title);
@@ -106,63 +90,14 @@ export function EntryEditor({
         <div className="min-h-0 flex-1 overflow-y-auto scroll-smooth">
           <MarkdownEditor
             ref={bodyRef}
-            value={visibleBody}
+            value={body}
             onChange={onBodyChange}
             placeholder="How was your day?"
           />
         </div>
 
-        {reflection || reflectionError ? (
-          <section className="mb-3 shrink-0 rounded-lg border border-primary/20 bg-surface-container-low px-4 py-3 text-sm text-on-surface">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="mb-1 flex items-center gap-2 text-[10px] font-medium uppercase text-primary">
-                  <Sparkles className="size-3.5" aria-hidden="true" />
-                  Echo
-                </div>
-                <p className="text-sm leading-relaxed text-on-surface">
-                  {reflection?.question ?? reflectionError}
-                </p>
-                {reflection?.source?.title ? (
-                  <p className="mt-2 text-[11px] text-on-surface-variant/70">
-                    Source: {reflection.source.title}
-                  </p>
-                ) : null}
-              </div>
-              <button
-                type="button"
-                aria-label="Dismiss Echo"
-                onClick={onDismissReflection}
-                className="interactive-element rounded-full p-1 text-on-surface-variant hover:bg-surface-container-high hover:text-primary"
-              >
-                <X className="size-4" aria-hidden="true" />
-              </button>
-            </div>
-          </section>
-        ) : null}
-
-        <footer className="flex shrink-0 flex-col gap-2 border-t border-surface-variant/20 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 text-[11px] text-on-surface-variant/60 sm:flex-row sm:items-center sm:justify-between sm:pb-0">
+        <footer className="flex shrink-0 flex-col gap-2 border-t border-surface-variant/20 pt-3 text-[11px] text-on-surface-variant/55 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <button
-              type="button"
-              onClick={onRequestReflection}
-              disabled={reflectionStatus === "loading"}
-              className="interactive-element flex items-center gap-1 rounded-full bg-surface-container-low/80 px-3 py-1 text-[11px] font-medium text-primary disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <Sparkles className="size-3.5" aria-hidden="true" />
-              {reflectionStatus === "loading" ? "Listening" : "Echo"}
-            </button>
-            <span className="opacity-30">•</span>
-            <span
-              className={
-                saveStatus === "error"
-                  ? "font-medium text-error"
-                  : "font-medium text-on-surface-variant/78"
-              }
-            >
-              {footerSaveLabel}
-            </span>
-            <span className="opacity-30">•</span>
             <span suppressHydrationWarning>
               Created {formatEntryCreated(createdIso)}
             </span>
@@ -175,7 +110,7 @@ export function EntryEditor({
               </>
             ) : null}
           </div>
-          <div className="w-fit text-[11px] text-on-surface-variant/62 sm:rounded-full sm:bg-surface-container-low/80 sm:px-3 sm:py-1 sm:text-on-surface-variant/70">
+          <div className="w-fit rounded-full bg-surface-container-low/80 px-3 py-1 text-[11px] text-on-surface-variant/70">
             {wordCount} {wordCount === 1 ? "word" : "words"} · {characterCount}{" "}
             {characterCount === 1 ? "character" : "characters"}
           </div>

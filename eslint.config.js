@@ -8,7 +8,6 @@ const eslintConfig = defineConfig([...nextVitals, // Override default ignores of
 globalIgnores([
   // Default ignores of eslint-config-next:
   ".next/**",
-  ".next-build/**",
   "out/**",
   "build/**",
   "storybook-static/**",

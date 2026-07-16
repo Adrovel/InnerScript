@@ -14,10 +14,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "seed:haulden": "node scripts/seed-haulden-persona.mjs",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.js",
-    "test:smoke": "node scripts/smoke-production.mjs",
     "storybook": "storybook dev -p 6006 --initial-path /?path=/story/journal-entry-editor--written-entry",
     "build-storybook": "storybook build"
   },

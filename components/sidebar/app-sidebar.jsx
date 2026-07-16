@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import { ChartNoAxesColumn, FolderPlus, Plus, Search, Shield, Trash2, Upload, Users, X } from "lucide-react";
+import { FolderPlus, Plus } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,12 +10,10 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
 import {
   filterSidebarEntries,
   getRootSidebarEntries,
@@ -30,15 +27,6 @@ import { SidebarFolderDraftRow } from "./sidebar-folder-draft-row";
 import { SidebarMessage } from "./sidebar-message";
 import { SidebarProfile } from "./sidebar-profile";
 import { SidebarSearch } from "./sidebar-search";
-import { sidebarActionRowClass } from "./sidebar-styles";
-
-const PRODUCT_LINKS = [
-  { href: "/search", label: "Search", Icon: Search },
-  { href: "/imports", label: "Imports", Icon: Upload },
-  { href: "/people", label: "People", Icon: Users },
-  { href: "/insights", label: "Insights", Icon: ChartNoAxesColumn },
-  { href: "/settings/privacy", label: "Privacy", Icon: Shield },
-];
 
 export function AppSidebar({
   entries,
@@ -47,10 +35,6 @@ export function AppSidebar({
   onSelectEntry,
   onDeleteEntry,
   onRenameEntry,
-  selectedEntryIds = [],
-  onToggleEntrySelection,
-  onClearEntrySelection,
-  onDeleteSelectedEntries,
   onNewNote,
   onCreateFolder,
   onDeleteFolder,
@@ -59,7 +43,6 @@ export function AppSidebar({
   creatingNote = false,
   creatingFolderParentId,
   deletingEntryId = null,
-  bulkDeletingEntries = false,
   deletingFolderId = null,
   renamingEntryId = null,
   renamingFolderId = null,
@@ -68,7 +51,6 @@ export function AppSidebar({
   const [searchQuery, setSearchQuery] = useState("");
   const [folderDraft, setFolderDraft] = useState(null);
   const [renameTarget, setRenameTarget] = useState(null);
-  const selectedEntryIdSet = useMemo(() => new Set(selectedEntryIds), [selectedEntryIds]);
   const filteredEntries = useMemo(
     () => filterSidebarEntries(entries, searchQuery),
     [entries, searchQuery],
@@ -81,7 +63,6 @@ export function AppSidebar({
   const hasSearchQuery = searchQuery.trim().length > 0;
   const hasEntries = entries.length > 0;
   const hasVisibleEntries = filteredEntries.length > 0;
-  const selectedEntryCount = selectedEntryIdSet.size;
 
   const closeMobileSidebar = () => {
     setOpenMobile(false);
@@ -156,55 +137,11 @@ export function AppSidebar({
               <SidebarSearch query={searchQuery} onQueryChange={setSearchQuery} />
             </SidebarMenuItem>
           </SidebarMenu>
-
-          <SidebarMenu className="gap-1">
-            {PRODUCT_LINKS.map(({ href, label, Icon }) => (
-              <SidebarMenuItem key={href}>
-                <SidebarMenuButton
-                  render={<Link href={href} onClick={closeMobileSidebar} />}
-                  className={`${sidebarActionRowClass} text-sidebar-foreground/76 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground`}
-                >
-                  <Icon className="text-sidebar-foreground/62" aria-hidden="true" />
-                  <span className="min-w-0 flex-1 truncate">{label}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
         </SidebarHeader>
 
         <div aria-hidden="true" className="mx-3 h-px shrink-0 bg-sidebar-border" />
 
         <SidebarContent className="px-2 py-3">
-          {selectedEntryCount > 0 ? (
-            <div className="mb-2 flex h-9 items-center gap-1 rounded-lg border border-sidebar-border/70 bg-sidebar-accent/55 px-2 text-xs text-sidebar-foreground/82">
-              <span className="min-w-0 flex-1 truncate font-medium">
-                {selectedEntryCount} selected
-              </span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                disabled={bulkDeletingEntries}
-                aria-label="Delete selected entries"
-                title="Delete selected entries"
-                onClick={onDeleteSelectedEntries}
-                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              >
-                <Trash2 aria-hidden="true" />
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                disabled={bulkDeletingEntries}
-                aria-label="Clear entry selection"
-                title="Clear selection"
-                onClick={onClearEntrySelection}
-              >
-                <X aria-hidden="true" />
-              </Button>
-            </div>
-          ) : null}
           <SidebarGroup className="p-0">
             <SidebarGroupContent>
               {hasEntries && hasSearchQuery && !hasVisibleEntries ? (
@@ -230,8 +167,6 @@ export function AppSidebar({
                     onSelectEntry={onSelectEntry}
                     onDeleteEntry={onDeleteEntry}
                     onRenameEntry={handleRenameEntry}
-                    selectedEntryIds={selectedEntryIdSet}
-                    onToggleEntrySelection={onToggleEntrySelection}
                     onStartEntryRename={(entry) => setRenameTarget({ type: "entry", id: entry.id })}
                     onCancelRename={() => setRenameTarget(null)}
                     onNewNote={onNewNote}
@@ -245,7 +180,6 @@ export function AppSidebar({
                     creatingNote={creatingNote}
                     creatingFolderParentId={creatingFolderParentId}
                     deletingEntryId={deletingEntryId}
-                    bulkDeletingEntries={bulkDeletingEntries}
                     deletingFolderId={deletingFolderId}
                     renamingEntryId={renamingEntryId}
                     renamingFolderId={renamingFolderId}
@@ -261,13 +195,10 @@ export function AppSidebar({
                     onSelectEntry={onSelectEntry}
                     onDeleteEntry={onDeleteEntry}
                     onRenameEntry={handleRenameEntry}
-                    selectedForBulk={selectedEntryIdSet.has(entry.id)}
-                    onToggleEntrySelection={onToggleEntrySelection}
                     onStartRename={(entry) => setRenameTarget({ type: "entry", id: entry.id })}
                     onCancelRename={() => setRenameTarget(null)}
                     onMobileClose={closeMobileSidebar}
                     deletingEntryId={deletingEntryId}
-                    bulkDeletingEntries={bulkDeletingEntries}
                     renaming={renameTarget?.type === "entry" && renameTarget.id === entry.id}
                     renamingEntryId={renamingEntryId}
                   />
@@ -276,8 +207,8 @@ export function AppSidebar({
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter className="hidden border-t border-sidebar-border/70 px-3 py-3 md:flex">
-          <SidebarProfile displayName="Haulden Vale" handle="local persona" />
+        <SidebarFooter className="border-t border-sidebar-border/70 px-3 py-3">
+          <SidebarProfile />
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>

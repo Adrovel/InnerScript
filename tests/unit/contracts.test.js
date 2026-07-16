@@ -11,20 +11,20 @@ import {
 
 describe("entry contracts", () => {
   test("accepts the canonical entry types", () => {
-    expect(entryTypeSchema.parse("note")).toBe("note");
+    expect(entryTypeSchema.parse("document")).toBe("document");
     expect(entryTypeSchema.parse("conversation")).toBe("conversation");
-    expect(() => entryTypeSchema.parse("document")).toThrow();
     expect(() => entryTypeSchema.parse("journal")).toThrow();
+    expect(() => entryTypeSchema.parse("note")).toThrow();
   });
 
-  test("manual entries default to note and cannot carry source provenance", () => {
+  test("manual entries default to document and cannot carry source provenance", () => {
     const parsed = createManualEntryInputSchema.parse({
-      body: "A manually written note.",
+      body: "A manually written document.",
     });
 
     expect(parsed).toMatchObject({
-      body: "A manually written note.",
-      entry_type: "note",
+      body: "A manually written document.",
+      entry_type: "document",
     });
     expect(parsed).not.toHaveProperty("folder_id");
     expect(parsed).not.toHaveProperty("journal_date");
@@ -37,15 +37,15 @@ describe("entry contracts", () => {
     ).toThrow();
   });
 
-  test("manual notes can live in folders or be marked as daily journals", () => {
+  test("manual documents can live in folders or be marked as daily journals", () => {
     expect(
       createManualEntryInputSchema.parse({
-        body: "A user-authored note.",
+        body: "A user-authored document.",
         folder_id: "734ac035-a77d-4da9-b8ca-5d9aeb699253",
         journal_date: "2026-06-11",
       }),
     ).toMatchObject({
-      entry_type: "note",
+      entry_type: "document",
       folder_id: "734ac035-a77d-4da9-b8ca-5d9aeb699253",
       journal_date: "2026-06-11",
     });
