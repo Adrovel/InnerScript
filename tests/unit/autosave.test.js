@@ -9,7 +9,7 @@ const savedEntry = {
   id: "entry-1",
   title: null,
   body: "hello",
-  entry_type: "note",
+  entry_type: "document",
   source_id: null,
   occurred_at: "2026-06-04T00:00:00.000Z",
   created_at: "2026-06-04T00:00:00.000Z",
@@ -28,7 +28,7 @@ describe("autosave helpers", () => {
       buildAutosavePayload({
         title: "",
         body: "",
-        entryType: "note",
+        entryType: "document",
         entryId: null,
       }),
     ).toBeNull();
@@ -37,7 +37,7 @@ describe("autosave helpers", () => {
       buildAutosavePayload({
         title: "  Cleared  ",
         body: "",
-        entryType: "note",
+        entryType: "document",
         entryId: savedEntry.id,
       }),
     ).toEqual({
@@ -50,14 +50,14 @@ describe("autosave helpers", () => {
     const pending = {
       title: "",
       body: "hello",
-      entryType: "note",
+      entryType: "document",
       occurredAt: savedEntry.occurred_at,
       entryId: savedEntry.id,
     };
     const latestPending = {
       title: "",
       body: "hello world",
-      entryType: "note",
+      entryType: "document",
       occurredAt: savedEntry.occurred_at,
       entryId: savedEntry.id,
     };
@@ -80,14 +80,14 @@ describe("autosave helpers", () => {
     const pending = {
       title: "",
       body: "hello",
-      entryType: "note",
+      entryType: "document",
       occurredAt: savedEntry.occurred_at,
       entryId: null,
     };
     const latestPending = {
       title: "Later",
       body: "hello after create",
-      entryType: "note",
+      entryType: "document",
       occurredAt: savedEntry.occurred_at,
       entryId: null,
     };
@@ -111,7 +111,7 @@ describe("autosave helpers", () => {
     const pending = {
       title: "",
       body: "hello",
-      entryType: "note",
+      entryType: "document",
       occurredAt: savedEntry.occurred_at,
       entryId: savedEntry.id,
     };

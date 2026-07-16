@@ -84,13 +84,3 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-22 | loaded: wolf docs rules | changed: update-log compaction rule added | running: unknown | open: none
 2026-06-22 | loaded: editor layout | changed: footer below full-height scrollable editor, Storybook frame fixed, bug logged | running: none | open: none
 2026-06-22 | loaded: atomic and future plan | changed: UI customization deferred to future plan | running: unknown | open: schema rename, export
-2026-06-22 | loaded: schema plan, entry tests | changed: entry type renamed document to note with migration and tests | running: none | open: Markdown export, build blocked by .next ownership
-2026-06-24 | loaded: session context, app docs, dev-docs | changed: Added InnerScript README "Videos to view" link (AF3XJT9YKpM) | running: unknown | open: none
-2026-06-29 | loaded: team decisions and plans | changed: core idea reframed as making unconscious conscious; emotions-first Echo extraction direction captured | running: unknown | open: Echo naming, extraction schema details, search/reflection/import order
-2026-07-02 | loaded: webpage audit, product decisions | changed: local audit notes saved, migration bug logged, missing local migrations applied manually | running: next 3000, postgres 5433/5434 | open: migration history fix, mobile footer overlap, writing trust polish
-2026-07-03 | loaded: webpage audit branch | changed: prompt contrast, editor footer save status, mobile sidebar profile hidden, mobile word count plain | running: postgres 5433/5434 | open: sidebar test note cleanup, Echo affordance later
-2026-07-07 | loaded: product decisions and open questions | changed: personal-data trust and cybersecurity concerns captured | running: unknown | open: answer privacy/security plan before public customers
-2026-07-10 | loaded: full product plan | changed: fast-forward-V1 product APIs/routes for search, Echo, imports, people, insights, privacy, voice, digest, limiter | running: postgres 5433/5434 | open: Go unavailable, provider adapters later
-2026-07-10 | loaded: production gaps | changed: Basic Auth proxy, readiness API, OpenAI-compatible Echo hook, Vercel config, Go limiter source scaffold | running: postgres 5433/5434 | open: deploy env vars and Go install
-2026-07-10 | loaded: fast-forward-V1 branch and readiness | changed: logged transient Storybook test flake | running: next 3000, postgres 5433/5434 | open: remote fast-forward-V1 branch absent; hosted env vars missing
-2026-07-16 | loaded: fast-forward-V1 docs and dirty patch | changed: fixed stale sidebar profile story tests | running: unknown | open: validate bulk delete and Haulden persona flow in browser
