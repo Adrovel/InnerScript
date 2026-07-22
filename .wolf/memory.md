@@ -84,3 +84,10 @@ YYYY-MM-DD | loaded: <short files/docs> | changed: <short changes> | running: <s
 2026-06-22 | loaded: wolf docs rules | changed: update-log compaction rule added | running: unknown | open: none
 2026-06-22 | loaded: editor layout | changed: footer below full-height scrollable editor, Storybook frame fixed, bug logged | running: none | open: none
 2026-06-22 | loaded: atomic and future plan | changed: UI customization deferred to future plan | running: unknown | open: schema rename, export
+2026-07-15 | loaded: product direction, dark tokens | changed: three Pencil home directions for Journal and Events | running: none | open: choose direction
+2026-07-16 | loaded: product decisions, design system | changed: PRODUCT.md | running: none | open: choose Pencil direction
+2026-07-17 | loaded: onboarding design context | changed: Brilliant has name-introduction screen plus matching Pattern and Masked hover frames | running: none | open: choose variant
+2026-07-17 | loaded: Brilliant Pattern Background, app router, shadcn | changed: `/onboard` light pattern page + reusable onboard components on feature/onboard-pattern-background | running: none | open: browser visual pass
+2026-07-22 | loaded: onboard v1 liquidGL, product register | changed: safe color guards, 1080p texture cap, about 33 FPS | running: next 3000 | open: Joel visual pass
+2026-07-22 | loaded: onboard v2, product accessibility | changed: centered controls, Manrope, proportional mobile cards fit one screen | running: next 3000 | open: Joel visual pass
+2026-07-22 | loaded: onboard v1/v2, Anime.js docs | changed: compact v1 glass, wide v2 masked cards, subtle phase animation | running: next 3000 | open: Joel visual pass
