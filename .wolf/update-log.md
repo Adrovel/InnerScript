@@ -103,3 +103,8 @@ YYYY-MM-DD | who | area | changed | open
 2026-06-22 | Prithvi+Codex | docs rules | update-log rules now require summarizing nearby similar updates and removing redundant nearby lines | open: none
 2026-06-22 | Codex | editor layout | editor footer now sits below a full-height scrollable CodeMirror body; Storybook editor story uses a full-screen frame | open: none
 2026-06-22 | Prithvi+Codex | editor UX | blockquote attribution lines align right, inactive `>` markers hide, and Enter on an empty quote line exits the quote; slash commands deferred | open: discuss slash-command system
+2026-07-15 | Prithvi+Codex | Pencil exploration | three dark post-login directions separate Journal from Events; layout verified | open: choose direction
+2026-07-16 | Codex | design context | added PRODUCT.md for product/web strategy and WCAG 2.2 AA | open: choose Pencil direction
+2026-07-17 | Prithvi+Codex | onboard UI | `/onboard` Pattern Background page on feature/onboard-pattern-background; Journal/Events cards both go `/` | open: browser visual pass
+2026-07-22 | Grok+Codex | onboard v1 glass | custom snapshot and parser guards work; texture capped to aspect-preserving 1080p; mobile uses compact full-width cards with visible touch actions and no viewport overflow | open: Joel visual pass
+2026-07-22 | Codex | onboard v2 | centered controls, Manrope, wide masked mobile cards with visible actions, and reduced-motion-safe Anime.js phase transition | open: Joel visual pass
